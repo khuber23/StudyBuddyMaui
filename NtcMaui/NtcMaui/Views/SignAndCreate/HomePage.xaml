@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NtcMaui.Views.SignAndCreate.HomePage"
+             Title="Home">
+    <ScrollView>
+        <Grid>
+            <StackLayout Margin="0,5">
+                <StackLayout>
+                    <Image Margin="25, 25" WidthRequest="50" HeightRequest="50" Source="ntclogo.png" HorizontalOptions="Start"></Image>
+                </StackLayout>
+                <StackLayout Margin="0, 30">
+                    <Image x:Name="UserImage" WidthRequest="150" HeightRequest="150" Source="stockprofileimage.png"></Image>
+                    <Label HorizontalOptions="Center" x:Name="UserNameText"></Label>
+                </StackLayout>
+                <StackLayout VerticalOptions="End" Orientation="Horizontal">
+                    <Button Margin="30, 30" x:Name="MyStudiesBtn" Clicked="GoToMyStudies" Text="My Studies" HorizontalOptions="StartAndExpand"></Button>
+                    <Button Margin="30, 30" x:Name="StudySessionBtn" Text="Study Session" HorizontalOptions="EndAndExpand"></Button>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

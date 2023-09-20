@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NtcMaui.Views.SignAndCreate.Success"
+             Title="Success">
+    <ScrollView>
+        <ScrollView.GestureRecognizers>
+            <TapGestureRecognizer Tapped="OnTapRecognized" NumberOfTapsRequired="1"></TapGestureRecognizer>
+        </ScrollView.GestureRecognizers>
+        <Grid>
+            <StackLayout Margin="0,10">
+                <StackLayout>
+                    <Image x:Name="UserImage"  WidthRequest="100" HeightRequest="100" Source="stockprofileimage.png"></Image>
+                    <Label HorizontalOptions="Center" x:Name="WelcomeUserMessage"></Label>
+                </StackLayout>
+                <StackLayout Margin="0, 60">
+                    <Image WidthRequest="400" HeightRequest="400" Source="green_checkmark.jpg"></Image>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>
