@@ -1,0 +1,8 @@
+# Kayla Huber 01/23/2023
+
+# Ignore any files in /bin and /obj Folders
+**/bin/*
+**/obj/*
+**/dist/*
+**/.vs/*
+**/publish/*

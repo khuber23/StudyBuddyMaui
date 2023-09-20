@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34024.191
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NtcMaui", "NtcMaui\NtcMaui.csproj", "{BA42839B-A01A-4EAD-AF0D-AD0F06409B90}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BA42839B-A01A-4EAD-AF0D-AD0F06409B90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA42839B-A01A-4EAD-AF0D-AD0F06409B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA42839B-A01A-4EAD-AF0D-AD0F06409B90}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{BA42839B-A01A-4EAD-AF0D-AD0F06409B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA42839B-A01A-4EAD-AF0D-AD0F06409B90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA42839B-A01A-4EAD-AF0D-AD0F06409B90}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1A7470DC-71CE-4B97-BC65-205DF12E92B0}
+	EndGlobalSection
+EndGlobal
