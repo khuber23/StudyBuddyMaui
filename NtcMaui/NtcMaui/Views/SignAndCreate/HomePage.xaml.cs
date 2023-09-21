@@ -21,7 +21,11 @@ public partial class HomePage : ContentPage, IQueryAttributable, INotifyProperty
     public async void GoToMyStudies(object sender, EventArgs e)
     {
         //eventually make this the dashboard page and also send the user through to this page.
-        await Shell.Current.GoToAsync(nameof(DeckGroupPage));
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        await Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
     }
     public User LoggedInUser { get; set; }
 }

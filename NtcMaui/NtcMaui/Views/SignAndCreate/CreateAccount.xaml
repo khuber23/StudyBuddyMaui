@@ -43,17 +43,11 @@
                         <Entry x:Name="ReTypedPasswordEntry" TextColor="Black" Placeholder="Password"></Entry>
                     </Grid>
                     <Label Margin="0,10" Text="Upload Profile Picture" FontSize="16"></Label>
-                    <Grid Margin="0,5">
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
 
-                        <ImageButton x:Name="UploadImageBtn"  Grid.Row="0" Grid.Column="0" HorizontalOptions="StartAndExpand" WidthRequest="25" HeightRequest="25" Source="upload.png"></ImageButton>
-                        <Image x:Name="ProfileImage" Grid.Row="0" Grid.Column="1"  Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50"></Image>
-                    </Grid>
+                    <StackLayout Orientation="Horizontal">
+                        <ImageButton x:Name="UploadImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png"></ImageButton>
+                        <Image x:Name="ProfileImage"  Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50"></Image>
+                    </StackLayout>
                 </StackLayout>
                 <StackLayout>
                     <Button x:Name="SaveBtn" Text="Save" Margin="0, 50" WidthRequest="200" HorizontalOptions="Start" Clicked="CompleteCreation"></Button>

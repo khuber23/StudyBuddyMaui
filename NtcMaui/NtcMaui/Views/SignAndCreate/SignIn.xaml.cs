@@ -61,6 +61,7 @@ public partial class SignIn : ContentPage
                     { "Current User", user }
                 };
                 await Shell.Current.GoToAsync(nameof(Success), navigationParameter);
+                break;
             }
             else
             {

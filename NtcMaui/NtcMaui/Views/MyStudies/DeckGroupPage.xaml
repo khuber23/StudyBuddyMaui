@@ -8,12 +8,28 @@
         <Grid>
             <StackLayout Margin="0, 5">
                 <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 5">
-                    <Button Margin="5, 5" Text="Dash Board"></Button>
-                    <Button Margin="5, 5" Text="Flashcard"></Button>
-                    <Button Margin="5, 5" Text="Deck"></Button>
-                    <Button Margin="5, 5" Text="Deck Groups"></Button>
+                    <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage"  Margin="5, 5" Text="Dash Board"></Button>
+                    <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Margin="5, 5" Text="Flashcard"></Button>
+                    <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Margin="5, 5" Text="Deck"></Button>
+                    <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Margin="5, 5" Text="Deck Groups"></Button>
                 </HorizontalStackLayout>
-                <StackLayout>
+                
+                <StackLayout Orientation="Horizontal">
+                    <ImageButton x:Name="AddDeckGroupBtn"  Margin="10, 10" Source="plussign.png" VerticalOptions="Start" WidthRequest="25" HeightRequest="25"></ImageButton>
+                    <StackLayout Orientation="Vertical" Margin="10, 5">
+                        <Label Text="Create A Deck Group" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
+                        <Label Text="test to see where this goes" VerticalOptions="CenterAndExpand"></Label>
+                        <!--<Button x:Name="TestBtn" Text="Click test to load data?" Clicked="TestClick"></Button>-->
+                    </StackLayout>
+                    <ListView x:Name="DeckGroupListView">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <Label Text="{Binding DeckGroupName}" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                     
                 </StackLayout>
             </StackLayout>
