@@ -6,10 +6,10 @@ namespace NtcMaui.Views.SignAndCreate;
 
 public partial class HomePage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
-	public HomePage()
-	{
-		InitializeComponent();
-	}
+    public HomePage()
+    {
+        InitializeComponent();
+    }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {

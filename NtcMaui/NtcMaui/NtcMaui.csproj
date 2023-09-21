@@ -16,7 +16,7 @@
 
 		<!-- App Identifier -->
 		<ApplicationId>com.companyname.ntcmaui</ApplicationId>
-		<ApplicationIdGuid>8dd9344b-4a02-49c7-b3dd-c3e1f876f563</ApplicationIdGuid>
+		<ApplicationIdGuid>120ec732-84f3-460d-8fe0-373ef39fc08a</ApplicationIdGuid>
 
 		<!-- Versions -->
 		<ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -49,15 +49,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Resources\Images\green_checkmark.jpg" />
+	  <None Remove="Resources\Images\ntclogo.png" />
+	  <None Remove="Resources\Images\stockprofileimage.png" />
+	  <None Remove="Resources\Images\upload.png" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Reference Include="ApiStudyBuddy">
-	    <HintPath>..\..\ApiStudyBuddy\ApiStudyBuddy\bin\Debug\net7.0\ApiStudyBuddy.dll</HintPath>
-	  </Reference>
-	  <Reference Include="NtcStudyBuddy.DataAccess">
-	    <HintPath>..\..\NtcStudyBuddyApi\NtcStudyBuddy.DataAccess\bin\Debug\net7.0\NtcStudyBuddy.DataAccess.dll</HintPath>
+	    <HintPath>..\..\..\NTCStudyBuddyApi\ApiStudyBuddy\ApiStudyBuddy\bin\Debug\net7.0\ApiStudyBuddy.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
 
@@ -77,10 +81,6 @@
 	  <MauiXaml Update="Views\SignAndCreate\Success.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Views\StudySession\" />
 	</ItemGroup>
 
 </Project>

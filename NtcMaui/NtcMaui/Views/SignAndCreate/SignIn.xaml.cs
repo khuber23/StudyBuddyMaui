@@ -9,10 +9,10 @@ namespace NtcMaui.Views.SignAndCreate;
 
 public partial class SignIn : ContentPage
 {
-public SignIn()
-	{
-		InitializeComponent();
-	}
+    public SignIn()
+    {
+        InitializeComponent();
+    }
     public void CompleteSignIn(object sender, EventArgs e)
     {
         //add method before this with other tasks that check stuff like if user exists in database and the password they typed is re-typed again correctly.
@@ -27,8 +27,8 @@ public SignIn()
     //local Url test to retrieve users from localhost and check something.
     public async Task<List<User>> GetAllUsers()
     {
-       List<User> users= new List<User>();
-        
+        List<User> users = new List<User>();
+
 
         Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User", string.Empty));
         try
@@ -53,7 +53,7 @@ public SignIn()
         List<User> users = await GetAllUsers();
         foreach (User user in users)
         {
-             if (user.Username == UserNameEntry.Text && user.Password == PasswordEntry.Text)
+            if (user.Username == UserNameEntry.Text && user.Password == PasswordEntry.Text)
             {
                 Error.Text = string.Empty;
                 var navigationParameter = new Dictionary<string, object>

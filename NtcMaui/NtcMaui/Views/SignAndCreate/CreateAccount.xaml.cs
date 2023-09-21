@@ -9,13 +9,13 @@ namespace NtcMaui.Views.SignAndCreate;
 public partial class CreateAccount : ContentPage
 {
     public CreateAccount()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+    }
     public async void CompleteCreation(object sender, EventArgs e)
     {
         //eventually add some checks/add to database before going back to sign in.
-       User user = this.MakeUser();
+        User user = this.MakeUser();
         await SaveUserAsync(user);
         await Shell.Current.GoToAsync(nameof(Success));
     }
