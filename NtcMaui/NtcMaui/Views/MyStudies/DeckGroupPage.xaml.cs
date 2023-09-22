@@ -1,10 +1,11 @@
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
 
 namespace NtcMaui.Views.MyStudies;
 
-public partial class DeckGroupPage : ContentPage
+public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
     public DeckGroupPage()
     {
@@ -18,10 +19,11 @@ public partial class DeckGroupPage : ContentPage
         DeckGroupListView.ItemsSource = await GetAllDeckGroups();
     }
 
-    //private async void TestClick(object sender, EventArgs e)
-    //{
-    //    DeckGroupListView.ItemsSource = await GetAllDeckGroups();
-    //}
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        LoggedInUser = query["Current User"] as User;
+        OnPropertyChanged("Current User");
+    }
 
     private void GoToDashboardPage(object sender, EventArgs e)
     {
@@ -43,19 +45,20 @@ public partial class DeckGroupPage : ContentPage
     }
 
 
-    public async Task<List<DeckGroup>> GetAllDeckGroups()
+    public async Task<List<UserDeckGroup>> GetAllDeckGroups()
     {
-        List<DeckGroup> deckGroups = new List<DeckGroup>();
+        List<UserDeckGroup> deckGroups = new List<UserDeckGroup>();
 
 
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup", string.Empty));
+        //Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup", string.Empty));
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/user/{LoggedInUser.UserId}", string.Empty));
         try
         {
             HttpResponseMessage response = await Constants._client.GetAsync(uri);
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                deckGroups = JsonSerializer.Deserialize<List<DeckGroup>>(content, Constants._serializerOptions);
+                deckGroups = JsonSerializer.Deserialize<List<UserDeckGroup>>(content, Constants._serializerOptions);
             }
         }
         catch (Exception ex)
@@ -65,5 +68,5 @@ public partial class DeckGroupPage : ContentPage
         return deckGroups;
     }
 
-    //public Task<List<DeckGroup>> DeckGroups { get; set; }
+    public User LoggedInUser { get; set; }
 }

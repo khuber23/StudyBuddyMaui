@@ -15,22 +15,28 @@
                 </HorizontalStackLayout>
                 
                 <StackLayout Orientation="Horizontal">
-                    <ImageButton x:Name="AddDeckGroupBtn"  Margin="10, 10" Source="plussign.png" VerticalOptions="Start" WidthRequest="25" HeightRequest="25"></ImageButton>
+                    <ImageButton x:Name="AddDeckGroupBtn" Margin="10, 10" Source="plussign.png" VerticalOptions="Start" WidthRequest="25" HeightRequest="25"></ImageButton>
                     <StackLayout Orientation="Vertical" Margin="10, 5">
                         <Label Text="Create A Deck Group" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
                         <Label Text="test to see where this goes" VerticalOptions="CenterAndExpand"></Label>
-                        <!--<Button x:Name="TestBtn" Text="Click test to load data?" Clicked="TestClick"></Button>-->
                     </StackLayout>
+                </StackLayout>
+                <StackLayout>
                     <ListView x:Name="DeckGroupListView">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <Label Text="{Binding DeckGroupName}" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
+                                    <StackLayout Orientation="Horizontal">
+                                        <Image x:Name="ProfileImage"  Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50" VerticalOptions="Start"></Image>
+                                        <StackLayout Orientation="Vertical" Margin="10, 5">
+                                            <Label Text="{Binding DeckGroup.DeckGroupName}" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
+                                            <Label Text="{Binding User.Username}"></Label>
+                                        </StackLayout>
+                                    </StackLayout>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-                    
                 </StackLayout>
             </StackLayout>
         </Grid>

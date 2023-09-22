@@ -23,8 +23,10 @@ namespace NtcMaui
         public static string LocalhostUrl = DeviceInfo.Platform == DevicePlatform.Android ? "10.0.2.2" : "localhost";
         //public static string Scheme = "https"; // or http
         //public static string Port = "5001";
-        //Url of our api
+        //Url of our test api
         public static string TestUrl = "https://instruct.ntc.edu/teststudybuddyapi";
+
+        public static string LocalApiUrl = "https://localhost:7025";
 
     }
 }
