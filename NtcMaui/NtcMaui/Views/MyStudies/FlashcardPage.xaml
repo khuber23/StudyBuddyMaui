@@ -12,8 +12,22 @@
                     <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Margin="5, 5" Text="Deck"></Button>
                     <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Margin="5, 5" Text="Deck Groups"></Button>
                 </HorizontalStackLayout>
-                <StackLayout>
 
+                <StackLayout>
+                    <ListView x:Name="FlashcardListView">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal">
+                                        <StackLayout Orientation="Vertical" Margin="10, 5">
+                                            <Label Text="{Binding FlashCardQuestion}" FontSize="20" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
+                                            <Label Text="{Binding FlashCardAnswer}"></Label>
+                                        </StackLayout>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </StackLayout>
             </StackLayout>
         </Grid>
