@@ -17,7 +17,7 @@ public partial class CreateAccount : ContentPage
         //eventually add some checks/add to database before going back to sign in.
         User user = this.MakeUser();
         await SaveUserAsync(user);
-        await Shell.Current.GoToAsync(nameof(Success));
+        await Shell.Current.GoToAsync(nameof(SignIn));
     }
 
     public async Task SaveUserAsync(User user)
