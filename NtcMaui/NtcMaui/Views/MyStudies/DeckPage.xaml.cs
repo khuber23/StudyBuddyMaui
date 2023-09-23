@@ -25,6 +25,15 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
         DeckListView.ItemsSource = await GetAllDecks();
     }
 
+    private void GoToCreateDeckPage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(CreateDeckPage), navigationParameter);
+    }
+
     public async Task<List<UserDeck>> GetAllDecks()
     {
         List<UserDeck> decks = new List<UserDeck>();
@@ -48,12 +57,20 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
 
     private void GoToDashboardPage(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync(nameof(DashboardPage));
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(DashboardPage), navigationParameter);
     }
 
     private void GoToFlashcardPage(object sender, EventArgs e)
     {
-        Shell.Current.GoToAsync(nameof(FlashcardPage));
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(FlashcardPage), navigationParameter);
     }
     private void GoToDeckPage(object sender, EventArgs e)
     {

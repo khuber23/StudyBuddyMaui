@@ -15,7 +15,7 @@
                 </HorizontalStackLayout>
                 
                 <StackLayout Orientation="Horizontal">
-                    <ImageButton x:Name="AddDeckGroupBtn" Margin="10, 10" Source="plussign.png" VerticalOptions="Start" WidthRequest="25" HeightRequest="25"></ImageButton>
+                    <ImageButton Clicked="GoToCreateDeckGroupPage" x:Name="AddDeckGroupBtn" Margin="10, 10" Source="plussign.png" VerticalOptions="Start" WidthRequest="25" HeightRequest="25"></ImageButton>
                     <StackLayout Orientation="Vertical" Margin="10, 5">
                         <Label Text="Create A Deck Group" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
                         <!--<Label Text="{Binding LoggedInUser.Username}" VerticalOptions="CenterAndExpand"></Label>-->

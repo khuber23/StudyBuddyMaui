@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NtcMaui.Views.MyStudies.CreateFlashcardPage"
+             Title="CreateFlashcardPage">
+    <ScrollView>
+        <Grid>
+            <StackLayout Margin="20">
+                <StackLayout Margin="0, 20">
+                    <Label Text="Create a Flashcard" FontSize="24"></Label>
+                </StackLayout>
+
+                <StackLayout>
+                    <Label Text="Flashcard Question"></Label>
+                    <Grid Margin="0,5">
+                        <Frame BackgroundColor="White"/>
+                        <Entry x:Name="FlashcardQuestionEntry" TextColor="Black" Placeholder="Enter Question Text here."></Entry>
+                    </Grid>
+                    <Label Text="Answer" FontSize="16"></Label>
+                    <Grid Margin="0,5">
+                        <Frame BackgroundColor="White"/>
+                        <Entry x:Name="QuestionAnswerEntry" TextColor="Black" Placeholder="Enter Answer Text here."></Entry>
+                    </Grid>
+                </StackLayout>
+                <StackLayout>
+                    <!--so after creating flashcard go back to the main flashcard screen maybe-->
+                    <Button Text="Next" x:Name="NextBtn" WidthRequest="100" HeightRequest="25"></Button>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

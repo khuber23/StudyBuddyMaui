@@ -34,6 +34,15 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
         Shell.Current.GoToAsync(nameof(DashboardPage), navigationParameter);
     }
 
+    private void GoToCreateDeckGroupPage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(CreateDeckGroupPage), navigationParameter);
+    }
+
     private void GoToFlashcardPage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>

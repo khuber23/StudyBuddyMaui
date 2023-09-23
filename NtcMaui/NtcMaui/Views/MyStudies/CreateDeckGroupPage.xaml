@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NtcMaui.Views.MyStudies.CreateDeckGroupPage"
+             Title="CreateDeckGroupPage">
+    <ScrollView>
+        <Grid>
+            <StackLayout Margin="20">
+                <StackLayout Margin="0, 20">
+                    <Label Text="Create a Deck Group" FontSize="24"></Label>
+                </StackLayout>
+
+                <StackLayout>
+                    <Label Text="Deck Group Name"></Label>
+                    <Grid Margin="0,5">
+                        <Frame BackgroundColor="White"/>
+                        <Entry x:Name="DeckGroupNameEntry" TextColor="Black" Placeholder="Name your deck group"></Entry>
+                    </Grid>
+                    <Label Text="Description" FontSize="16"></Label>
+                    <Grid Margin="0,5">
+                        <Frame BackgroundColor="White"/>
+                        <Entry x:Name="DeckGroupDescriptionEntry" TextColor="Black" Placeholder="Enter Text Description"></Entry>
+                    </Grid>
+                </StackLayout>
+                <StackLayout>
+                    <Button Text="Next" Clicked="GoToBuildDeckGroupPage" x:Name="NextBtn" WidthRequest="100" HeightRequest="25"></Button>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

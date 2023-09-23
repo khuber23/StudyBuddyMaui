@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="NtcMaui.Views.MyStudies.DeckPage"
-             Title="DeckPage">
+             x:Class="NtcMaui.Views.MyStudies.BuildDeckGroupPage"
+             Title="BuildDeckGroupPage">
     <ScrollView>
         <Grid>
-            <StackLayout Margin="0, 5">
-                <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 5">
-                    <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage"  Margin="5, 5" Text="Dash Board"></Button>
-                    <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Margin="5, 5" Text="Flashcard"></Button>
-                    <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Margin="5, 5" Text="Deck"></Button>
-                    <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Margin="5, 5" Text="Deck Groups"></Button>
-                </HorizontalStackLayout>
+            <StackLayout>
+                <StackLayout Margin="0, 20">
+                    <Label Text="Build a Deck Group" FontSize="24"></Label>
+                </StackLayout>
+
+                <StackLayout>
+                    <Label Text="Add/Create a Deck"></Label>
+                </StackLayout>
 
                 <StackLayout Orientation="Horizontal">
                     <ImageButton x:Name="AddDeckBtn" Clicked="GoToCreateDeckPage" Margin="10, 10" Source="plussign.png" VerticalOptions="Start" WidthRequest="25" HeightRequest="25"></ImageButton>
                     <StackLayout Orientation="Vertical" Margin="10, 5">
                         <Label Text="Create A Deck" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
-                        <!--<Label Text="{Binding User.Username}" VerticalOptions="CenterAndExpand"></Label>-->
                     </StackLayout>
                 </StackLayout>
                 <StackLayout>
