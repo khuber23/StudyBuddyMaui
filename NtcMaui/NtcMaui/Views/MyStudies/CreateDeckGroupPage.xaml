@@ -23,7 +23,7 @@
                     </Grid>
                 </StackLayout>
                 <StackLayout>
-                    <Button Text="Next" Clicked="GoToBuildDeckGroupPage" x:Name="NextBtn" WidthRequest="100" HeightRequest="25"></Button>
+                    <Button Text="Next" Clicked="GoToDeckGroupPage" x:Name="NextBtn" WidthRequest="100" HeightRequest="25"></Button>
                 </StackLayout>
             </StackLayout>
         </Grid>

@@ -52,8 +52,20 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         LoggedInUser = query["Current User"] as User;
+        SelectedUserDeckGroup = query["Selected UserDeckGroup"] as UserDeckGroup;
         OnPropertyChanged("Current User");
     }
 
+
+
     public User LoggedInUser { get; set; }
+
+    public UserDeckGroup SelectedUserDeckGroup { get; set; }
+
+    private void DeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem != null)
+        {
+        }
+    }
 }

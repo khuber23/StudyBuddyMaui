@@ -9,6 +9,8 @@ public partial class FlashCardFlip : ContentPage
 		InitializeComponent();
     }
 
+    
+   
   async void OnTapRecognized(object sender, TappedEventArgs args)
     {
         if (FlashcardText.Text == "Here is some filler text")

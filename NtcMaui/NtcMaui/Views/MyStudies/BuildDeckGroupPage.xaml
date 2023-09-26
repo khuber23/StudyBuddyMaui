@@ -21,7 +21,7 @@
                     </StackLayout>
                 </StackLayout>
                 <StackLayout>
-                    <ListView x:Name="DeckListView">
+                    <ListView x:Name="DeckListView" ItemSelected="DeckListView_ItemSelected">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
