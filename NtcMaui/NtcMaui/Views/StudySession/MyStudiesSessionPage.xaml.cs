@@ -34,7 +34,7 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
     {
         List<UserDeckGroup> userDeckGroups = new List<UserDeckGroup>();
 
-        Uri uri = new Uri(string.Format($"{Constants.LocalApiUrl}/api/UserDeckGroup/user/{LoggedInUser.UserId}", string.Empty));
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/user/{LoggedInUser.UserId}", string.Empty));
         try
         {
             HttpResponseMessage response = await Constants._client.GetAsync(uri);
@@ -53,10 +53,16 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
 
     public User LoggedInUser { get; set; }
 
-    public List<UserDeckGroup> UserDeckGroups { get; set; }
+    public UserDeckGroup ChosenUserDeckGroup { get; set; }
 
     private void BeginSession(object sender, EventArgs e)
     {
-        
+        ChosenUserDeckGroup = MyStudiesListView.SelectedItem as UserDeckGroup;
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    {"ChosenStudy", ChosenUserDeckGroup }
+                };
+        Shell.Current.GoToAsync(nameof(StudyingPage), navigationParameter);
     }
 }

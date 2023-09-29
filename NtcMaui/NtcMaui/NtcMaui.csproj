@@ -105,10 +105,10 @@
 	  <MauiXaml Update="Views\SignAndCreate\Success.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\StudySession\FlashCardFlip.xaml">
+	  <MauiXaml Update="Views\StudySession\MyStudiesSessionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\StudySession\MyStudiesSessionPage.xaml">
+	  <MauiXaml Update="Views\StudySession\StudyingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

@@ -31,7 +31,6 @@ public partial class HomePage : ContentPage, IQueryAttributable, INotifyProperty
 
     public async void GoToStudySession(object sender, EventArgs e)
     {
-        //eventually make this the dashboard page and also send the user through to this page.
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }

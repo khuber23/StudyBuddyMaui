@@ -60,10 +60,10 @@
     <MauiXaml Update="Views\SignAndCreate\Success.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="Views\StudySession\FlashCardFlip.xaml">
+    <MauiXaml Update="Views\StudySession\MyStudiesSessionPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="Views\StudySession\MyStudiesSessionPage.xaml">
+    <MauiXaml Update="Views\StudySession\StudyingPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
   </ItemGroup>

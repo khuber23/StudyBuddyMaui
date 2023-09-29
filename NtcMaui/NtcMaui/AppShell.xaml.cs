@@ -18,8 +18,8 @@
             Routing.RegisterRoute(nameof(Views.MyStudies.CreateDeckPage), typeof(Views.MyStudies.CreateDeckPage));
             Routing.RegisterRoute(nameof(Views.MyStudies.BuildDeckPage), typeof(Views.MyStudies.BuildDeckPage));
             Routing.RegisterRoute(nameof(Views.MyStudies.CreateFlashcardPage), typeof(Views.MyStudies.CreateFlashcardPage));
-            Routing.RegisterRoute(nameof(Views.StudySession.FlashCardFlip), typeof(Views.StudySession.FlashCardFlip));
             Routing.RegisterRoute(nameof(Views.StudySession.MyStudiesSessionPage), typeof(Views.StudySession.MyStudiesSessionPage));
+            Routing.RegisterRoute(nameof(Views.StudySession.StudyingPage), typeof(Views.StudySession.StudyingPage));
         }
     }
 }
