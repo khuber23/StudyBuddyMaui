@@ -95,20 +95,21 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
         return deckGroups;
     }
 
-    private void DeckGroupListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-    {
-        if (e.SelectedItem != null)
-        {
-            UserDeckGroup = e.SelectedItem as UserDeckGroup;
-            var navigationParameter = new Dictionary<string, object>
-                {
-                    { "Current User", LoggedInUser },
-                    {"Selected UserDeckGroup", UserDeckGroup }
-                };
-            Shell.Current.GoToAsync(nameof(BuildDeckGroupPage), navigationParameter);
+    // will add this back later to the deckgroup list view item selected.
+    //private void DeckGroupListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    //{
+    //    if (e.SelectedItem != null)
+    //    {
+    //        UserDeckGroup = e.SelectedItem as UserDeckGroup;
+    //        var navigationParameter = new Dictionary<string, object>
+    //            {
+    //                { "Current User", LoggedInUser },
+    //                {"Selected UserDeckGroup", UserDeckGroup }
+    //            };
+    //        Shell.Current.GoToAsync(nameof(BuildDeckGroupPage), navigationParameter);
 
-        }
-    }
+    //    }
+    //}
 
     public User LoggedInUser { get; set; }
 

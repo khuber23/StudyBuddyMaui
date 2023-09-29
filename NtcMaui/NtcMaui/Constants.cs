@@ -12,7 +12,7 @@ namespace NtcMaui
     {
         public static HttpClient _client = new HttpClient();
         public static JsonSerializerOptions _serializerOptions = new JsonSerializerOptions
-        {
+        { 
             ReferenceHandler = ReferenceHandler.IgnoreCycles,
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             WriteIndented = true
