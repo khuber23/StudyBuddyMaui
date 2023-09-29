@@ -7,7 +7,7 @@
         <Grid>
             <StackLayout Margin="30">
                 <StackLayout VerticalOptions="Start" HorizontalOptions="Center">
-                    <Button Text="Start Session" WidthRequest="150"></Button>
+                    <Button Text="Start Session" Clicked="BeginSession" WidthRequest="150"></Button>
                 </StackLayout>
 
                 <!---this will probably need to load all user decks and user deck groups later on that have a user id 
@@ -22,7 +22,14 @@
                                     <StackLayout Orientation="Horizontal">
                                         <Image x:Name="ProfileImage"  Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50" VerticalOptions="Start"></Image>
                                         <StackLayout Orientation="Vertical" Margin="10, 5">
-                                            <Label Text="{Binding Deck.DeckName}" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
+                                            <Label FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand">
+                                                <Label.Text>
+                                                    <MultiBinding StringFormat="{}{0}-{1} ">
+                                                        <Binding Path="DeckGroup.DeckGroupName" />
+                                                        <Binding Path="DeckGroup.DeckGroupDeck.Deck.DeckName" />
+                                                    </MultiBinding>
+                                                </Label.Text>
+                                            </Label>
                                             <Label Text="{Binding User.Username}"></Label>
                                         </StackLayout>
                                     </StackLayout>

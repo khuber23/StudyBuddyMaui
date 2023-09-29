@@ -27,30 +27,36 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-
-        MyStudiesListView.ItemsSource = await GetAllDecks();
+        MyStudiesListView.ItemsSource = await GetAllUserDeckGroups();
     }
 
-    public async Task<List<UserDeck>> GetAllDecks()
+    public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
     {
-        List<UserDeck> decks = new List<UserDeck>();
+        List<UserDeckGroup> userDeckGroups = new List<UserDeckGroup>();
 
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/user/{LoggedInUser.UserId}", string.Empty));
+        Uri uri = new Uri(string.Format($"{Constants.LocalApiUrl}/api/UserDeckGroup/user/{LoggedInUser.UserId}", string.Empty));
         try
         {
             HttpResponseMessage response = await Constants._client.GetAsync(uri);
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                decks = JsonSerializer.Deserialize<List<UserDeck>>(content, Constants._serializerOptions);
+                userDeckGroups = JsonSerializer.Deserialize<List<UserDeckGroup>>(content, Constants._serializerOptions);
             }
         }
         catch (Exception ex)
         {
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
-        return decks;
+        return userDeckGroups;
     }
 
     public User LoggedInUser { get; set; }
+
+    public List<UserDeckGroup> UserDeckGroups { get; set; }
+
+    private void BeginSession(object sender, EventArgs e)
+    {
+        
+    }
 }
