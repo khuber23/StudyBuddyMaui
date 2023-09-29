@@ -5,6 +5,7 @@ namespace NtcMaui.Views.StudySession;
 
 public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
+    int index = 0;
 	public StudyingPage()
 	{
 		InitializeComponent();
@@ -32,18 +33,18 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
     async void OnTapRecognized(object sender, TappedEventArgs args)
     {
         //old code for testing.
-        //if (FlashcardText.Text == "Here is some filler text")
-        //{
-        //    await Flashcard.RotateXTo(180, 500);
-        //    Flashcard.RotationX = 0;
-        //    FlashcardText.Text = "text has changed";
-        //}
-        //else if (FlashcardText.Text == "text has changed")
-        //{
-        //    await Flashcard.RotateXTo(180, 500);
-        //    Flashcard.RotationX = 0;
-        //    FlashcardText.Text = "Here is some filler text";
-        //}
+        if (FlashcardText.Text == FlashCards[index].FlashCard.FlashCardQuestion)
+            {
+                await Flashcard.RotateXTo(180, 500);
+                Flashcard.RotationX = 0;
+                FlashcardText.Text = FlashCards[index].FlashCard.FlashCardAnswer;
+            }
+            else if (FlashcardText.Text == FlashCards[index].FlashCard.FlashCardAnswer)
+            {
+                await Flashcard.RotateXTo(180, 500);
+                Flashcard.RotationX = 0;
+                FlashcardText.Text = FlashCards[index].FlashCard.FlashCardQuestion;
+            }
     }
 
     public User LoggedInUser { get; set; }
