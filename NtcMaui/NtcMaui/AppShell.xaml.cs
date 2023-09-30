@@ -20,6 +20,7 @@
             Routing.RegisterRoute(nameof(Views.MyStudies.CreateFlashcardPage), typeof(Views.MyStudies.CreateFlashcardPage));
             Routing.RegisterRoute(nameof(Views.StudySession.MyStudiesSessionPage), typeof(Views.StudySession.MyStudiesSessionPage));
             Routing.RegisterRoute(nameof(Views.StudySession.StudyingPage), typeof(Views.StudySession.StudyingPage));
+            Routing.RegisterRoute(nameof(Views.StudySession.SessionStatsPage), typeof(Views.StudySession.SessionStatsPage));
         }
     }
 }

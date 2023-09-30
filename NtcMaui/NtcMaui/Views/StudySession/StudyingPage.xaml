@@ -4,22 +4,30 @@
              x:Class="NtcMaui.Views.StudySession.StudyingPage"
              Title="StudyingPage">
 
- <ScrollView>
-<Grid>
+    <ScrollView>
+        <ScrollView.GestureRecognizers>
+            <SwipeGestureRecognizer Direction="Left" Swiped="OnSwiped"/>
+            <SwipeGestureRecognizer Direction="Right" Swiped="OnSwiped"/>
+        </ScrollView.GestureRecognizers>
+        <Grid>
  <!---This stacklayout represents the actual flashcard-->
   <StackLayout x:Name="Flashcard" Margin="10" VerticalOptions="Center" WidthRequest="500">
          <StackLayout.GestureRecognizers>
-       <TapGestureRecognizer Tapped="OnTapRecognized" NumberOfTapsRequired="1"></TapGestureRecognizer>
-             </StackLayout.GestureRecognizers>
-                  <Border Stroke="Black" StrokeThickness="2" BackgroundColor="White" Padding="10" VerticalOptions="Center">
-                      <StackLayout   Margin="50" HorizontalOptions="Center" VerticalOptions="Center">
-                            <!---This stacklayout is where the inside of the card will appear along with flashcard text-->
-                             <Label x:Name="FlashcardText"></Label>
+                    <TapGestureRecognizer Tapped="OnTapRecognized" NumberOfTapsRequired="1"></TapGestureRecognizer>
+                </StackLayout.GestureRecognizers>
+                <Border Stroke="Black" StrokeThickness="2" BackgroundColor="White" Padding="10" VerticalOptions="Center">
+                    <StackLayout   Margin="50" HorizontalOptions="Center" VerticalOptions="Center">
+                        <!---This stacklayout is where the inside of the card will appear along with flashcard text-->
+                        <Label x:Name="FlashcardText"></Label>
 
-                        </StackLayout>
-                   </Border>
-      </StackLayout>
-</Grid>
+                    </StackLayout>
+                </Border>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" VerticalOptions="End" HorizontalOptions="Center">
+                <Button Margin="20" Text="Don't Understand" Clicked="DontUnderstandClick"></Button>
+                <Button Margin="20" Text="Understand" Clicked="UnderstandClick"></Button>
+            </StackLayout>
+        </Grid>
 </ScrollView>
 
 </ContentPage>

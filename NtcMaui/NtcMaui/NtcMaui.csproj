@@ -108,6 +108,9 @@
 	  <MauiXaml Update="Views\StudySession\MyStudiesSessionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\StudySession\SessionStatsPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\StudySession\StudyingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
