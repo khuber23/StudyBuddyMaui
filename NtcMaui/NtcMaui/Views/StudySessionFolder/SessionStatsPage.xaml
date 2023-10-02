@@ -3,10 +3,21 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.StudySessionFolder.SessionStatsPage"
              Title="SessionStatsPage">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <ScrollView>
+        <Grid>
+            <StackLayout x:Name="Box" Margin="10" VerticalOptions="Center" WidthRequest="500">
+                <Border Stroke="Black" StrokeThickness="2" BackgroundColor="White" Padding="10" VerticalOptions="Center">
+                    <StackLayout Margin="10">
+                        <Label x:Name="RunTime"></Label>
+                        <Label x:Name="TotalCardsText"></Label>
+                        <Label x:Name="CorrectFlashcardCount"></Label>
+                        <Label x:Name="IncorrectFlashcardCount"></Label>
+                    </StackLayout>
+                </Border>
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" VerticalOptions="End" HorizontalOptions="Start">
+                <Button Text="Continue" Clicked="GoToStudySession"></Button>
+            </StackLayout>
+        </Grid>
+    </ScrollView>
 </ContentPage>
