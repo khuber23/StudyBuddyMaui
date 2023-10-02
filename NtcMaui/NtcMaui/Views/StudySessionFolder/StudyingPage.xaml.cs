@@ -170,11 +170,55 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
             StudySession.UserId = LoggedInUser.UserId;
             StudySession.DeckGroupId = ChosenUserDeckGroup.DeckGroupId;
             StudySession.DeckId = ChosenUserDeckGroup.DeckGroup.DeckGroupDeck.Deck.DeckId;
-            StudySessions =  await GetAllStudySessions();
 
             //post the StudySession.
+            await SaveStudySessionAsync(StudySession);
+
             //after posting you need to retrieve it to upload the study session flashcard.
+            StudySessions =  await GetAllStudySessions();
+
+            foreach(StudySession studySession in StudySessions)
+            {
+                if (studySession.EndTime == StudySession.EndTime
+                    && studySession.StartTime == StudySession.StartTime
+                    && studySession.UserId == StudySession.UserId
+                    && studySession.DeckGroupId == StudySession.DeckGroupId
+                    && studySession.DeckId == StudySession.DeckId)
+                {
+                    //so if they are equal it will re-get the current StudySession along with it's Id from the Database.
+                    StudySession = studySession;
+                    break;
+                }
+            }
+
+           
             //then make Post for Study session flashcards based on the StudySession and the cards.
+            //for each CorrectCard/IcnorrectCard list if the list has a count greater than 1
+            //make a new StudySession flashcard with the current sessionId and cardId
+
+            foreach(FlashCard flashCard in CorrectFlashCards)
+            {
+                if (CorrectFlashCards.Count > 0)
+                {
+                    StudySessionFlashCard = new StudySessionFlashCard();
+                    StudySessionFlashCard.FlashCardId = flashCard.FlashCardId;
+                    StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
+                    //Api error currently
+                    await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+                }
+            }
+
+            foreach (FlashCard flashCard in IncorrectFlashCards)
+            {
+                if (CorrectFlashCards.Count > 0)
+                {
+                    StudySessionFlashCard = new StudySessionFlashCard();
+                    StudySessionFlashCard.FlashCardId = flashCard.FlashCardId;
+                    StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
+                    //Api error currently
+                    await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+                }
+            }
 
             //store both card sets for right and wrong and continue to session stats Page.
             var navigationParameter = new Dictionary<string, object>
