@@ -105,13 +105,13 @@
 	  <MauiXaml Update="Views\SignAndCreate\Success.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\StudySession\MyStudiesSessionPage.xaml">
+	  <MauiXaml Update="Views\StudySessionFolder\MyStudiesSessionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\StudySession\SessionStatsPage.xaml">
+	  <MauiXaml Update="Views\StudySessionFolder\SessionStatsPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\StudySession\StudyingPage.xaml">
+	  <MauiXaml Update="Views\StudySessionFolder\StudyingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

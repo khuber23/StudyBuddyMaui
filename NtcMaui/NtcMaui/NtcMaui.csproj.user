@@ -63,13 +63,13 @@
     <MauiXaml Update="Views\SignAndCreate\Success.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="Views\StudySession\MyStudiesSessionPage.xaml">
+    <MauiXaml Update="Views\StudySessionFolder\MyStudiesSessionPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="Views\StudySession\SessionStatsPage.xaml">
+    <MauiXaml Update="Views\StudySessionFolder\SessionStatsPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
-    <MauiXaml Update="Views\StudySession\StudyingPage.xaml">
+    <MauiXaml Update="Views\StudySessionFolder\StudyingPage.xaml">
       <SubType>Designer</SubType>
     </MauiXaml>
   </ItemGroup>

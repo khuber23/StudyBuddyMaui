@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using ApiStudyBuddy.Models;
 using NtcMaui.Views.MyStudies;
-using NtcMaui.Views.StudySession;
+using NtcMaui.Views.StudySessionFolder;
 
 namespace NtcMaui.Views.SignAndCreate;
 

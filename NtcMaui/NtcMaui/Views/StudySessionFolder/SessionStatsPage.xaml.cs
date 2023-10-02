@@ -1,7 +1,7 @@
 using System.ComponentModel;
 using ApiStudyBuddy.Models;
 
-namespace NtcMaui.Views.StudySession;
+namespace NtcMaui.Views.StudySessionFolder;
 
 public partial class SessionStatsPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {

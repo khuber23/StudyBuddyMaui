@@ -33,7 +33,7 @@ public partial class CreateAccount : ContentPage
             response = await Constants._client.PostAsync(uri, content);
 
             if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
+                Debug.WriteLine(@"\tUser successfully saved.");
         }
         catch (Exception ex)
         {

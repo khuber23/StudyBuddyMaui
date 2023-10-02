@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
 
-namespace NtcMaui.Views.StudySession;
+namespace NtcMaui.Views.StudySessionFolder;
 
 public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
