@@ -93,4 +93,5 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
     }
 
     public User LoggedInUser { get; set; }
+
 }

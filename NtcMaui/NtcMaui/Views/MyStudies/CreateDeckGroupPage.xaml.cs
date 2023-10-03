@@ -8,7 +8,6 @@ namespace NtcMaui.Views.MyStudies;
 
 public partial class CreateDeckGroupPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
-    private DeckGroup _deckGroup = new DeckGroup();
     public CreateDeckGroupPage()
 	{
 		InitializeComponent();
@@ -24,25 +23,25 @@ public partial class CreateDeckGroupPage : ContentPage, IQueryAttributable, INot
     {
         //in this code then might need to create a deckgroup or make a method to create a deck group and post it before moving on?
         //I'll get the method ready
-        //_deckGroup.DeckGroupName = DeckGroupNameEntry.Text;
-        //_deckGroup.DeckGroupDescription = DeckGroupDescriptionEntry.Text;
-        //DeckGroup = _deckGroup;
-        // //alright so basically we need to save it to a deckgroup then basically assign it to the User Deck after.
-        //await SaveDeckGroupAsync(DeckGroup);
+        DeckGroup = new DeckGroup();
+        DeckGroup.DeckGroupName = DeckGroupNameEntry.Text;
+        DeckGroup.DeckGroupDescription = DeckGroupDescriptionEntry.Text;
+        //alright so basically we need to save it to a deckgroup then basically assign it to the User DeckGroup after.
+        await SaveDeckGroupAsync(DeckGroup);
 
-        // //get a list of the deckgroups and find the one matching the Description of current Deckgroup.
-        // //this allows us to reassign the DeckGroup
-        // List<DeckGroup> deckGroups = await GetAllDeckGroups();
-        // foreach (DeckGroup deckGroup in deckGroups)
-        // {
-        //     if (deckGroup.DeckGroupName == DeckGroup.DeckGroupName && deckGroup.DeckGroupDescription == DeckGroup.DeckGroupDescription)
-        //     {
-        //         DeckGroup = deckGroup;
-        //         break;
-        //     }
-        // }
+        //get a list of the deckgroups and find the one matching the Description of current Deckgroup.
+        //this allows us to reassign the DeckGroup
+        List<DeckGroup> deckGroups = await GetAllDeckGroups();
+        foreach (DeckGroup deckGroup in deckGroups)
+        {
+            if (deckGroup.DeckGroupName == DeckGroup.DeckGroupName && deckGroup.DeckGroupDescription == DeckGroup.DeckGroupDescription)
+            {
+                DeckGroup = deckGroup;
+                break;
+            }
+        }
         //balls to the wall
-        //manual test to see why stuff isn't working
+        //remember the one to one relationships.
         //create userDeckGroup
         UserDeckGroup userDeckGroup = new UserDeckGroup();
         userDeckGroup.UserId = LoggedInUser.UserId;
@@ -107,7 +106,7 @@ public partial class CreateDeckGroupPage : ContentPage, IQueryAttributable, INot
         }
     }
 
-    //is going to get
+    //is going to get all of the Deck Groups
     public async Task<List<DeckGroup>> GetAllDeckGroups()
     {
         List<DeckGroup> deckGroups = new List<DeckGroup>();

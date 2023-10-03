@@ -44,7 +44,8 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
     {
         var navigationParameter = new Dictionary<string, object>
                 {
-                    { "Current User", LoggedInUser }
+                    { "Current User", LoggedInUser },
+            {"Selected UserDeckGroup", SelectedUserDeckGroup }
                 };
         Shell.Current.GoToAsync(nameof(CreateDeckPage), navigationParameter);
     }
