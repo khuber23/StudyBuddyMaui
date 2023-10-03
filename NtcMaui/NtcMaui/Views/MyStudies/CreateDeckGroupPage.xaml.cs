@@ -44,10 +44,6 @@ public partial class CreateDeckGroupPage : ContentPage, IQueryAttributable, INot
         //balls to the wall
         //manual test to see why stuff isn't working
         //create userDeckGroup
-        _deckGroup.DeckGroupId = 4;
-        _deckGroup.DeckGroupName = "Pirateology";
-        _deckGroup.DeckGroupDescription = "Deck group relating to the study of pirates";
-        DeckGroup = _deckGroup;
         UserDeckGroup userDeckGroup = new UserDeckGroup();
         userDeckGroup.UserId = LoggedInUser.UserId;
         userDeckGroup.DeckGroupId = DeckGroup.DeckGroupId;

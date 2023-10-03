@@ -62,10 +62,21 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
 
     public UserDeckGroup SelectedUserDeckGroup { get; set; }
 
+    public UserDeck SelectedDeck { get; set; }
+
     private void DeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
         if (e.SelectedItem != null)
         {
+            SelectedDeck = e.SelectedItem as UserDeck;
+            var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    {"Selected UserDeckGroup", SelectedUserDeckGroup },
+                    {"Selected UserDeck", SelectedDeck }
+                };
+            Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
+
         }
     }
 }

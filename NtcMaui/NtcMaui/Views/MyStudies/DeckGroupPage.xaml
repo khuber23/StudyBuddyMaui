@@ -22,7 +22,7 @@
                     </StackLayout>
                 </StackLayout>
                 <StackLayout>
-                    <ListView x:Name="DeckGroupListView">
+                    <ListView x:Name="DeckGroupListView" ItemSelected="DeckGroupListView_ItemSelected">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>

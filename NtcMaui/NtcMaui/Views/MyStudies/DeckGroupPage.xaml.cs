@@ -16,7 +16,7 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
     {
         base.OnAppearing();
 
-        DeckGroupListView.ItemsSource = await GetAllDeckGroups();
+        DeckGroupListView.ItemsSource = await GetAllUserDeckGroups();
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -72,7 +72,7 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
     }
 
 
-    public async Task<List<UserDeckGroup>> GetAllDeckGroups()
+    public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
     {
         List<UserDeckGroup> deckGroups = new List<UserDeckGroup>();
 
@@ -96,20 +96,20 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
     }
 
     // will add this back later to the deckgroup list view item selected.
-    //private void DeckGroupListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-    //{
-    //    if (e.SelectedItem != null)
-    //    {
-    //        UserDeckGroup = e.SelectedItem as UserDeckGroup;
-    //        var navigationParameter = new Dictionary<string, object>
-    //            {
-    //                { "Current User", LoggedInUser },
-    //                {"Selected UserDeckGroup", UserDeckGroup }
-    //            };
-    //        Shell.Current.GoToAsync(nameof(BuildDeckGroupPage), navigationParameter);
+    private void DeckGroupListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem != null)
+        {
+            UserDeckGroup = e.SelectedItem as UserDeckGroup;
+            var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    {"Selected UserDeckGroup", UserDeckGroup }
+                };
+            Shell.Current.GoToAsync(nameof(BuildDeckGroupPage), navigationParameter);
 
-    //    }
-    //}
+        }
+    }
 
     public User LoggedInUser { get; set; }
 

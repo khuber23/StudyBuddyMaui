@@ -7,14 +7,17 @@ namespace NtcMaui.Views.MyStudies;
 
 public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
-	public BuildDeckPage()
-	{
-		InitializeComponent();
-	}
+    public BuildDeckPage()
+    {
+        InitializeComponent();
+    }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         LoggedInUser = query["Current User"] as User;
+        SelectedUserDeckGroup = query["Selected UserDeckGroup"] as UserDeckGroup;
+        SelectedUserDeck = query["Selected UserDeck"] as UserDeck;
+
         OnPropertyChanged("Current User");
     }
 
@@ -57,4 +60,8 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
     }
 
     public User LoggedInUser { get; set; }
+
+    public UserDeckGroup SelectedUserDeckGroup {get; set;}
+
+    public UserDeck SelectedUserDeck { get; set; }
 }
