@@ -21,7 +21,6 @@
             Routing.RegisterRoute(nameof(Views.StudySessionFolder.MyStudiesSessionPage), typeof(Views.StudySessionFolder.MyStudiesSessionPage));
             Routing.RegisterRoute(nameof(Views.StudySessionFolder.StudyingPage), typeof(Views.StudySessionFolder.StudyingPage));
             Routing.RegisterRoute(nameof(Views.StudySessionFolder.SessionStatsPage), typeof(Views.StudySessionFolder.SessionStatsPage));
-            Routing.RegisterRoute(nameof(Views.StudySessionFolder.StudyPriorityPage), typeof(Views.StudySessionFolder.StudyPriorityPage));
         }
     }
 }

@@ -114,9 +114,6 @@
 	  <MauiXaml Update="Views\StudySessionFolder\StudyingPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="Views\StudySessionFolder\StudyPriorityPage.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
