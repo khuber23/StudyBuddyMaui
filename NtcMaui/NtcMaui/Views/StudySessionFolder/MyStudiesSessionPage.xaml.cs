@@ -65,4 +65,22 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
                 };
         Shell.Current.GoToAsync(nameof(StudyingPage), navigationParameter);
     }
+
+    private void GoToStudyPriorityPage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(StudyPriorityPage), navigationParameter);
+    }
+
+    private void GoToMyStudiesSessionPage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                };
+        Shell.Current.GoToAsync(nameof(MyStudiesSessionPage), navigationParameter);
+    }
 }
