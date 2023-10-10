@@ -27,7 +27,8 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        MyStudiesListView.ItemsSource = await GetAllUserDeckGroups();
+        UserDeckGroups = await GetAllUserDeckGroups();
+        MyStudiesListView.ItemsSource = UserDeckGroups;
     }
 
     public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
@@ -51,19 +52,23 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
         return userDeckGroups;
     }
 
-    public User LoggedInUser { get; set; }
-
-    public UserDeckGroup ChosenUserDeckGroup { get; set; }
-
     private void BeginSession(object sender, EventArgs e)
     {
         ChosenUserDeckGroup = MyStudiesListView.SelectedItem as UserDeckGroup;
-        var navigationParameter = new Dictionary<string, object>
+        ErrorLabel.IsVisible = false;
+        if (ChosenUserDeckGroup != null)
+        {
+            var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser },
                     {"ChosenStudy", ChosenUserDeckGroup }
                 };
-        Shell.Current.GoToAsync(nameof(StudyingPage), navigationParameter);
+            Shell.Current.GoToAsync(nameof(StudyingPage), navigationParameter);
+        }
+        else
+        {
+            ErrorLabel.IsVisible = true;
+        }
     }
 
     private void GoToStudyPriorityPage(object sender, EventArgs e)
@@ -83,4 +88,12 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
                 };
         Shell.Current.GoToAsync(nameof(MyStudiesSessionPage), navigationParameter);
     }
+
+    public User LoggedInUser { get; set; }
+
+    public UserDeckGroup ChosenUserDeckGroup { get; set; }
+
+    public List<UserDeckGroup> UserDeckGroups { get; set; }
+
+    public List<DeckFlashCard> DeckFlashCards { get; set; }
 }

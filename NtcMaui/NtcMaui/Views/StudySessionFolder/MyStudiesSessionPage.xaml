@@ -12,15 +12,12 @@
                     <Button x:Name="StudyPriorityBtn" Clicked="GoToStudyPriorityPage" Margin="5, 5" Text="Study Priority"></Button>
                 </HorizontalStackLayout>
 
-                <StackLayout VerticalOptions="Start" HorizontalOptions="Center">
-                    <Button Text="Start Session" Clicked="BeginSession" WidthRequest="150"></Button>
-                </StackLayout>
-
                 <!---this will probably need to load all user decks and user deck groups later on that have a user id 
                 Matching the id of the logged in user.
                 Also will need to make a method again to return a full list of user decks or deck groups to access 
                 deck and user at same time. for the mean time i am just going to load the decks until the meeting tuesday-->
                 <StackLayout>
+                    <Label x:Name="ErrorLabel" IsVisible="false" TextColor="Red" Text="Please Select a deck you wish to study"></Label>
                     <ListView x:Name="MyStudiesListView">
                         <ListView.ItemTemplate>
                             <DataTemplate>
@@ -36,13 +33,29 @@
                                                     </MultiBinding>
                                                 </Label.Text>
                                             </Label>
+                                            <StackLayout>
+                                                <ListView IsEnabled="False" x:Name="FlashCardsListView" SelectionMode="None" ItemsSource="{Binding DeckGroup.DeckGroupDeck.Deck.DeckFlashCards}">
+                                                    <ListView.ItemTemplate>
+                                                        <DataTemplate>
+                                                            <ViewCell>
+                                                                <Label Text="{Binding FlashCard.FlashCardQuestion, StringFormat='{}FlashCard: {0}'}"></Label>
+                                                            </ViewCell>
+                                                        </DataTemplate>
+                                                    </ListView.ItemTemplate>
+                                                </ListView>
+                                            </StackLayout>
                                             <Label Text="{Binding User.Username}"></Label>
+                                            
                                         </StackLayout>
                                     </StackLayout>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
+                </StackLayout>
+
+                <StackLayout VerticalOptions="Start" HorizontalOptions="Center">
+                    <Button Text="Start Session" Clicked="BeginSession" Margin="20" WidthRequest="150"></Button>
                 </StackLayout>
             </StackLayout>
         </Grid>
