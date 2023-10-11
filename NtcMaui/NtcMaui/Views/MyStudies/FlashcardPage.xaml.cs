@@ -22,7 +22,7 @@ public partial class FlashcardPage : ContentPage, IQueryAttributable, INotifyPro
     {
         base.OnAppearing();
 
-       FlashcardListView.ItemsSource = await GetAllFlashcards();
+        FlashcardListView.ItemsSource = await GetAllFlashcards();
     }
 
     public async Task<List<FlashCard>> GetAllFlashcards()
@@ -86,4 +86,23 @@ public partial class FlashcardPage : ContentPage, IQueryAttributable, INotifyPro
     }
 
     public User LoggedInUser { get; set; }
+
+    private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+       List<FlashCard> flashCards = await GetAllFlashcards();
+
+        if (flashCards != null)
+        {
+            if (e != null)
+            {
+                FlashcardListView.ItemsSource = null;
+                FlashcardListView.ItemsSource = flashCards.Where(f => f.FlashCardQuestion.StartsWith(e.NewTextValue));
+            }
+            else
+            {
+                OnAppearing();
+            }
+        }
+       
+    }
 }
