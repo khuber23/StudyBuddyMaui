@@ -15,8 +15,8 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-
-        DeckGroupListView.ItemsSource = await GetAllUserDeckGroups();
+        UserDeckGroups = await GetAllUserDeckGroups();
+        DeckGroupListView.ItemsSource = UserDeckGroups;
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -78,7 +78,7 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
 
 
         //Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup", string.Empty));
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/user/{LoggedInUser.UserId}", string.Empty));
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/deckgroup/{LoggedInUser.UserId}", string.Empty));
         try
         {
             HttpResponseMessage response = await Constants._client.GetAsync(uri);
@@ -95,23 +95,25 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
         return deckGroups;
     }
 
-    // will add this back later to the deckgroup list view item selected.
+    // it works but i am commenting it out for now
     private void DeckGroupListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
-        if (e.SelectedItem != null)
-        {
-            UserDeckGroup = e.SelectedItem as UserDeckGroup;
-            var navigationParameter = new Dictionary<string, object>
-                {
-                    { "Current User", LoggedInUser },
-                    {"Selected UserDeckGroup", UserDeckGroup }
-                };
-            Shell.Current.GoToAsync(nameof(BuildDeckGroupPage), navigationParameter);
+        //if (e.SelectedItem != null)
+        //{
+        //    UserDeckGroup = e.SelectedItem as UserDeckGroup;
+        //    var navigationParameter = new Dictionary<string, object>
+        //        {
+        //            { "Current User", LoggedInUser },
+        //            {"Selected UserDeckGroup", UserDeckGroup }
+        //        };
+        //    Shell.Current.GoToAsync(nameof(BuildDeckGroupPage), navigationParameter);
 
-        }
+       // }
     }
 
     public User LoggedInUser { get; set; }
 
     public UserDeckGroup UserDeckGroup { get; set; }
+
+    public List<UserDeckGroup> UserDeckGroups { get; set; } 
 }

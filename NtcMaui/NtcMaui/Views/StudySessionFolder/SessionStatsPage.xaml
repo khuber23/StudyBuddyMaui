@@ -15,7 +15,7 @@
                     </StackLayout>
                 </Border>
             </StackLayout>
-            <StackLayout Orientation="Horizontal" VerticalOptions="End" HorizontalOptions="Start">
+            <StackLayout Orientation="Horizontal" VerticalOptions="End" HorizontalOptions="Center" Margin="20">
                 <Button Text="Continue" Clicked="GoToStudySession"></Button>
             </StackLayout>
         </Grid>
