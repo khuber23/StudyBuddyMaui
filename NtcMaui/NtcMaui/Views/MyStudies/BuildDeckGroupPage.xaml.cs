@@ -19,6 +19,27 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
         DeckListView.ItemsSource = await GetAllDecks();
     }
 
+    public void ApplyQueryAttributes(IDictionary<string, object> query)
+    {
+        LoggedInUser = query["Current User"] as User;
+        SelectedDeckGroup = query["Current DeckGroup"] as DeckGroup;
+        OnPropertyChanged("Current User");
+    }
+
+
+
+    //button click event for Building off of DeckGroup
+    private void GoToCreateDeckPage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    //needs to be DeckGroup for later for connecting Everything.
+            {"Current DeckGroup", SelectedDeckGroup }
+                };
+        Shell.Current.GoToAsync(nameof(CreateDeckPage), navigationParameter);
+    }
+
     public async Task<List<UserDeck>> GetAllDecks()
     {
         List<UserDeck> decks = new List<UserDeck>();
@@ -40,44 +61,28 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
         return decks;
     }
 
-    private void GoToCreateDeckPage(object sender, EventArgs e)
-    {
-        var navigationParameter = new Dictionary<string, object>
-                {
-                    { "Current User", LoggedInUser },
-            {"Selected UserDeckGroup", SelectedUserDeckGroup }
-                };
-        Shell.Current.GoToAsync(nameof(CreateDeckPage), navigationParameter);
-    }
-
-    public void ApplyQueryAttributes(IDictionary<string, object> query)
-    {
-        LoggedInUser = query["Current User"] as User;
-        SelectedUserDeckGroup = query["Selected UserDeckGroup"] as UserDeckGroup;
-        OnPropertyChanged("Current User");
-    }
-
 
 
     public User LoggedInUser { get; set; }
 
-    public UserDeckGroup SelectedUserDeckGroup { get; set; }
+    public DeckGroup SelectedDeckGroup { get; set; }
 
     public UserDeck SelectedDeck { get; set; }
 
     private void DeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
-        if (e.SelectedItem != null)
-        {
-            SelectedDeck = e.SelectedItem as UserDeck;
-            var navigationParameter = new Dictionary<string, object>
-                {
-                    { "Current User", LoggedInUser },
-                    {"Selected UserDeckGroup", SelectedUserDeckGroup },
-                    {"Selected UserDeck", SelectedDeck }
-                };
-            Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
+        //eventually change this to be for editing or just button clicks later, for now not worrying about it
+        //if (e.SelectedItem != null)
+        //{
+        //    SelectedDeck = e.SelectedItem as UserDeck;
+        //    var navigationParameter = new Dictionary<string, object>
+        //        {
+        //            { "Current User", LoggedInUser },
+        //            {"Selected UserDeckGroup", SelectedUserDeckGroup },
+        //            {"Selected UserDeck", SelectedDeck }
+        //        };
+        //    Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
 
-        }
+        //}
     }
 }

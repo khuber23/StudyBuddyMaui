@@ -55,26 +55,6 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
         }
     }
 
-    public User LoggedInUser { get; set; }
-    public UserDeckGroup ChosenUserDeckGroup { get; set; }
-    public List<DeckFlashCard> FlashCards { get; set; }
-
-    public DateTime StartSessionTime { get; set; }
-
-    public DateTime EndSessionTime { get; set; }
-
-    public List<FlashCard> CorrectFlashCards = new List<FlashCard>();
-
-    public List<FlashCard> IncorrectFlashCards = new List<FlashCard>();
-
-    public StudySession StudySession { get; set; }
-
-    public List<StudySession> StudySessions { get; set; }
-
-    public StudySessionFlashCard StudySessionFlashCard {get; set;}
-
-    public FlashCard CurentFlashCard { get; set; }
-
     //when user swipes left it should take the current index card and add it to a group of wrong cards for example
     //and move onto the next card in the index.
 
@@ -494,4 +474,24 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
 
         return studySessions;
     }
+
+    public User LoggedInUser { get; set; }
+    public UserDeckGroup ChosenUserDeckGroup { get; set; }
+    public List<DeckFlashCard> FlashCards { get; set; }
+
+    public DateTime StartSessionTime { get; set; }
+
+    public DateTime EndSessionTime { get; set; }
+
+    public List<FlashCard> CorrectFlashCards = new List<FlashCard>();
+
+    public List<FlashCard> IncorrectFlashCards = new List<FlashCard>();
+
+    public StudySession StudySession { get; set; }
+
+    public List<StudySession> StudySessions { get; set; }
+
+    public StudySessionFlashCard StudySessionFlashCard { get; set; }
+
+    public FlashCard CurentFlashCard { get; set; }
 }

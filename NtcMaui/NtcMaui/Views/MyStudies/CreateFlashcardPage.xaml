@@ -19,13 +19,15 @@
                     <Label Text="Answer" FontSize="16"></Label>
                     <Grid Margin="0,5">
                         <Frame BackgroundColor="White"/>
-                        <Entry x:Name="QuestionAnswerEntry" TextColor="Black" Placeholder="Enter Answer Text here."></Entry>
+                        <Entry x:Name="FlashcardAnswerEntry" TextColor="Black" Placeholder="Enter Answer Text here."></Entry>
                     </Grid>
+                    <Label IsVisible="False" x:Name="FinishLabel" Text="Hit finish when you are done saving flashcards to add."></Label>
                 </StackLayout>
-                <StackLayout>
-                    <!--so after creating flashcard go back to the main flashcard screen maybe-->
-                    <Button Text="Next" x:Name="NextBtn" WidthRequest="100" HeightRequest="25"></Button>
-                </StackLayout>
+                <HorizontalStackLayout Margin="10">
+                    <!--after making a flashcard it won't save until at least 1 exists in the thing and hides a button that will say finish and go back to Decks.-->
+                    <Button Clicked="SaveFlashCard" Text="Save" x:Name="SaveBtn" WidthRequest="100" HeightRequest="25"></Button>
+                    <Button Clicked="FinishCreation" IsVisible="False" Text="Finish" x:Name="FinishBtn" WidthRequest="100" HeightRequest="25"></Button>
+                </HorizontalStackLayout>
             </StackLayout>
         </Grid>
     </ScrollView>

@@ -40,20 +40,25 @@ public partial class CreateDeckGroupPage : ContentPage, IQueryAttributable, INot
                 break;
             }
         }
-        //balls to the wall
-        //remember the one to one relationships.
         //create userDeckGroup
         UserDeckGroup userDeckGroup = new UserDeckGroup();
         userDeckGroup.UserId = LoggedInUser.UserId;
         userDeckGroup.DeckGroupId = DeckGroup.DeckGroupId;
 
+        //so now UserDeckGroup is at least made and if there was an issue a user can at least later go into it to view it/edit
         await SaveUserDeckGroupAsync(userDeckGroup);
 
+        //So this method is basically going towards the Full Creation of a UserDeckGroup. So after they create one, immedietly takes them to BuildDeckGroup.
+        //might eventually need a different page/folder for editing.
+
+        //pass on the DeckGroup that they made for their UserDeckGroup to the next page.
         var navigationParameter = new Dictionary<string, object>
                 {
-                    { "Current User", LoggedInUser }
+                    { "Current User", LoggedInUser },
+                    //this is the current DeckGroup that belongs to the user, easier to deal with this than the userDeckGroup itself.
+                    {"Current DeckGroup", DeckGroup }
                 };
-       await Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
+       await Shell.Current.GoToAsync(nameof(BuildDeckGroupPage), navigationParameter);
     }
 
     public async Task SaveDeckGroupAsync(DeckGroup deckGroup)
@@ -62,7 +67,7 @@ public partial class CreateDeckGroupPage : ContentPage, IQueryAttributable, INot
         //for now i won't run anything but will just keep deckgroup.
         //wait to see what they want from it and explain what you are thinking/what he envisions. you could have been right in the beginning 
         //with the idea of creating new ones from there and saving them or just choosing 1 like your new idea. --past Brody
-        Uri uri = new Uri(string.Format($"{Constants.LocalApiUrl}/api/DeckGroup", string.Empty));
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup", string.Empty));
 
         try
         {

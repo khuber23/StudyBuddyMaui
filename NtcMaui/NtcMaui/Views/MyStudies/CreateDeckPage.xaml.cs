@@ -6,6 +6,8 @@ using ApiStudyBuddy.Models;
 
 namespace NtcMaui.Views.MyStudies;
 
+//might eventually need to copy this page and make a different one just for dealing with creatingUSerDeckGroup and just creating a UserDeck.
+//most definetly since this code deals with DeckGroupDecks and if there is just a UserDeck I won't need this and I can't deal with nulls when applying Query attributes.
 public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
 	public CreateDeckPage()
@@ -16,6 +18,7 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         LoggedInUser = query["Current User"] as User;
+        SelectedDeckGroup = query["Current DeckGroup"] as DeckGroup;
         OnPropertyChanged("Current User");
     }
 
@@ -24,30 +27,39 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
         Deck = new Deck();
         Deck.DeckName = DeckNameEntry.Text;
         Deck.DeckDescription = DeckDescriptionEntry.Text;
-        //await SaveDeckAsync(Deck);
-        ////get all the Decks and re-find the one so we have an ID...since when posting it the Id would be 0.
-        //List<Deck> decks = await GetAllDecks();
-        //foreach (Deck deck in decks)
-        //{
-        //    if (deck.DeckName == Deck.DeckName && deck.DeckDescription == Deck.DeckDescription)
-        //    {
-        //        Deck = deck;
-        //        break;
-        //    }
-        //}
+        await SaveDeckAsync(Deck);
+        //get all the Decks and re-find the one so we have an ID...since when posting it the Id would be 0.
+        List<Deck> decks = await GetAllDecks();
+        foreach (Deck deck in decks)
+        {
+            if (deck.DeckName == Deck.DeckName && deck.DeckDescription == Deck.DeckDescription)
+            {
+                Deck = deck;
+                break;
+            }
+        }
         //after getting the right Deck With an ID from the database we make it a userDeck and post it to database.
         UserDeck userDeck = new UserDeck();
         userDeck.DeckId = Deck.DeckId;
         userDeck.UserId = LoggedInUser.UserId;
-        //await SaveUserDeckAsync(userDeck); 
+        //creates the User Deck
+        await SaveUserDeckAsync(userDeck); 
+
+        //need a method to create the DeckGroupDeck part to combine the DeckGroup with the Created Deck.
+        DeckGroupDeck deckGroupDeck = new DeckGroupDeck();
+        deckGroupDeck.DeckGroupId = SelectedDeckGroup.DeckGroupId;
+        deckGroupDeck.DeckId = Deck.DeckId;
+
+        await SaveDeckGroupDeckAsync(deckGroupDeck);
+
+        //pass in Deck so then Users can eventually add Flashcards to the deck.
         var navigationParameter = new Dictionary<string, object>
                 {
-                    { "Current User", LoggedInUser }
+                    { "Current User", LoggedInUser },
+                    {"Current Deck", Deck }
                 };
-        //do an if statement on the go to. So if they have a UserDeckGroup selected that isn't null! then send em to BuildDeckGroup
-        //ask about that...where do they go since there is to ways of navigating to this page.
-        //maybe make 2 seperate pages? one for when user clicks to add a deck from Deck and another from BuildDeckGroup
-            await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+        //Finishing up making a DeckGroup so now it will take the user to Build Deck
+            await Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
     }
 
     public async Task SaveDeckAsync(Deck deck)
@@ -59,6 +71,29 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
         try
         {
             string json = JsonSerializer.Serialize<Deck>(deck, Constants._serializerOptions);
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            HttpResponseMessage response = null;
+            response = await Constants._client.PostAsync(uri, content);
+
+            if (response.IsSuccessStatusCode)
+                Debug.WriteLine(@"\tTodoItem successfully saved.");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+    }
+
+    public async Task SaveDeckGroupDeckAsync(DeckGroupDeck deckGroupDeck)
+    {
+        //either will be api/userDeck or maybe just Deck?
+        //for now i won't run anything but will just keep deck. (won't do a post essentially just comment it out)
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck", string.Empty));
+
+        try
+        {
+            string json = JsonSerializer.Serialize<DeckGroupDeck>(deckGroupDeck, Constants._serializerOptions);
             StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
             HttpResponseMessage response = null;
@@ -124,7 +159,7 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
 
     public User LoggedInUser { get; set; }
     
-    public UserDeckGroup SelectedUserDeckroup { get; set; }
+    public DeckGroup SelectedDeckGroup { get; set; }
 
     public Deck Deck { get; set; }
 

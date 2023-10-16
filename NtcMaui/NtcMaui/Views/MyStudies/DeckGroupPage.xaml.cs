@@ -34,6 +34,7 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
         Shell.Current.GoToAsync(nameof(DashboardPage), navigationParameter);
     }
 
+    //button click event
     private void GoToCreateDeckGroupPage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
@@ -53,7 +54,6 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
     }
     private void GoToDeckPage(object sender, EventArgs e)
     {
-        //eventually make this the dashboard page and also send the user through to this page.
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }
@@ -63,7 +63,6 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
 
     private void GoToDeckGroupPage(object sender, EventArgs e)
     {
-        //eventually make this the dashboard page and also send the user through to this page.
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }
@@ -95,7 +94,7 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
         return deckGroups;
     }
 
-    // it works but i am commenting it out for now
+    // might just get rid of this for button clicks or maybe for a viewing page/editing process.
     private void DeckGroupListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
         //if (e.SelectedItem != null)

@@ -25,6 +25,9 @@ namespace NtcMaui
         //public static string Port = "5001";
         //Url of our test api
         public static string TestUrl = "https://instruct.ntc.edu/teststudybuddyapi";
+        
+        //Prod endpoint
+        //public static string TestUrl = "https://instruct.ntc.edu/studybuddyapi";
 
         public static string LocalApiUrl = "https://localhost:7025";
 

@@ -15,18 +15,18 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         LoggedInUser = query["Current User"] as User;
-        SelectedUserDeckGroup = query["Selected UserDeckGroup"] as UserDeckGroup;
-        SelectedUserDeck = query["Selected UserDeck"] as UserDeck;
+        SelectedDeck = query["Current Deck"] as Deck;
 
         OnPropertyChanged("Current User");
     }
 
-    //might need to eventually add an if else statement for if a user is just making a flashcard for a deck of if there is also a deck group involved...
+    //button Click For CreateFlashcardPage
     private void GoToCreateFlashcardPage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
                 {
-                    { "Current User", LoggedInUser }
+                    { "Current User", LoggedInUser },
+                    { "Current Deck", SelectedDeck}
                 };
         Shell.Current.GoToAsync(nameof(CreateFlashcardPage), navigationParameter);
     }
@@ -61,7 +61,5 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
 
     public User LoggedInUser { get; set; }
 
-    public UserDeckGroup SelectedUserDeckGroup {get; set;}
-
-    public UserDeck SelectedUserDeck { get; set; }
+    public Deck SelectedDeck { get; set; }
 }
