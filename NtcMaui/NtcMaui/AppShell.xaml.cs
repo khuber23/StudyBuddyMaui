@@ -5,10 +5,14 @@
         public AppShell()
         {
             InitializeComponent();
+
+            //Sign In routes
             Routing.RegisterRoute(nameof(Views.SignAndCreate.SignIn), typeof(Views.SignAndCreate.SignIn));
             Routing.RegisterRoute(nameof(Views.SignAndCreate.CreateAccount), typeof(Views.SignAndCreate.CreateAccount));
             Routing.RegisterRoute(nameof(Views.SignAndCreate.Success), typeof(Views.SignAndCreate.Success));
             Routing.RegisterRoute(nameof(Views.SignAndCreate.HomePage), typeof(Views.SignAndCreate.HomePage));
+
+            //my study routes
             Routing.RegisterRoute(nameof(Views.MyStudies.DeckGroupPage), typeof(Views.MyStudies.DeckGroupPage));
             Routing.RegisterRoute(nameof(Views.MyStudies.DeckPage), typeof(Views.MyStudies.DeckPage));
             Routing.RegisterRoute(nameof(Views.MyStudies.DashboardPage), typeof(Views.MyStudies.DashboardPage));
@@ -18,6 +22,9 @@
             Routing.RegisterRoute(nameof(Views.MyStudies.CreateDeckPage), typeof(Views.MyStudies.CreateDeckPage));
             Routing.RegisterRoute(nameof(Views.MyStudies.BuildDeckPage), typeof(Views.MyStudies.BuildDeckPage));
             Routing.RegisterRoute(nameof(Views.MyStudies.CreateFlashcardPage), typeof(Views.MyStudies.CreateFlashcardPage));
+            Routing.RegisterRoute(nameof(Views.MyStudies.CreateDeckPageNoDeckGroup), typeof(Views.MyStudies.CreateDeckPageNoDeckGroup));
+
+            //Study Session Routes
             Routing.RegisterRoute(nameof(Views.StudySessionFolder.MyStudiesSessionPage), typeof(Views.StudySessionFolder.MyStudiesSessionPage));
             Routing.RegisterRoute(nameof(Views.StudySessionFolder.StudyingPage), typeof(Views.StudySessionFolder.StudyingPage));
             Routing.RegisterRoute(nameof(Views.StudySessionFolder.SessionStatsPage), typeof(Views.StudySessionFolder.SessionStatsPage));

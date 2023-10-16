@@ -35,6 +35,7 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
     {
         base.OnAppearing();
 
+        //this I want to eventually be all the Deck Flashcards. Work on that later.
         FlashcardListView.ItemsSource = await GetAllFlashcards();
     }
 

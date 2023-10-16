@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NtcMaui.Views.MyStudies.CreateDeckPageNoDeckGroup"
+             Title="CreateDeckPageNoDeckGroup">
+
+    <ScrollView>
+        <Grid>
+            <StackLayout Margin="20">
+                <StackLayout Margin="0, 20">
+                    <Label Text="Create a Deck" FontSize="24"></Label>
+                </StackLayout>
+
+                <StackLayout>
+                    <Label Text="Deck Name"></Label>
+                    <Grid Margin="0,5">
+                        <Frame BackgroundColor="White"/>
+                        <Entry x:Name="DeckNameEntry" TextColor="Black" Placeholder="Name your deck"></Entry>
+                    </Grid>
+                    <Label Text="Description" FontSize="16"></Label>
+                    <Grid Margin="0,5">
+                        <Frame BackgroundColor="White"/>
+                        <Entry x:Name="DeckDescriptionEntry" TextColor="Black" Placeholder="Enter Text Description"></Entry>
+                    </Grid>
+                </StackLayout>
+                <StackLayout>
+                    <Button Text="Next" Clicked="GoToBuildDeckPage" x:Name="NextBtn" WidthRequest="100" HeightRequest="25"></Button>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

@@ -79,6 +79,9 @@
 	  <MauiXaml Update="Views\MyStudies\CreateDeckPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\MyStudies\CreateDeckPageNoDeckGroup.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\MyStudies\CreateFlashcardPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

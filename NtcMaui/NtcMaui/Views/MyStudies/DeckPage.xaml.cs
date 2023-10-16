@@ -25,13 +25,16 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
         DeckListView.ItemsSource = await GetAllDecks();
     }
 
+    //this will be slightly different than the other go to Create Deck page.
+    //Reason being the other CreateDeckPage and stuff deals with DeckGroup and I can't deal with nulls when dealing with query attributes.
+    //So we will just be making a different CreateDeckPage and BuildDeckPage
     private void GoToCreateDeckPage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }
                 };
-        Shell.Current.GoToAsync(nameof(CreateDeckPage), navigationParameter);
+        Shell.Current.GoToAsync(nameof(CreateDeckPageNoDeckGroup), navigationParameter);
     }
 
     public async Task<List<UserDeck>> GetAllDecks()
