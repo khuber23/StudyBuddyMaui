@@ -32,7 +32,7 @@ public partial class SignIn : ContentPage
         List<User> users = new List<User>();
 
 
-        Uri uri = new Uri(string.Format($"{Constants.LocalApiUrl}/api/User", string.Empty));
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User", string.Empty));
         try
         {
             HttpResponseMessage response = await Constants._client.GetAsync(uri);
