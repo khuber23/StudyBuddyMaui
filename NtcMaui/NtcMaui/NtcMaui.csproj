@@ -56,12 +56,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Identity.Core" Version="7.0.12" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>
 	  <Reference Include="ApiStudyBuddy">
-	    <HintPath>..\..\..\NTCStudyBuddyAPI\ApiStudyBuddy\ApiStudyBuddy\bin\Debug\net7.0\ApiStudyBuddy.dll</HintPath>
+	    <HintPath>..\..\..\NTCStudyBuddyApi\ApiStudyBuddy\ApiStudyBuddy\bin\Release\net7.0\ApiStudyBuddy.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
 

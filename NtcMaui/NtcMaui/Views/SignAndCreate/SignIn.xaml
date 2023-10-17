@@ -6,7 +6,6 @@
     <ScrollView>
         <Grid>
             <StackLayout Margin="20">
-
                 <Image Source="ntclogo.png" HeightRequest="200" WidthRequest="200" HorizontalOptions="Center" VerticalOptions="Center"></Image>
 
                 <StackLayout Margin="0, 20">

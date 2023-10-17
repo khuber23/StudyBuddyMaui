@@ -4,11 +4,13 @@ using System.Text.Json.Serialization;
 using ApiStudyBuddy.Models;
 using Microsoft.Maui.ApplicationModel;
 using System.Windows;
+using Microsoft.AspNetCore.Identity;
 
 namespace NtcMaui.Views.SignAndCreate;
 
 public partial class SignIn : ContentPage
 {
+     PasswordHasher<string> passwordHasher = new PasswordHasher<string>();
     public SignIn()
     {
         InitializeComponent();
@@ -30,7 +32,7 @@ public partial class SignIn : ContentPage
         List<User> users = new List<User>();
 
 
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User", string.Empty));
+        Uri uri = new Uri(string.Format($"{Constants.LocalApiUrl}/api/User", string.Empty));
         try
         {
             HttpResponseMessage response = await Constants._client.GetAsync(uri);
@@ -53,20 +55,32 @@ public partial class SignIn : ContentPage
         List<User> users = await GetAllUsers();
         foreach (User user in users)
         {
-            if (user.Username == UserNameEntry.Text && user.Password == PasswordEntry.Text)
+            if (user.Username == UserNameEntry.Text)
             {
-                Error.Text = string.Empty;
-                var navigationParameter = new Dictionary<string, object>
+                PasswordVerificationResult passwordVerificationResult =
+                passwordHasher.VerifyHashedPassword(null, user.PasswordHash, PasswordEntry.Text);
+                if (passwordVerificationResult == PasswordVerificationResult.Success)
+                {
+                    Error.Text = string.Empty;
+                    var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", user }
                 };
-                await Shell.Current.GoToAsync(nameof(Success), navigationParameter);
+                    await Shell.Current.GoToAsync(nameof(Success), navigationParameter);
+                    break;
+                }
+                else
+                {
+                    Error.TextColor = Colors.Red;
+                    Error.Text = "Invalid password";
+                }
+
                 break;
             }
             else
             {
                 Error.TextColor = Colors.Red;
-                Error.Text = "Invalid User name or password";
+                Error.Text = "Invalid User Name";
             }
 
         }

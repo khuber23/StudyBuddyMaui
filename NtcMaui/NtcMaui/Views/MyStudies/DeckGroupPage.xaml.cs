@@ -94,20 +94,23 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
         return deckGroups;
     }
 
-    // might just get rid of this for button clicks or maybe for a viewing page/editing process.
+    //Note to Brody: might just get rid of this for button clicks or maybe for a viewing page/editing process.
+    // for editing maybe add a checkbox that will enable editing and disable clicking on items and add an edit screen to change the name and stuff.
+    //otherwise clicking on an item will allow you to navigate through it
+
+    //When user clicks on an item in the listView it will take the item and send it through to the neck Page
     private void DeckGroupListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
-        //if (e.SelectedItem != null)
-        //{
-        //    UserDeckGroup = e.SelectedItem as UserDeckGroup;
-        //    var navigationParameter = new Dictionary<string, object>
-        //        {
-        //            { "Current User", LoggedInUser },
-        //            {"Selected UserDeckGroup", UserDeckGroup }
-        //        };
-        //    Shell.Current.GoToAsync(nameof(BuildDeckGroupPage), navigationParameter);
+        if (e.SelectedItem != null)
+        {
+            UserDeckGroup = e.SelectedItem as UserDeckGroup;
+            var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+            Shell.Current.GoToAsync(nameof(BuildDeckGroupPage), navigationParameter);
 
-       // }
+        }
     }
 
     public User LoggedInUser { get; set; }

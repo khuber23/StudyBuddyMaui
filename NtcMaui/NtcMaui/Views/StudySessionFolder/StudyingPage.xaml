@@ -11,6 +11,7 @@
         </ScrollView.GestureRecognizers>
         <Grid>
  <!---This stacklayout represents the actual flashcard-->
+            <!--Add A Screenreader with Semantic screenreader part of IsemanticScreenreader interface in microsfot.maui.accessability-->
   <StackLayout x:Name="Flashcard" Margin="10" VerticalOptions="Center" WidthRequest="500">
          <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnTapRecognized" NumberOfTapsRequired="1"></TapGestureRecognizer>

@@ -3,11 +3,14 @@ using System.Text.Json;
 using System.Text;
 using System.Text.Json.Serialization;
 using ApiStudyBuddy.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace NtcMaui.Views.SignAndCreate;
 
 public partial class CreateAccount : ContentPage
 {
+
+    PasswordHasher<string> passwordHasher = new PasswordHasher<string>();
     public CreateAccount()
     {
         InitializeComponent();
@@ -45,7 +48,9 @@ public partial class CreateAccount : ContentPage
     {
         User user = new User();
         user.Username = UserNameEntry.Text;
-        user.Password = PasswordEntry.Text;
+        //when we implement password hash
+        user.PasswordHash = passwordHasher.HashPassword(null, PasswordEntry.Text);
+        //user.Password = PasswordEntry.Text;
         user.Email = EmailEntry.Text;
         user.FirstName = FirstNameEntry.Text;
         user.LastName = LastNameEntry.Text;

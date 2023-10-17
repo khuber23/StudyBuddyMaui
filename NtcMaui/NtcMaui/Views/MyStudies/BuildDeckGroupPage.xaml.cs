@@ -16,7 +16,10 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
     {
         base.OnAppearing();
 
-        DeckListView.ItemsSource = await GetAllDecks();
+        //change this to get all the decks in whatever deckGroup they selected.
+        //need to wait until api is changed but essentially need an endpoint in DeckGroup
+        //as of 5:30 10/16/2023 this will get all of the Deck based on DeckGroup Id which will only belong to 1 user as of this moment.
+        DeckListView.ItemsSource = await GetAllDecksbyDeckGroup();
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -40,25 +43,25 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
         Shell.Current.GoToAsync(nameof(CreateDeckPage), navigationParameter);
     }
 
-    public async Task<List<UserDeck>> GetAllDecks()
+    public async Task<List<DeckGroupDeck>> GetAllDecksbyDeckGroup()
     {
-        List<UserDeck> decks = new List<UserDeck>();
+        List<DeckGroupDeck> deckGroupDecks = new List<DeckGroupDeck>();
 
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/user/{LoggedInUser.UserId}", string.Empty));
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck/MVC/{SelectedDeckGroup.DeckGroupId}", string.Empty));
         try
         {
             HttpResponseMessage response = await Constants._client.GetAsync(uri);
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                decks = JsonSerializer.Deserialize<List<UserDeck>>(content, Constants._serializerOptions);
+                deckGroupDecks = JsonSerializer.Deserialize<List<DeckGroupDeck>>(content, Constants._serializerOptions);
             }
         }
         catch (Exception ex)
         {
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
-        return decks;
+        return deckGroupDecks;
     }
 
 
@@ -72,17 +75,16 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
     private void DeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
         //eventually change this to be for editing or just button clicks later, for now not worrying about it
-        //if (e.SelectedItem != null)
-        //{
-        //    SelectedDeck = e.SelectedItem as UserDeck;
-        //    var navigationParameter = new Dictionary<string, object>
-        //        {
-        //            { "Current User", LoggedInUser },
-        //            {"Selected UserDeckGroup", SelectedUserDeckGroup },
-        //            {"Selected UserDeck", SelectedDeck }
-        //        };
-        //    Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
+        if (e.SelectedItem != null)
+        {
+            SelectedDeck = e.SelectedItem as UserDeck;
+            var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    {"Selected UserDeck", SelectedDeck }
+                };
+            Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
 
-        //}
+        }
     }
 }
