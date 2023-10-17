@@ -52,6 +52,7 @@ public partial class SignIn : ContentPage
 
     public async void ValidateUser()
     {
+        //This endpoint I need to at least include the stuff from user to pass into other areas maybe?
         List<User> users = await GetAllUsers();
         foreach (User user in users)
         {

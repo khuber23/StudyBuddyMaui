@@ -11,12 +11,23 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
     {
         InitializeComponent();
     }
-
+    //NEED TO FIX ALL MY ENDPOINTS EVENTUALLY
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        UserDeckGroups = await GetAllUserDeckGroups();
-        DeckGroupListView.ItemsSource = UserDeckGroups;
+        var tests = await GetAllUserDeckGroups();
+        var tests2 = await GetAllDeckGroups();
+        List<DeckGroup> groups = new List<DeckGroup>();
+        foreach(var userDeckGroup in tests) { 
+        foreach(var DeckGroup in tests2)
+            {
+                if (userDeckGroup.DeckGroupId == DeckGroup.DeckGroupId)
+                {
+                    groups.Add(DeckGroup); break;
+                }
+            }
+        }
+        DeckGroupListView.ItemsSource = groups;
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -70,14 +81,41 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
         Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
     }
 
+    //trying a shitty fucking test due to kayla being a fucking moron
+    public async Task<List<DeckGroup>> GetAllDeckGroups()
+    {
+        List<DeckGroup> deckGroups = new List<DeckGroup>();
+
+
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup", string.Empty));
+
+        //originally
+        //Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/deckgroup/{LoggedInUser.UserId}", string.Empty));
+        try
+        {
+            HttpResponseMessage response = await Constants._client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                deckGroups = JsonSerializer.Deserialize<List<DeckGroup>>(content, Constants._serializerOptions);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+        return deckGroups;
+    }
 
     public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
     {
         List<UserDeckGroup> deckGroups = new List<UserDeckGroup>();
 
 
-        //Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup", string.Empty));
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/deckgroup/{LoggedInUser.UserId}", string.Empty));
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup", string.Empty));
+
+        //originally
+        //Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/deckgroup/{LoggedInUser.UserId}", string.Empty));
         try
         {
             HttpResponseMessage response = await Constants._client.GetAsync(uri);
