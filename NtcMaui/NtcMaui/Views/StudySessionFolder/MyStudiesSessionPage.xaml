@@ -17,23 +17,66 @@
                 Also will need to make a method again to return a full list of user decks or deck groups to access 
                 deck and user at same time. for the mean time i am just going to load the decks until the meeting tuesday-->
                 <StackLayout>
-                    <Label x:Name="ErrorLabel" IsVisible="false" TextColor="Red" Text="Please Select a deck you wish to study"></Label>
-                    <ListView x:Name="MyStudiesListView">
+                    <Label Margin="10" x:Name="ErrorLabel" Text="Please Select a deck you wish to study"></Label>
+                    <Label Margin="15" x:Name="ChosenDeckLabel" IsVisible="false"></Label>
+                    <ListView SelectionMode="None" x:Name="MyStudiesListView">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
                                     <StackLayout Orientation="Horizontal">
-                                        <Image x:Name="ProfileImage"  Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50" VerticalOptions="Start"></Image>
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroupList>
+                                                <VisualStateGroup x:Name="CommonStates">
+                                                    <VisualState x:Name="PointerOver">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="BackgroundColor" 
+                                                            Value="white" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                    <VisualState x:Name="Normal">
+                                                        <VisualState.Setters>
+                                                            <Setter Property="BackgroundColor" 
+                                                            Value="white" />
+                                                        </VisualState.Setters>
+                                                    </VisualState>
+                                                </VisualStateGroup>
+                                            </VisualStateGroupList>
+                                        </VisualStateManager.VisualStateGroups>
+                                        <!--eventually make this user image.-->
+                                        <Image x:Name="ProfileImage" Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50" VerticalOptions="Start"></Image>
                                         <StackLayout Orientation="Vertical" Margin="10, 5">
-                                            <Label FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand">
-                                                <Label.Text>
-                                                    <MultiBinding StringFormat="{}{0}-{1} ">
-                                                        <Binding Path="DeckGroup.DeckGroupName" />
-                                                        <Binding Path="DeckGroup.DeckGroupDeck.Deck.DeckName" />
-                                                    </MultiBinding>
-                                                </Label.Text>
-                                            </Label>
-                                            <StackLayout>
+                                            <Label Text="{Binding DeckGroup.DeckGroupName}"></Label>
+                                            <ListView ItemSelected="DeckGroupDeckListView_ItemSelected" x:Name="DeckGroupDeckListView" ItemsSource="{Binding DeckGroup.DeckGroupDecks}">
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <ViewCell>
+                                                            
+                                                            <Label Text="{Binding Path=Deck.DeckName}" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand">
+                                                                <VisualStateManager.VisualStateGroups>
+                                                                    <VisualStateGroupList>
+                                                                        <VisualStateGroup x:Name="CommonStates">
+                                                                            <VisualState x:Name="PointerOver">
+                                                                                <VisualState.Setters>
+                                                                                    <Setter Property="BackgroundColor" 
+                                                                                        Value="Grey" />
+                                                                                </VisualState.Setters>
+                                                                            </VisualState>
+                                                                            <VisualState x:Name="Normal">
+                                                                                <VisualState.Setters>
+                                                                                    <Setter Property="BackgroundColor" 
+                                                                                     Value="white" />
+                                                                                </VisualState.Setters>
+                                                                            </VisualState>
+                                                                        </VisualStateGroup>
+                                                                    </VisualStateGroupList>
+                                                                </VisualStateManager.VisualStateGroups>
+                                                            </Label>
+                                                        </ViewCell>
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                            <!--Might re-add this later-->
+                                            <!--<StackLayout>
                                                 <ListView IsEnabled="False" x:Name="FlashCardsListView" SelectionMode="None" ItemsSource="{Binding DeckGroup.DeckGroupDeck.Deck.DeckFlashCards}">
                                                     <ListView.ItemTemplate>
                                                         <DataTemplate>
@@ -43,7 +86,7 @@
                                                         </DataTemplate>
                                                     </ListView.ItemTemplate>
                                                 </ListView>
-                                            </StackLayout>
+                                            </StackLayout>-->
                                             <Label Text="{Binding User.Username}"></Label>
                                             
                                         </StackLayout>

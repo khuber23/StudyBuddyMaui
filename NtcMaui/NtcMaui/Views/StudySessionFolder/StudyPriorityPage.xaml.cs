@@ -70,7 +70,7 @@ public partial class StudyPriorityPage : ContentPage, IQueryAttributable, INotif
     {
         List<StudySessionFlashCard> studySessionFlashCards = new List<StudySessionFlashCard>();
 
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySessionFlashCard/incorrect/{userId}", string.Empty));
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySessionFlashCard/maui/incorrect/{userId}", string.Empty));
         try
         {
             HttpResponseMessage response = await Constants._client.GetAsync(uri);

@@ -4,21 +4,21 @@
              x:Class="NtcMaui.Views.StudySessionFolder.StudyingPage"
              Title="StudyingPage">
 
-    <!--<ScrollView>
-        <ScrollView.GestureRecognizers>
+    <ScrollView>
+        <!--<ScrollView.GestureRecognizers>
             <SwipeGestureRecognizer Direction="Left" Swiped="OnSwiped"/>
             <SwipeGestureRecognizer Direction="Right" Swiped="OnSwiped"/>
-        </ScrollView.GestureRecognizers>
+        </ScrollView.GestureRecognizers>-->
         <Grid>
- --><!---This stacklayout represents the actual flashcard-->
-            <!--Add A Screenreader with Semantic screenreader part of IsemanticScreenreader interface in microsfot.maui.accessability--><!--
+ <!---This stacklayout represents the actual flashcard-->
+            <!--Eventually need to add in flashcard images and deal with those -->
   <StackLayout x:Name="Flashcard" Margin="10" VerticalOptions="Center" WidthRequest="500">
          <StackLayout.GestureRecognizers>
                     <TapGestureRecognizer Tapped="OnTapRecognized" NumberOfTapsRequired="1"></TapGestureRecognizer>
                 </StackLayout.GestureRecognizers>
                 <Border Stroke="Black" StrokeThickness="2" BackgroundColor="White" Padding="10" VerticalOptions="Center">
                     <StackLayout   Margin="50" HorizontalOptions="Center" VerticalOptions="Center">
-                        --><!---This stacklayout is where the inside of the card will appear along with flashcard text--><!--
+                        <!---This stacklayout is where the inside of the card will appear along with flashcard text-->
                         <Label x:Name="FlashcardText"></Label>
 
                     </StackLayout>
@@ -29,6 +29,6 @@
                 <Button Margin="20" Text="Understand" Clicked="UnderstandClick"></Button>
             </StackLayout>
         </Grid>
-</ScrollView>-->
+</ScrollView>
 
 </ContentPage>

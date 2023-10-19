@@ -29,13 +29,14 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
         base.OnAppearing();
         UserDeckGroups = await GetAllUserDeckGroups();
         MyStudiesListView.ItemsSource = UserDeckGroups;
+        //evemtially add another listView for doing just user Decks without a DeckGroup and deal with it
     }
 
     public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
     {
         List<UserDeckGroup> userDeckGroups = new List<UserDeckGroup>();
 
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/user/{LoggedInUser.UserId}", string.Empty));
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/maui/user/{LoggedInUser.UserId}", string.Empty));
         try
         {
             HttpResponseMessage response = await Constants._client.GetAsync(uri);
@@ -52,17 +53,29 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
         return userDeckGroups;
     }
 
+    //going to have to re-do this part to deal with probably just user decks.
+    //Eventually this code will be used for if a user choosen A UserDeckGroup and can probably do all of the Decks within.
     private void BeginSession(object sender, EventArgs e)
     {
-        ChosenUserDeckGroup = MyStudiesListView.SelectedItem as UserDeckGroup;
+        //ChosenUserDeckGroup = MyStudiesListView.SelectedItem as UserDeckGroup;
         ErrorLabel.IsVisible = false;
-        if (ChosenUserDeckGroup != null)
+        //if (ChosenUserDeckGroup != null)
+        //{
+        //    var navigationParameter = new Dictionary<string, object>
+        //        {
+        //            { "Current User", LoggedInUser },
+        //            {"ChosenStudy", ChosenUserDeckGroup }
+        //        };
+        //    Shell.Current.GoToAsync(nameof(StudyingPage), navigationParameter);
+        //}
+        if (ChosenDeckGroupDeck != null)
         {
             var navigationParameter = new Dictionary<string, object>
-                {
-                    { "Current User", LoggedInUser },
-                    {"ChosenStudy", ChosenUserDeckGroup }
-                };
+            {
+            { "Current User", LoggedInUser },
+            {"Chosen Deck", ChosenDeckGroupDeck }
+            };
+            //might need to make seperate pages eventually for StudyPage with just a deck eventually.
             Shell.Current.GoToAsync(nameof(StudyingPage), navigationParameter);
         }
         else
@@ -95,5 +108,15 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
 
     public List<UserDeckGroup> UserDeckGroups { get; set; }
 
+    public DeckGroupDeck ChosenDeckGroupDeck { get; set; }
+
     public List<DeckFlashCard> DeckFlashCards { get; set; }
+
+    //will assign a deckGroupDeck when a user clicks on it.
+    private void DeckGroupDeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        ChosenDeckGroupDeck = e.SelectedItem as DeckGroupDeck;
+        ChosenDeckLabel.IsVisible = true;
+        ChosenDeckLabel.Text = $"Current Deck Chosen: {ChosenDeckGroupDeck.Deck.DeckName}";
+    }
 }

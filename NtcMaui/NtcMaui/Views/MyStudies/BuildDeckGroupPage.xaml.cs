@@ -47,7 +47,7 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
     {
         List<DeckGroupDeck> deckGroupDecks = new List<DeckGroupDeck>();
 
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck/MVC/{SelectedDeckGroup.DeckGroupId}", string.Empty));
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck/maui/{SelectedDeckGroup.DeckGroupId}", string.Empty));
         try
         {
             HttpResponseMessage response = await Constants._client.GetAsync(uri);

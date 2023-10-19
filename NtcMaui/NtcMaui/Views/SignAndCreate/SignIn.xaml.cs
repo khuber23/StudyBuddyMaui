@@ -53,6 +53,7 @@ public partial class SignIn : ContentPage
     public async void ValidateUser()
     {
         //This endpoint I need to at least include the stuff from user to pass into other areas maybe?
+        //should honestly just make this with a new endpoint to return a user based on username and password hash and if not null return.
         List<User> users = await GetAllUsers();
         foreach (User user in users)
         {

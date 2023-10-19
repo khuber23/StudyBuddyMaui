@@ -50,10 +50,11 @@ public partial class CreateAccount : ContentPage
         user.Username = UserNameEntry.Text;
         //when we implement password hash
         user.PasswordHash = passwordHasher.HashPassword(null, PasswordEntry.Text);
-        //user.Password = PasswordEntry.Text;
         user.Email = EmailEntry.Text;
         user.FirstName = FirstNameEntry.Text;
         user.LastName = LastNameEntry.Text;
+        //eventually add profile picture stuff here
+        user.IsAdmin = false;
         return user;
     }
 }

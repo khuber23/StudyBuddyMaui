@@ -15,19 +15,8 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        var tests = await GetAllUserDeckGroups();
-        var tests2 = await GetAllDeckGroups();
-        List<DeckGroup> groups = new List<DeckGroup>();
-        foreach(var userDeckGroup in tests) { 
-        foreach(var DeckGroup in tests2)
-            {
-                if (userDeckGroup.DeckGroupId == DeckGroup.DeckGroupId)
-                {
-                    groups.Add(DeckGroup); break;
-                }
-            }
-        }
-        DeckGroupListView.ItemsSource = groups;
+
+        DeckGroupListView.ItemsSource = await GetAllUserDeckGroups();
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -111,11 +100,8 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
     {
         List<UserDeckGroup> deckGroups = new List<UserDeckGroup>();
 
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup", string.Empty));
-
         //originally
-        //Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/deckgroup/{LoggedInUser.UserId}", string.Empty));
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/maui/deckgroup/{LoggedInUser.UserId}", string.Empty));
         try
         {
             HttpResponseMessage response = await Constants._client.GetAsync(uri);
@@ -144,7 +130,9 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
             UserDeckGroup = e.SelectedItem as UserDeckGroup;
             var navigationParameter = new Dictionary<string, object>
                 {
-                    { "Current User", LoggedInUser }
+                    { "Current User", LoggedInUser },
+                    //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
+                    {"Current DeckGroup", UserDeckGroup.DeckGroup}
                 };
             Shell.Current.GoToAsync(nameof(BuildDeckGroupPage), navigationParameter);
 
