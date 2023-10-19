@@ -7,7 +7,7 @@
         <Grid>
             <StackLayout>
                 <StackLayout Margin="0, 20">
-                    <Label Text="Build a Deck Group" FontSize="24"></Label>
+                    <Label x:Name="DeckGroupNameLabel" FontSize="24"></Label>
                 </StackLayout>
 
                 <StackLayout>

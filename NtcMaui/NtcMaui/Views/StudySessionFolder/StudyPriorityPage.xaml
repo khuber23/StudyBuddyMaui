@@ -17,7 +17,7 @@
                                 <ViewCell>
                                     <StackLayout Orientation="Horizontal">
                                         <StackLayout Orientation="Vertical" Margin="10, 5">
-                                            <Label Text="{Binding FlashCard.FlashCardQuestion}" FontSize="20" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
+                                            <Label TextColor="Red" Text="{Binding FlashCard.FlashCardQuestion}" FontSize="20" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
                                             <Label Text="{Binding StudySession.Deck.DeckName, StringFormat='From: {0}' }"></Label>
                                         </StackLayout>
                                     </StackLayout>

@@ -41,7 +41,7 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
     {
         List<UserDeck> decks = new List<UserDeck>();
 
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/user/{LoggedInUser.UserId}", string.Empty));
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/maui/user/{LoggedInUser.UserId}", string.Empty));
         try
         {
             HttpResponseMessage response = await Constants._client.GetAsync(uri);
@@ -95,6 +95,24 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
         Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
     }
 
+    private void DeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem != null)
+        {
+            SelectedDeck = e.SelectedItem as UserDeck;
+            var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
+                    {"Current Deck", SelectedDeck}
+                };
+            Shell.Current.GoToAsync(nameof(BuildDeckPageOnlyDeck), navigationParameter);
+
+        }
+    }
+
     public User LoggedInUser { get; set; }
+
+    public UserDeck SelectedDeck { get; set; }
 
 }

@@ -20,6 +20,7 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
         //need to wait until api is changed but essentially need an endpoint in DeckGroup
         //as of 5:30 10/16/2023 this will get all of the Deck based on DeckGroup Id which will only belong to 1 user as of this moment.
         DeckListView.ItemsSource = await GetAllDecksbyDeckGroup();
+        DeckGroupNameLabel.Text = $"Building {SelectedDeckGroup.DeckGroupName}";
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -64,27 +65,26 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
         return deckGroupDecks;
     }
 
-
-
-    public User LoggedInUser { get; set; }
-
-    public DeckGroup SelectedDeckGroup { get; set; }
-
-    public UserDeck SelectedDeck { get; set; }
-
     private void DeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
         //eventually change this to be for editing or just button clicks later, for now not worrying about it
         if (e.SelectedItem != null)
         {
-            SelectedDeck = e.SelectedItem as UserDeck;
+            //its a deckGroupDeck
+            SelectedDeckGroupDeck = e.SelectedItem as DeckGroupDeck;
             var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser },
-                    {"Selected UserDeck", SelectedDeck }
+                    {"Current Deck", SelectedDeckGroupDeck }
                 };
             Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
 
         }
     }
+
+    public User LoggedInUser { get; set; }
+
+    public DeckGroup SelectedDeckGroup { get; set; }
+
+    public DeckGroupDeck SelectedDeckGroupDeck { get; set; }
 }

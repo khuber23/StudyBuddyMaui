@@ -24,6 +24,8 @@
                             <DataTemplate>
                                 <ViewCell>
                                     <StackLayout Orientation="Horizontal">
+                                        <!---This code just make it so we don't see the highlight when we hover over a UserDeckGroup
+                                        Eventually change the colors to whatver background color we decide on-->
                                         <VisualStateManager.VisualStateGroups>
                                             <VisualStateGroupList>
                                                 <VisualStateGroup x:Name="CommonStates">

@@ -22,14 +22,17 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
     }
 
     //So when a user saves a FlashCard it will end up in a list until a User decides to Finish making the Deck.
+    //eventually handle making images but for now i can handle if flashcard is public.
     private void SaveFlashCard(object sender, EventArgs e)
     {
         FlashCard flashCard = new FlashCard();
         flashCard.FlashCardQuestion = FlashcardQuestionEntry.Text;
         flashCard.FlashCardAnswer = FlashcardAnswerEntry.Text;
+        flashCard.IsPublic = IsFlashCardPublic;
         UsermadeFlashCards.Add(flashCard);
         FlashcardQuestionEntry.Text = String.Empty;
         FlashcardAnswerEntry.Text = String.Empty;
+        IsPublicCheckBox.IsChecked = false;
         if (UsermadeFlashCards.Count > 0)
         {
             FinishBtn.IsVisible = true;
@@ -163,4 +166,18 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
     public User LoggedInUser { get; set; }
 
     public Deck SelectedDeck { get; set; }
+
+    public bool IsFlashCardPublic { get; set; }
+
+    private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        if (e.Value == true)
+        {
+            IsFlashCardPublic = true;
+        }
+        else
+        {
+            IsFlashCardPublic = false;
+        }
+    }
 }

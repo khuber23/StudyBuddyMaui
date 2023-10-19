@@ -5,6 +5,7 @@ using ApiStudyBuddy.Models;
 
 namespace NtcMaui.Views.MyStudies;
 
+//eventually need to make a view flashcard page to see the details and eventually edit like images and stuff.
 public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
     public BuildDeckPage()
@@ -15,7 +16,7 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         LoggedInUser = query["Current User"] as User;
-        SelectedDeck = query["Current Deck"] as Deck;
+        SelectedDeckGroupDeck = query["Current Deck"] as DeckGroupDeck;
 
         OnPropertyChanged("Current User");
     }
@@ -26,19 +27,22 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser },
-                    { "Current Deck", SelectedDeck}
+                    { "Current Deck", SelectedDeckGroupDeck}
                 };
         Shell.Current.GoToAsync(nameof(CreateFlashcardPage), navigationParameter);
     }
 
-    protected async override void OnAppearing()
+    protected override void OnAppearing()
     {
         base.OnAppearing();
 
         //this I want to eventually be all the Deck Flashcards. Work on that later.
-        FlashcardListView.ItemsSource = await GetAllFlashcards();
+        //FlashcardListView.ItemsSource = await GetAllFlashcards();
+        FlashcardListView.ItemsSource = SelectedDeckGroupDeck.Deck.DeckFlashCards;
+        BuildDeckNameLabel.Text = $"Building: {SelectedDeckGroupDeck.Deck.DeckName}";
     }
 
+    //might straight up get rid of this and just display all of the DeckFlashCards of the deck/deckGroupDeck
     public async Task<List<FlashCard>> GetAllFlashcards()
     {
         List<FlashCard> flashCards = new List<FlashCard>();
@@ -62,5 +66,5 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
 
     public User LoggedInUser { get; set; }
 
-    public Deck SelectedDeck { get; set; }
+    public DeckGroupDeck SelectedDeckGroupDeck { get; set; }
 }
