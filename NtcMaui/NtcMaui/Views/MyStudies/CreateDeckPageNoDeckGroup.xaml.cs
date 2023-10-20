@@ -52,7 +52,7 @@ public partial class CreateDeckPageNoDeckGroup : ContentPage, IQueryAttributable
                     {"Current Deck", Deck }
                 };
         //Finishing up making a DeckGroup so now it will take the user to Build Deck
-        await Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
+        await Shell.Current.GoToAsync(nameof(BuildDeckPageOnlyDeck), navigationParameter);
     }
 
     //Posts the Deck

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NtcMaui.Views.MyStudies.AddFlashcardToDeckPage"
+             Title="AddFlashcardToDeckPage">
+    <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+        <Label x:Name="CurrentFlashCardLabel"></Label>
+        <Picker x:Name="DeckPicker" SelectedItem="{Binding SelectedUserDeck}" ItemDisplayBinding="{Binding Deck.DeckName}" Title="Select a Deck to add the flashcard to">
+            
+        </Picker>
+    </VerticalStackLayout>
+</ContentPage>

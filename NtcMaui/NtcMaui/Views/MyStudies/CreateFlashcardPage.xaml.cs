@@ -92,8 +92,6 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
     //Posts a flashcard
     public async Task SaveFlashcardAsync(FlashCard flashCard)
     {
-        //either will be api/userDeckgroup or maybe just Deckgroup?
-        //for now i won't run anything but will just keep deckgroup.
         Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/FlashCard", string.Empty));
 
         try
@@ -116,8 +114,6 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
     //Posts a Deckflashcard
     public async Task SaveDeckFlashcardAsync(DeckFlashCard deckFlashCard)
     {
-        //either will be api/userDeckgroup or maybe just Deckgroup?
-        //for now i won't run anything but will just keep deckgroup.
         Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckFlashCard", string.Empty));
 
         try
@@ -161,14 +157,6 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         return flashCards;
     }
 
-    public List<FlashCard> UsermadeFlashCards { get; set; } = new List<FlashCard>();
-
-    public User LoggedInUser { get; set; }
-
-    public Deck SelectedDeck { get; set; }
-
-    public bool IsFlashCardPublic { get; set; }
-
     private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         if (e.Value == true)
@@ -180,4 +168,12 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
             IsFlashCardPublic = false;
         }
     }
+
+    public List<FlashCard> UsermadeFlashCards { get; set; } = new List<FlashCard>();
+
+    public User LoggedInUser { get; set; }
+
+    public Deck SelectedDeck { get; set; }
+
+    public bool IsFlashCardPublic { get; set; }
 }

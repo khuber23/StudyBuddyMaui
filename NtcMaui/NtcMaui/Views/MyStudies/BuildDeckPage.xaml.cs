@@ -27,7 +27,7 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser },
-                    { "Current Deck", SelectedDeckGroupDeck}
+                    { "Current Deck", SelectedDeckGroupDeck.Deck}
                 };
         Shell.Current.GoToAsync(nameof(CreateFlashcardPage), navigationParameter);
     }
