@@ -25,7 +25,6 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
         OnPropertyChanged("Current User");
     }
 
-    //completely fucking redo everything.
     protected async override void OnAppearing()
     {
         base.OnAppearing();
@@ -249,6 +248,7 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
             StudySession.UserId = LoggedInUser.UserId;
             StudySession.DeckGroupId = ChosenDeckGroupDeck.DeckGroupId;
             StudySession.DeckId = ChosenDeckGroupDeck.DeckId;
+            //do a check for if it is complete.
 
             //post the StudySession.
             await SaveStudySessionAsync(StudySession);

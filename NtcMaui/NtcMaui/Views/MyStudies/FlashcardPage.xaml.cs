@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
+using CommunityToolkit.Maui.Views;
 
 namespace NtcMaui.Views.MyStudies;
 
@@ -85,7 +86,7 @@ public partial class FlashcardPage : ContentPage, IQueryAttributable, INotifyPro
         Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
     }
 
-    public User LoggedInUser { get; set; }
+
 
     private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
     {
@@ -105,4 +106,22 @@ public partial class FlashcardPage : ContentPage, IQueryAttributable, INotifyPro
         }
        
     }
+
+    private void FlashcardListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if(e.SelectedItem != null)
+        {
+            SelectedFlashcard = e.SelectedItem as FlashCard;
+            var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    {"Selected FlashCard", SelectedFlashcard }
+                };
+            Shell.Current.GoToAsync(nameof(AddFlashcardToDeckPage), navigationParameter);
+        }
+    }
+
+    public User LoggedInUser { get; set; }
+
+    public FlashCard SelectedFlashcard { get; set; }
 }

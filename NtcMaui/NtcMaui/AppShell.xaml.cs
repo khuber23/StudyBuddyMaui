@@ -24,6 +24,7 @@
             Routing.RegisterRoute(nameof(Views.MyStudies.CreateFlashcardPage), typeof(Views.MyStudies.CreateFlashcardPage));
             Routing.RegisterRoute(nameof(Views.MyStudies.CreateDeckPageNoDeckGroup), typeof(Views.MyStudies.CreateDeckPageNoDeckGroup));
             Routing.RegisterRoute(nameof(Views.MyStudies.BuildDeckPageOnlyDeck), typeof(Views.MyStudies.BuildDeckPageOnlyDeck));
+            Routing.RegisterRoute(nameof(Views.MyStudies.AddFlashcardToDeckPage), typeof(Views.MyStudies.AddFlashcardToDeckPage));
 
             //Study Session Routes
             Routing.RegisterRoute(nameof(Views.StudySessionFolder.MyStudiesSessionPage), typeof(Views.StudySessionFolder.MyStudiesSessionPage));

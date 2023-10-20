@@ -16,7 +16,7 @@
                 <SearchBar HorizontalOptions="StartAndExpand" Placeholder="Search Flash Cards" TextChanged="SearchBar_TextChanged"></SearchBar>
                 <!--<ListView x:Name="searchFlashCards"></ListView>-->
                 <StackLayout>
-                    <ListView x:Name="FlashcardListView">
+                    <ListView x:Name="FlashcardListView" ItemSelected="FlashcardListView_ItemSelected">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>

@@ -49,14 +49,19 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
         DeckGroupDeck deckGroupDeck = new DeckGroupDeck();
         deckGroupDeck.DeckGroupId = SelectedDeckGroup.DeckGroupId;
         deckGroupDeck.DeckId = Deck.DeckId;
+       
 
         await SaveDeckGroupDeckAsync(deckGroupDeck);
+
+
+        //need to refind that DeckGroupDeck
+        CurrentDeckGroupDeck = await GetSpecificDeckGroupDeck(deckGroupDeck.DeckGroupId, deckGroupDeck.DeckId);
 
         //pass in Deck so then Users can eventually add Flashcards to the deck.
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser },
-                    {"Current Deck", Deck }
+                    {"Current Deck",  CurrentDeckGroupDeck}
                 };
         //Finishing up making a DeckGroup so now it will take the user to Build Deck
             await Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
@@ -157,6 +162,30 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
         return decks;
     }
 
+    //is going to get all of the Deck
+    public async Task<DeckGroupDeck> GetSpecificDeckGroupDeck(int deckGroupId, int deckId)
+    {
+        DeckGroupDeck deckGroupDeck = new DeckGroupDeck();
+
+
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck/maui/specificdeckgroupdeck/{deckGroupId}/{deckId}", string.Empty));
+        try
+        {
+            HttpResponseMessage response = await Constants._client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                deckGroupDeck = JsonSerializer.Deserialize<DeckGroupDeck>(content, Constants._serializerOptions);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+
+        return deckGroupDeck;
+    }
+
     public User LoggedInUser { get; set; }
     
     public DeckGroup SelectedDeckGroup { get; set; }
@@ -164,4 +193,6 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
     public Deck Deck { get; set; }
 
     public UserDeck UserDeck { get; set; }
+
+    public DeckGroupDeck CurrentDeckGroupDeck { get; set; }
 }
