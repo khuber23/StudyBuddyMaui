@@ -27,7 +27,8 @@
                     <Label x:Name="Error"></Label>
                 </StackLayout>
                 <StackLayout>
-                    <Label Margin="0, 40" Text="Forgot Password?" TextDecorations="Underline" HorizontalOptions="Center" VerticalOptions="Center"></Label>
+                    <!--<Label Margin="0, 40" Text="Forgot Password?" TextDecorations="Underline" HorizontalOptions="Center" VerticalOptions="Center"></Label>-->                
+                    <Button x:Name="ForgotPassword" Text="Forgot Password?" VerticalOptions="Center" WidthRequest="200" BorderColor="White" TextColor="Blue" BackgroundColor="White" Clicked="ForgotPassword_Clicked"></Button>
                 </StackLayout>
                 <StackLayout>
                     <Button x:Name="SignInBtn" Margin="0,10" Text="Sign in" WidthRequest="200" VerticalOptions="Center" Clicked="CompleteSignIn"></Button>

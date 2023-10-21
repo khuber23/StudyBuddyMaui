@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using System.Threading.Tasks;
+using static System.Net.WebRequestMethods;
 
 namespace NtcMaui
 {
@@ -27,6 +28,5 @@ namespace NtcMaui
         public static string TestUrl = "https://instruct.ntc.edu/teststudybuddyapi";
 
         public static string LocalApiUrl = "https://localhost:7025";
-
     }
 }

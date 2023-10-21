@@ -61,9 +61,10 @@
 
 	<ItemGroup>
 	  <Reference Include="ApiStudyBuddy">
-	    <HintPath>..\..\..\..\NTCStudyBuddyAPI\NTCStudyBuddyApi\ApiStudyBuddy\ApiStudyBuddy\bin\Debug\net7.0\ApiStudyBuddy.dll</HintPath>
-	  </Reference>                                                                       
+	    <HintPath>..\..\..\NTCStudyBuddyAPI\ApiStudyBuddy\ApiStudyBuddy\bin\Debug\net7.0\ApiStudyBuddy.dll</HintPath>
+	  </Reference>
 	</ItemGroup>
+
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\MyStudies\BuildDeckGroupPage.xaml">
@@ -94,6 +95,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\SignAndCreate\CreateAccount.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\SignAndCreate\ForgotPassword.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\SignAndCreate\HomePage.xaml">

@@ -29,7 +29,6 @@ public partial class SignIn : ContentPage
     {
         List<User> users = new List<User>();
 
-
         Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User", string.Empty));
         try
         {
@@ -68,7 +67,11 @@ public partial class SignIn : ContentPage
                 Error.TextColor = Colors.Red;
                 Error.Text = "Invalid User name or password";
             }
-
         }
+    }
+
+    private async void ForgotPassword_Clicked(object sender, EventArgs e)
+    {
+        await Shell.Current.GoToAsync(nameof(ForgotPassword));
     }
 }
