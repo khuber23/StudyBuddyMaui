@@ -62,17 +62,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Reference Include="ApiStudyBuddy">
-<<<<<<< HEAD
-	    <HintPath>..\..\..\NTCStudyBuddyApi\ApiStudyBuddy\ApiStudyBuddy\bin\Release\net7.0\ApiStudyBuddy.dll</HintPath>
-=======
-	    <HintPath>..\..\..\NTCStudyBuddyAPI\ApiStudyBuddy\ApiStudyBuddy\bin\Debug\net7.0\ApiStudyBuddy.dll</HintPath>
->>>>>>> PVBranchMAUI
-	  </Reference>
-	</ItemGroup>
-
-
-	<ItemGroup>
 	  <MauiXaml Update="Views\MyStudies\AddFlashcardToDeckPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

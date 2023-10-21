@@ -5,19 +5,4 @@
     <ActiveDebugFramework>net7.0-windows10.0.19041.0</ActiveDebugFramework>
     <ActiveDebugProfile>Windows Machine</ActiveDebugProfile>
   </PropertyGroup>
-  <ItemGroup>
-<<<<<<< HEAD
-    <MauiXaml Update="Views\MyStudies\AddFlashcardToDeckPage.xaml">
-      <SubType>Designer</SubType>
-    </MauiXaml>
-    <MauiXaml Update="Views\MyStudies\BuildDeckPageOnlyDeck.xaml">
-      <SubType>Designer</SubType>
-    </MauiXaml>
-    <MauiXaml Update="Views\MyStudies\CreateDeckPageNoDeckGroup.xaml">
-=======
-    <MauiXaml Update="Views\SignAndCreate\ForgotPassword.xaml">
->>>>>>> PVBranchMAUI
-      <SubType>Designer</SubType>
-    </MauiXaml>
-  </ItemGroup>
 </Project>
