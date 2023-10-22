@@ -5,8 +5,12 @@
              Title="AddFlashcardToDeckPage">
     <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
         <Label x:Name="CurrentFlashCardLabel"></Label>
-        <Picker x:Name="DeckPicker" SelectedItem="{Binding SelectedUserDeck}" ItemDisplayBinding="{Binding Deck.DeckName}" Title="Select a Deck to add the flashcard to">
+        <Picker x:Name="DeckPicker" SelectedItem="{Binding SelectedUserDeck}"
+                SelectedIndexChanged="DeckPicker_SelectedIndexChanged"
+        ItemDisplayBinding="{Binding Deck.DeckName}" Title="Select a Deck to add the flashcard to">
             
         </Picker>
+
+        <Button x:Name="AddFlashcardToDeckBtn" Text="Add FlashCard" Clicked="AddFlashcardToDeckBtn_Clicked"></Button>
     </VerticalStackLayout>
 </ContentPage>

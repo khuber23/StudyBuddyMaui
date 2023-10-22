@@ -57,4 +57,21 @@ public partial class AddFlashcardToDeckPage : ContentPage, IQueryAttributable, I
     public UserDeck SelectedUserDeck { get; set; }
 
     public FlashCard SelectedFlashCard { get; set; }
+
+
+
+    private void AddFlashcardToDeckBtn_Clicked(object sender, EventArgs e)
+    {
+    }
+
+    private void DeckPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        var picker = (Picker)sender;
+        int selectedIndex = picker.SelectedIndex;
+        if (selectedIndex != -1)
+        {
+            //if this is stuck as a string I can sit there and maybe make a endpoint to find the deck as based on the string
+           var test = picker.Items[selectedIndex];
+        }
+    }
 }
