@@ -47,7 +47,8 @@ public partial class ForgotPassword : ContentPage
             {
                 if (newPassword == ReEnterNewPassword && !string.IsNullOrWhiteSpace(newPassword))
                 {
-                    userFound.Password = newPassword;
+                    //fix this to deal with hashing
+                    userFound.PasswordHash = newPassword;
                     UpdatePassword(userFound);
 
                     var navigationParameter = new Dictionary<string, object>
@@ -79,7 +80,8 @@ public partial class ForgotPassword : ContentPage
         if (user != null)
         {
             // Just verifying that user's password has successfully changed. 
-            string newPassowrd = user.Password;
+            //maybe need to deal with hashing
+            string newPassowrd = user.PasswordHash;
 
         }
     }
