@@ -12,5 +12,6 @@
         </Picker>
 
         <Button x:Name="AddFlashcardToDeckBtn" Text="Add FlashCard" Clicked="AddFlashcardToDeckBtn_Clicked"></Button>
+        <Label x:Name="ErrorLabel" IsVisible="false" TextColor="Red" Text="Please Select a deck from the drop-down"></Label>
     </VerticalStackLayout>
 </ContentPage>
