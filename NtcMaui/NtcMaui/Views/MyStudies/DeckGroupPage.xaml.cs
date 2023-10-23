@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
+using NtcMaui.Views.Edit;
 
 namespace NtcMaui.Views.MyStudies;
 
@@ -128,14 +129,29 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
         if (e.SelectedItem != null)
         {
             UserDeckGroup = e.SelectedItem as UserDeckGroup;
-            var navigationParameter = new Dictionary<string, object>
+            //add an if statement showing if a user has the checkbox checked for editing. 
+            //if editischecked
+            if (EditingCheckBox.IsChecked == true)
+            {
+                var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser },
                     //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
                     {"Current DeckGroup", UserDeckGroup.DeckGroup}
                 };
-            Shell.Current.GoToAsync(nameof(BuildDeckGroupPage), navigationParameter);
-
+                Shell.Current.GoToAsync(nameof(EditDeckGroupPage), navigationParameter);
+            }
+            else
+            {
+                //else
+                var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
+                    {"Current DeckGroup", UserDeckGroup.DeckGroup}
+                };
+                Shell.Current.GoToAsync(nameof(BuildDeckGroupPage), navigationParameter);
+            }
         }
     }
 

@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
+using NtcMaui.Views.Edit;
 
 namespace NtcMaui.Views.MyStudies;
 
@@ -100,13 +101,29 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
         if (e.SelectedItem != null)
         {
             SelectedDeck = e.SelectedItem as UserDeck;
-            var navigationParameter = new Dictionary<string, object>
+
+            //if checked go to edit Deck Page
+            if (EditingCheckBox.IsChecked == true)
+            {
+                var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
+                    {"Current Deck", SelectedDeck.Deck}
+                };
+                Shell.Current.GoToAsync(nameof(EditDeckPage), navigationParameter);
+            }
+            else
+            //go to view/build screen
+            {
+                var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser },
                     //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
                     {"Current Deck", SelectedDeck}
                 };
-            Shell.Current.GoToAsync(nameof(BuildDeckPageOnlyDeck), navigationParameter);
+                Shell.Current.GoToAsync(nameof(BuildDeckPageOnlyDeck), navigationParameter);
+            }
 
         }
     }
