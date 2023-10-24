@@ -24,7 +24,16 @@
                                     <StackLayout Orientation="Horizontal">
                                         <StackLayout Orientation="Vertical" Margin="10, 5">
                                             <Label TextColor="Red" Text="{Binding FlashCard.FlashCardQuestion}" FontSize="20" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
-                                            <Label Text="{Binding StudySession.Deck.DeckName, StringFormat='{} From: {0}' }"></Label>
+                                            <!--<Label
+                                                Text="{Binding StudySession.Deck.DeckName, StringFormat='{} From: {0}' }"></Label>-->
+                                            <Label>
+                                                <Label.Text>
+                                                    <MultiBinding StringFormat="{} From {0}-{1}">
+                                                        <Binding Path="StudySession.Deck.DeckName"/>
+                                                        <Binding Path="StudySession.StartTime"/>
+                                                    </MultiBinding>
+                                                </Label.Text>
+                                            </Label>
                                         </StackLayout>
                                     </StackLayout>
                                 </ViewCell>
