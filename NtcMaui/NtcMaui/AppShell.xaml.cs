@@ -33,6 +33,7 @@
             Routing.RegisterRoute(nameof(Views.StudySessionFolder.StudyingPage), typeof(Views.StudySessionFolder.StudyingPage));
             Routing.RegisterRoute(nameof(Views.StudySessionFolder.SessionStatsPage), typeof(Views.StudySessionFolder.SessionStatsPage));
             Routing.RegisterRoute(nameof(Views.StudySessionFolder.StudyPriorityPage), typeof(Views.StudySessionFolder.StudyPriorityPage));
+            Routing.RegisterRoute(nameof(Views.StudySessionFolder.StudyingPageFromStudyPriority), typeof(Views.StudySessionFolder.StudyingPageFromStudyPriority));
 
             //editing routes
             Routing.RegisterRoute(nameof(Views.Edit.EditDeckGroupPage), typeof(Views.Edit.EditDeckGroupPage));

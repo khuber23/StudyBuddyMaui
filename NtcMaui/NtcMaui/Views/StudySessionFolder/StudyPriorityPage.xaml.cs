@@ -24,7 +24,17 @@ public partial class StudyPriorityPage : ContentPage, IQueryAttributable, INotif
         base.OnAppearing();
         IncorrectCards = await GetIncorrectStudySessionsById(LoggedInUser.UserId);
         StudySessionFlashCardsListView.ItemsSource = IncorrectCards;
-        //ok so it appears but now i need a way to seperate them so that only return the flashcard question where 
+        //do something/disable button if the incorrectCards count = 0
+        if (IncorrectCards.Count == 0 ||  IncorrectCards == null) 
+        { 
+            DoStudySessionBtn.IsVisible = false;
+            ChosenCardLabel.Text = "You have no incorrect flashcards. Good Job!";
+        }
+        else
+        {
+            DoStudySessionBtn.IsVisible = true;
+            ChosenCardLabel.Text = string.Empty;
+        }
     }
 
     private void GoToStudyPriorityPage(object sender, EventArgs e)
@@ -87,9 +97,56 @@ public partial class StudyPriorityPage : ContentPage, IQueryAttributable, INotif
         return studySessionFlashCards;
     }
 
+    private void FlashCardSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem != null)
+        {
+            //with this we can get the Id of the study session
+            SelectedFlashCard = e.SelectedItem as StudySessionFlashCard;
+
+            //if person would re-choose a different flashcard we need to clear the CardsToStudy list otherwise it just keeps re-adding the same card.
+            CardsToStudy.Clear();
+            
+            //so when a user clicks on a flashcard it can go throgh and find similiar incorrect flashcards to eventually study/re-study based on Id
+            foreach (StudySessionFlashCard flashCard in IncorrectCards)
+            {
+                if (flashCard.StudySessionId == SelectedFlashCard.StudySessionId)
+                {
+                    CardsToStudy.Add(flashCard);
+                }
+            }
+            ChosenCardLabel.Text = $"You have chosen {SelectedFlashCard.FlashCard.FlashCardQuestion} and any subsecquent flashcards to redo. Click Begin Session to re-study these cards.";
+        }
+    }
+
+    private void BeginStudySession(object sender, EventArgs e)
+    {   
+        if (SelectedFlashCard != null)
+        {
+            var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    {"Study Session", SelectedFlashCard.StudySession },
+                    {"Cards to Study", CardsToStudy }
+                };
+            Shell.Current.GoToAsync(nameof(StudyingPageFromStudyPriority), navigationParameter);
+        }
+        else
+        {
+            ChosenCardLabel.Text = "Please choose a flashcard to re-do your studysessions with";
+        }
+
+    }
+
     public User LoggedInUser { get; set; }
 
     public List<StudySession> StudySessions { get; set; }
 
     public List<StudySessionFlashCard> IncorrectCards { get; set; }
+
+    public List<StudySessionFlashCard> CardsToStudy { get; set; } = new List<StudySessionFlashCard>();
+
+    public StudySessionFlashCard SelectedFlashCard { get; set; }
+
+
 }

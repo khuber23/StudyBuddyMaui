@@ -26,7 +26,6 @@ public partial class SignIn : ContentPage
         await Shell.Current.GoToAsync(nameof(CreateAccount));
     }
 
-    //local Url test to retrieve users from localhost and check something.
     public async Task<List<User>> GetAllUsers()
     {
         List<User> users = new List<User>();
