@@ -1,6 +1,8 @@
 using ApiStudyBuddy.Models;
+using Microsoft.AspNetCore.Identity;
 using System.Diagnostics;
 using System.Net.Http.Json;
+using System.Text;
 using System.Text.Json;
 
 namespace NtcMaui.Views.SignAndCreate;
@@ -8,6 +10,7 @@ namespace NtcMaui.Views.SignAndCreate;
 public partial class ForgotPassword : ContentPage
 {
     private SignIn signInPage;
+    PasswordHasher<string> passwordHasher = new PasswordHasher<string>();
 
     public ForgotPassword()
     {
@@ -48,7 +51,7 @@ public partial class ForgotPassword : ContentPage
                 if (newPassword == ReEnterNewPassword && !string.IsNullOrWhiteSpace(newPassword))
                 {
                     //fix this to deal with hashing
-                    userFound.PasswordHash = newPassword;
+                    userFound.PasswordHash = passwordHasher.HashPassword(string.Empty, newPassword);
                     UpdatePassword(userFound);
 
                     var navigationParameter = new Dictionary<string, object>
@@ -75,27 +78,40 @@ public partial class ForgotPassword : ContentPage
         }
     }
 
-    private void UpdatePassword(User user)
+    private async void UpdatePassword(User user)
     {
+        // To verify user is valid before we offically call API to update their password.
         if (user != null)
         {
-            // Just verifying that user's password has successfully changed. 
-            //maybe need to deal with hashing
-            string newPassowrd = user.PasswordHash;
-
+            await UpdateUser(user);
         }
     }
 
-    //public async Task<User> UpdateUser(User user)
-    //{
-    //    HttpClient client = new HttpClient();
-    //    string path = string.Format($"{Constants.TestUrl}/api/User/{user.UserId}");
-    //    Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User/{user.UserId}", string.Empty));
+    public async Task UpdateUser(User user)
+    {
+        ///Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User/{user.UserId}", string.Empty));
+        ///
+        Uri uri = new Uri("https://localhost:7025/api/User/2"); 
+        ///
 
-    //    HttpRequestMessage response = await client.pu
+        /// Uri uri = new Uri(string.Format($"{Constants.LocalhostUrl}/api/User/{user.UserId}", string.Empty));
 
-    //public async Task RunAsync()
-    //{
+        try
+        {
+            string json = JsonSerializer.Serialize<User>(user, Constants._serializerOptions);
+            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
 
-    //}
+            HttpResponseMessage response = null;
+            response = await Constants._client.PutAsync(uri, content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                Debug.WriteLine(@"\tUser successfully changed.");
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tError {0}", ex.Message);
+        }
+    } 
 }
