@@ -52,7 +52,6 @@
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate>
                                                         <ViewCell>
-                                                            
                                                             <Label Text="{Binding Path=Deck.DeckName}" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand">
                                                                 <VisualStateManager.VisualStateGroups>
                                                                     <VisualStateGroupList>

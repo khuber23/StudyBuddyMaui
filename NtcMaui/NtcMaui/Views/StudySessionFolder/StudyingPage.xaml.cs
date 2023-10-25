@@ -38,6 +38,7 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
         FlashcardText.Text = firstquestionText;
     }
 
+    //might just end up getting rid of this for swiping since I can't really test it out with a phone emulator since it's ungodly slow...and we have buttons
     async void OnTapRecognized(object sender, TappedEventArgs args)
     {
         //old code for testing.
@@ -229,7 +230,6 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
     //}
 
 
-    //need to deal with StudySessionIs completed might just make a thingy in the flashcards?
     private async void DontUnderstandClick(object sender, EventArgs e)
     {
         IncorrectFlashCards.Add(FlashCards[index].FlashCard);
@@ -249,6 +249,16 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
             StudySession.DeckGroupId = ChosenDeckGroupDeck.DeckGroupId;
             StudySession.DeckId = ChosenDeckGroupDeck.DeckId;
             //do a check for if it is complete.
+            //Basically check if The CorrectFlashcardsCount matches with how many deckflashcards count. If match then user said they understood them all
+            //else they didn't understand all the flashcards and the StudySession isn't complete
+            if (CorrectFlashCards.Count == ChosenDeckGroupDeck.Deck.DeckFlashCards.Count)
+            {
+                StudySession.IsCompleted = true;
+            }
+            else
+            {
+                StudySession.IsCompleted = false;
+            }
 
             //post the StudySession.
             await SaveStudySessionAsync(StudySession);
@@ -336,6 +346,16 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
             StudySession.UserId = LoggedInUser.UserId;
             StudySession.DeckGroupId = ChosenDeckGroupDeck.DeckGroupId;
             StudySession.DeckId = ChosenDeckGroupDeck.DeckId;
+            //Basically check if The CorrectFlashcardsCount matches with how many deckflashcards count. If match then user said they understood them all
+            //else they didn't understand all the flashcards and the StudySession isn't complete
+            if (CorrectFlashCards.Count == ChosenDeckGroupDeck.Deck.DeckFlashCards.Count)
+            {
+                StudySession.IsCompleted = true;
+            }
+            else
+            {
+                StudySession.IsCompleted = false;
+            }
 
             //post the StudySession.
             await SaveStudySessionAsync(StudySession);
