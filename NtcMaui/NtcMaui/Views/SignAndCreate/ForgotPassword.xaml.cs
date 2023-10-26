@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using static System.Net.WebRequestMethods;
 
 namespace NtcMaui.Views.SignAndCreate;
 
@@ -89,12 +90,10 @@ public partial class ForgotPassword : ContentPage
 
     public async Task UpdateUser(User user)
     {
-        ///Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User/{user.UserId}", string.Empty));
-        ///
-        Uri uri = new Uri("https://localhost:7025/api/User/2"); 
-        ///
-
-        /// Uri uri = new Uri(string.Format($"{Constants.LocalhostUrl}/api/User/{user.UserId}", string.Empty));
+        // We are adding the {id}?userid + the user id together as a string for now until we update the API later so the code looks cleaner. 
+        string userIdSet = "{id}?userid=" + user.UserId;
+      
+        Uri uri = new Uri($"{Constants.TestUrl}/api/User/{userIdSet}");
 
         try
         {
