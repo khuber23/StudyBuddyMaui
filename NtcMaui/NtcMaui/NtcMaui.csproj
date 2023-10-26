@@ -63,7 +63,7 @@
 
 	<ItemGroup>
 	  <Reference Include="ApiStudyBuddy">
-	    <HintPath>..\..\..\NTCStudyBuddyApi\ApiStudyBuddy\ApiStudyBuddy\bin\Debug\net7.0\ApiStudyBuddy.dll</HintPath>
+	    <HintPath>..\..\..\NTCStudyBuddyAPI\ApiStudyBuddy\ApiStudyBuddy\bin\Debug\net7.0\ApiStudyBuddy.dll</HintPath>
 	  </Reference>
 	</ItemGroup>
 
