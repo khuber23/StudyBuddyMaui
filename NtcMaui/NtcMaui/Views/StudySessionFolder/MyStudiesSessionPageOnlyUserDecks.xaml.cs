@@ -18,6 +18,30 @@ public partial class MyStudiesSessionPageOnlyUserDecks : ContentPage, IQueryAttr
         OnPropertyChanged("Current User");
     }
 
+    protected async override void OnAppearing()
+    {
+        base.OnAppearing();
+        UserDeckGroups = await GetAllUserDeckGroups();
+        //evemtially add another listView for doing just user Decks without a DeckGroup and deal with it
+        UserDecks = await GetAllUserDecks();
+        //do all this stuff on load to eventually be able to display 1 or the other with the checkbox check
+        DecksNotInDeckGroup = new List<UserDeck>();
+        List<int> deckIds = new List<int>();
+        foreach (UserDeckGroup userdeckgroup in UserDeckGroups)
+        {
+            //test
+            foreach (DeckGroupDeck deckGroupDeck in userdeckgroup.DeckGroup.DeckGroupDecks)
+            {
+                deckIds.Add(deckGroupDeck.DeckId);
+            }
+        }
+
+         UserDecks.Where(userdeck =>  deckIds.Contains(userdeck.DeckId)).ToList().ForEach(userdeck => UserDecks.Remove(userdeck));
+        DecksNotInDeckGroup = UserDecks;
+        //basically sets the items source to be all the Decks not found in the UserDeckGroups related to a user
+        UserDecksOnlyListView.ItemsSource = DecksNotInDeckGroup;
+    }
+
     private void GoToStudyPriorityPage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
@@ -43,32 +67,6 @@ public partial class MyStudiesSessionPageOnlyUserDecks : ContentPage, IQueryAttr
                     { "Current User", LoggedInUser },
                 };
         Shell.Current.GoToAsync(nameof(MyStudiesSessionPageOnlyUserDecks), navigationParameter);
-    }
-
-    protected async override void OnAppearing()
-    {
-        base.OnAppearing();
-        UserDeckGroups = await GetAllUserDeckGroups();
-        //evemtially add another listView for doing just user Decks without a DeckGroup and deal with it
-        UserDecks = await GetAllUserDecks();
-        //do all this stuff on load to eventually be able to display 1 or the other with the checkbox check
-        DecksNotInDeckGroup = new List<UserDeck>();
-        foreach (UserDeckGroup userdeckgroup in UserDeckGroups)
-        {
-            //test
-            foreach (DeckGroupDeck deckGroupDeck in userdeckgroup.DeckGroup.DeckGroupDecks)
-            {
-                foreach (UserDeck userDeck in UserDecks)
-                {
-                    if (userDeck.DeckId != deckGroupDeck.DeckId)
-                    {
-                        DecksNotInDeckGroup.Add(userDeck);
-                    }
-                }
-            }
-        }
-        //basically sets the items source to be all the Decks not found in the UserDeckGroups related to a user
-        UserDecksOnlyListView.ItemsSource = DecksNotInDeckGroup;
     }
 
     public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
