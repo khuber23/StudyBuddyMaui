@@ -33,7 +33,7 @@
                                         <Image x:Name="ProfileImage"  Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50" VerticalOptions="Start"></Image>
                                         <StackLayout Orientation="Vertical" Margin="10, 5">
                                             <Label Text="{Binding Deck.DeckName}" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
-                                            <Label Text="{Binding LoggedInUser.Username}"></Label>
+                                            <Label Text="{Binding User.Username}"></Label>
                                         </StackLayout>
                                     </StackLayout>
                                 </ViewCell>

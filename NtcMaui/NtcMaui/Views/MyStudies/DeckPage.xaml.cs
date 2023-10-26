@@ -120,7 +120,7 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
                 {
                     { "Current User", LoggedInUser },
                     //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
-                    {"Current Deck", SelectedDeck}
+                    {"Current Deck", SelectedDeck.Deck}
                 };
                 Shell.Current.GoToAsync(nameof(BuildDeckPageOnlyDeck), navigationParameter);
             }

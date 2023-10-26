@@ -1,28 +1,42 @@
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Globalization;
-using System.Text.Json;
 using System.Text;
+using System.Text.Json;
 using ApiStudyBuddy.Models;
 
 namespace NtcMaui.Views.StudySessionFolder;
 
-public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
+public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
     int index = 0;
-    public StudyingPage()
-    {
-        InitializeComponent();
-    }
 
-    //might also add in the SelectedUserDeckGroup.
-    //might make this code/studyingpage just work for 1 userDeck. Eventually make it so they can choose to do a DeckGroup and do all decks.
+    public StudyingPageNoDeckGroups()
+	{
+		InitializeComponent();
+	}
+
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         LoggedInUser = query["Current User"] as User;
-        ChosenDeckGroupDeck = query["Chosen Deck"] as DeckGroupDeck;
+        ChosenUserDeck = query["Chosen Deck"] as UserDeck;
         OnPropertyChanged("Current User");
+    }
+
+    async void OnTapRecognized(object sender, TappedEventArgs args)
+    {
+        //old code for testing.
+        if (FlashcardText.Text == FlashCards[index].FlashCard.FlashCardQuestion)
+        {
+            await Flashcard.RotateXTo(180, 500);
+            Flashcard.RotationX = 0;
+            FlashcardText.Text = FlashCards[index].FlashCard.FlashCardAnswer;
+        }
+        else if (FlashcardText.Text == FlashCards[index].FlashCard.FlashCardAnswer)
+        {
+            await Flashcard.RotateXTo(180, 500);
+            Flashcard.RotationX = 0;
+            FlashcardText.Text = FlashCards[index].FlashCard.FlashCardQuestion;
+        }
     }
 
     protected async override void OnAppearing()
@@ -31,203 +45,12 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
         StartSessionTime = DateTime.Now;
 
         //need to make a list of the cards.
-        FlashCards = ChosenDeckGroupDeck.Deck.DeckFlashCards;
+        FlashCards = ChosenUserDeck.Deck.DeckFlashCards;
         //need to get the flashcard at first instance. 
         //then after thsi when users swipe left or right we go to the next flashcard
         string firstquestionText = FlashCards[0].FlashCard.FlashCardQuestion;
         FlashcardText.Text = firstquestionText;
     }
-
-    async void OnTapRecognized(object sender, TappedEventArgs args)
-    {
-        //old code for testing.
-        if (FlashcardText.Text == FlashCards[index].FlashCard.FlashCardQuestion)
-            {
-                await Flashcard.RotateXTo(180, 500);
-                Flashcard.RotationX = 0;
-                FlashcardText.Text = FlashCards[index].FlashCard.FlashCardAnswer;
-            }
-            else if (FlashcardText.Text == FlashCards[index].FlashCard.FlashCardAnswer)
-            {
-                await Flashcard.RotateXTo(180, 500);
-                Flashcard.RotationX = 0;
-                FlashcardText.Text = FlashCards[index].FlashCard.FlashCardQuestion;
-            }
-    }
-
-    //when user swipes left it should take the current index card and add it to a group of wrong cards for example
-    //and move onto the next card in the index.
-
-    //when a user swipes right the it should take current index and add it to right group of cards and move onto next card index.
-    // Both need to have something in place to check to for the last card and finish.
-    //private async void OnSwiped(object sender, SwipedEventArgs e)
-    //{
-    //    switch (e.Direction)
-    //    {
-    //        case SwipeDirection.Left:
-    //            // Handle the swipe
-    //            IncorrectFlashCards.Add(FlashCards[index].FlashCard);
-    //            //when user is on the last card.
-    //            if (index == (FlashCards.Count - 1))
-    //            {
-    //                //now we need to make the StudySession here and eventually call a post to post it.
-    //                EndSessionTime = DateTime.Now;
-
-    //                StudySession = new StudySession();
-    //                //this might fail since the datbase has a time of datetime2
-    //                StudySession.StartTime = StartSessionTime;
-    //                StudySession.EndTime = EndSessionTime;
-    //                StudySession.UserId = LoggedInUser.UserId;
-    //                StudySession.DeckGroupId = ChosenUserDeckGroup.DeckGroupId;
-    //                StudySession.DeckId = ChosenUserDeckGroup.DeckGroup.DeckGroupDeck.Deck.DeckId;
-
-    //                //post the StudySession.
-    //                await SaveStudySessionAsync(StudySession);
-
-    //                //after posting you need to retrieve it to upload the study session flashcard.
-    //                StudySessions = await GetAllStudySessions();
-
-    //                foreach (StudySession studySession in StudySessions)
-    //                {
-    //                    if (studySession.EndTime == StudySession.EndTime
-    //                        && studySession.StartTime == StudySession.StartTime
-    //                        && studySession.UserId == StudySession.UserId
-    //                        && studySession.DeckGroupId == StudySession.DeckGroupId
-    //                        && studySession.DeckId == StudySession.DeckId)
-    //                    {
-    //                        //so if they are equal it will re-get the current StudySession along with it's Id from the Database.
-    //                        StudySession = studySession;
-    //                        break;
-    //                    }
-    //                }
-
-
-    //                //then make Post for Study session flashcards based on the StudySession and the cards.
-    //                //for each CorrectCard/IcnorrectCard list if the list has a count greater than 1
-    //                //make a new StudySession flashcard with the current sessionId and cardId
-
-    //                foreach (FlashCard flashCard in CorrectFlashCards)
-    //                {
-    //                    if (CorrectFlashCards.Count > 0)
-    //                    {
-    //                        StudySessionFlashCard = new StudySessionFlashCard();
-    //                        StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
-    //                        //Api error currently
-    //                        await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
-    //                    }
-    //                }
-
-    //                foreach (FlashCard flashCard in IncorrectFlashCards)
-    //                {
-    //                    if (IncorrectFlashCards.Count > 0)
-    //                    {
-    //                        StudySessionFlashCard = new StudySessionFlashCard();
-    //                        StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
-    //                        //Api error currently
-    //                        await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
-    //                    }
-    //                }
-    //                //store both card sets for right and wrong and continue to session stats Page.
-    //                var navigationParameter = new Dictionary<string, object>
-    //            {
-    //                { "Current User", LoggedInUser },
-    //            {"Correct Cards", CorrectFlashCards },
-    //            {"Incorrect Cards", IncorrectFlashCards }
-    //            };
-    //               await Shell.Current.GoToAsync(nameof(SessionStatsPage), navigationParameter);
-    //            }
-
-    //            else
-    //            {
-    //                index++;
-    //                FlashcardText.Text = FlashCards[index].FlashCard.FlashCardQuestion;
-    //            }
-
-    //            break;
-    //        case SwipeDirection.Right:
-    //            CorrectFlashCards.Add(FlashCards[index].FlashCard);
-    //            //when user is on the last card.
-    //            if (index == (FlashCards.Count - 1))
-    //            {
-    //                //now we need to make the StudySession here and eventually call a post to post it.
-    //                EndSessionTime = DateTime.Now;
-
-    //                StudySession = new StudySession();
-    //                //this might fail since the datbase has a time of datetime2
-    //                StudySession.StartTime = StartSessionTime;
-    //                StudySession.EndTime = EndSessionTime;
-    //                StudySession.UserId = LoggedInUser.UserId;
-    //                StudySession.DeckGroupId = ChosenUserDeckGroup.DeckGroupId;
-    //                StudySession.DeckId = ChosenUserDeckGroup.DeckGroup.DeckGroupDeck.Deck.DeckId;
-
-    //                //post the StudySession.
-    //                await SaveStudySessionAsync(StudySession);
-
-    //                //after posting you need to retrieve it to upload the study session flashcard.
-    //                StudySessions = await GetAllStudySessions();
-
-    //                foreach (StudySession studySession in StudySessions)
-    //                {
-    //                    if (studySession.EndTime == StudySession.EndTime
-    //                        && studySession.StartTime == StudySession.StartTime
-    //                        && studySession.UserId == StudySession.UserId
-    //                        && studySession.DeckGroupId == StudySession.DeckGroupId
-    //                        && studySession.DeckId == StudySession.DeckId)
-    //                    {
-    //                        //so if they are equal it will re-get the current StudySession along with it's Id from the Database.
-    //                        StudySession = studySession;
-    //                        break;
-    //                    }
-    //                }
-
-
-    //                //then make Post for Study session flashcards based on the StudySession and the cards.
-    //                //for each CorrectCard/IcnorrectCard list if the list has a count greater than 1
-    //                //make a new StudySession flashcard with the current sessionId and cardId
-
-    //                foreach (FlashCard flashCard in CorrectFlashCards)
-    //                {
-    //                    if (CorrectFlashCards.Count > 0)
-    //                    {
-    //                        StudySessionFlashCard = new StudySessionFlashCard();
-    //                        StudySessionFlashCard.FlashCardId = flashCard.FlashCardId;
-    //                        StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
-    //                        StudySessionFlashCard.WasCorrect = true;
-    //                        //Api error currently
-    //                        await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
-    //                    }
-    //                }
-
-    //                foreach (FlashCard flashCard in IncorrectFlashCards)
-    //                {
-    //                    if (IncorrectFlashCards.Count > 0)
-    //                    {
-    //                        StudySessionFlashCard = new StudySessionFlashCard();
-    //                        StudySessionFlashCard.FlashCardId = flashCard.FlashCardId;
-    //                        StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
-    //                        StudySessionFlashCard.WasCorrect = false;
-    //                        //Api error currently
-    //                        await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
-    //                    }
-    //                }
-    //                //store both card sets for right and wrong and continue to session stats Page.
-    //                var navigationParameter = new Dictionary<string, object>
-    //            {
-    //                { "Current User", LoggedInUser },
-    //            {"Correct Cards", CorrectFlashCards },
-    //            {"Incorrect Cards", IncorrectFlashCards }
-    //            };
-    //              await  Shell.Current.GoToAsync(nameof(SessionStatsPage), navigationParameter);
-    //            }
-    //            else
-    //            {
-    //                index++;
-    //                FlashcardText.Text = FlashCards[index].FlashCard.FlashCardQuestion;
-    //            }
-    //            break;
-    //    }
-    //}
-
 
     private async void DontUnderstandClick(object sender, EventArgs e)
     {
@@ -245,12 +68,12 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
             StudySession.StartTime = StartSessionTime;
             StudySession.EndTime = EndSessionTime;
             StudySession.UserId = LoggedInUser.UserId;
-            StudySession.DeckGroupId = ChosenDeckGroupDeck.DeckGroupId;
-            StudySession.DeckId = ChosenDeckGroupDeck.DeckId;
+            StudySession.DeckGroupId = null;
+            StudySession.DeckId = ChosenUserDeck.DeckId;
             //do a check for if it is complete.
             //Basically check if The CorrectFlashcardsCount matches with how many deckflashcards count. If match then user said they understood them all
             //else they didn't understand all the flashcards and the StudySession isn't complete
-            if (CorrectFlashCards.Count == ChosenDeckGroupDeck.Deck.DeckFlashCards.Count)
+            if (CorrectFlashCards.Count == ChosenUserDeck.Deck.DeckFlashCards.Count)
             {
                 StudySession.IsCompleted = true;
             }
@@ -324,8 +147,6 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
             index++;
             FlashcardText.Text = FlashCards[index].FlashCard.FlashCardQuestion;
         }
-
-
     }
 
     private async void UnderstandClick(object sender, EventArgs e)
@@ -343,11 +164,12 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
             StudySession.StartTime = StartSessionTime;
             StudySession.EndTime = EndSessionTime;
             StudySession.UserId = LoggedInUser.UserId;
-            StudySession.DeckGroupId = ChosenDeckGroupDeck.DeckGroupId;
-            StudySession.DeckId = ChosenDeckGroupDeck.DeckId;
+            //test to first see this will be null when uploading
+            StudySession.DeckGroupId = null;
+            StudySession.DeckId = ChosenUserDeck.DeckId;
             //Basically check if The CorrectFlashcardsCount matches with how many deckflashcards count. If match then user said they understood them all
             //else they didn't understand all the flashcards and the StudySession isn't complete
-            if (CorrectFlashCards.Count == ChosenDeckGroupDeck.Deck.DeckFlashCards.Count)
+            if (CorrectFlashCards.Count == ChosenUserDeck.Deck.DeckFlashCards.Count)
             {
                 StudySession.IsCompleted = true;
             }
@@ -482,7 +304,7 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-               studySessions = JsonSerializer.Deserialize<List<StudySession>>(content, Constants._serializerOptions);
+                studySessions = JsonSerializer.Deserialize<List<StudySession>>(content, Constants._serializerOptions);
             }
         }
         catch (Exception ex)
@@ -493,8 +315,11 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
         return studySessions;
     }
 
+
+    public UserDeck ChosenUserDeck { get; set; }
+
     public User LoggedInUser { get; set; }
-    public DeckGroupDeck ChosenDeckGroupDeck { get; set; }
+
     public List<DeckFlashCard> FlashCards { get; set; }
 
     public DateTime StartSessionTime { get; set; }

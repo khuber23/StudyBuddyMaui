@@ -13,7 +13,7 @@ public partial class BuildDeckPageOnlyDeck : ContentPage, IQueryAttributable, IN
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         LoggedInUser = query["Current User"] as User;
-        SelectedDeck = query["Current Deck"] as UserDeck;
+        SelectedDeck = query["Current Deck"] as Deck;
 
         OnPropertyChanged("Current User");
     }
@@ -24,7 +24,7 @@ public partial class BuildDeckPageOnlyDeck : ContentPage, IQueryAttributable, IN
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser },
-                    { "Current Deck", SelectedDeck.Deck}
+                    { "Current Deck", SelectedDeck}
                 };
         Shell.Current.GoToAsync(nameof(CreateFlashcardPage), navigationParameter);
     }
@@ -35,11 +35,11 @@ public partial class BuildDeckPageOnlyDeck : ContentPage, IQueryAttributable, IN
 
         //this I want to eventually be all the Deck Flashcards. Work on that later.
         //FlashcardListView.ItemsSource = await GetAllFlashcards();
-        FlashcardListView.ItemsSource = SelectedDeck.Deck.DeckFlashCards;
-        BuildDeckNameLabel.Text = $"Building: {SelectedDeck.Deck.DeckName}";
+        FlashcardListView.ItemsSource = SelectedDeck.DeckFlashCards;
+        BuildDeckNameLabel.Text = $"Building: {SelectedDeck.DeckName}";
     }
 
     public User LoggedInUser { get; set; }
 
-    public UserDeck SelectedDeck { get; set; }
+    public Deck SelectedDeck { get; set; }
 }
