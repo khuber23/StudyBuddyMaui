@@ -2,16 +2,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
+using NtcMaui.Views.StudySessionFolder;
 
 namespace NtcMaui.Views.MyStudies;
 
-public partial class DashboardPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
+public partial class DashboardStudyPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
-    //need these for the progress bar
-    int correctCount;
-    int incorrectCount;
-
-    public DashboardPage()
+	public DashboardStudyPage()
 	{
 		InitializeComponent();
 	}
@@ -25,24 +22,53 @@ public partial class DashboardPage : ContentPage, IQueryAttributable, INotifyPro
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        StudySessionFlashCards = await GetAllStudySessionFlashCards();       
-        AllStudyFlashcardsListView.ItemsSource = StudySessionFlashCards;
-        int totalCount = StudySessionFlashCards.Count;
-       
-        foreach(var item in  StudySessionFlashCards)
+        IncorrectCards = await GetIncorrectStudySessionsById(LoggedInUser.UserId);
+        StudySessionFlashCardsListView.ItemsSource = IncorrectCards;
+        //do something/disable button if the incorrectCards count = 0
+        if (IncorrectCards.Count == 0 || IncorrectCards == null)
         {
-            if (item.IsCorrect)
-            {
-                correctCount++;
-            }
+            NoCardsToStudyLabel.IsVisible = true;
 
+            NoCardsToStudyLabel.Text = "You have no Cards to study. Good Job";
         }
-        decimal progress = Math.Round(((decimal)correctCount / totalCount), 2);
-        StatsProgressBar.Progress = (double)progress;
-        ProgressLabel.Text = $"You are at {Math.Round(progress * 100)}% on your studying";
+        else
+        {
+            NoCardsToStudyLabel.IsVisible = false;
+        }
     }
 
-    private  void GoToDashboardPage(object sender, EventArgs e)
+    //when user clicks a flashcard it should take him straight to study priority page.
+    private void FlashCardSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(StudyPriorityPage), navigationParameter);
+    }
+
+    public async Task<List<StudySessionFlashCard>> GetIncorrectStudySessionsById(int userId)
+    {
+        List<StudySessionFlashCard> studySessionFlashCards = new List<StudySessionFlashCard>();
+
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySessionFlashCard/maui/incorrect/{userId}", string.Empty));
+        try
+        {
+            HttpResponseMessage response = await Constants._client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                studySessionFlashCards = JsonSerializer.Deserialize<List<StudySessionFlashCard>>(content, Constants._serializerOptions);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+        return studySessionFlashCards;
+    }
+
+    private void GoToDashboardPage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
                 {
@@ -60,7 +86,7 @@ public partial class DashboardPage : ContentPage, IQueryAttributable, INotifyPro
                 };
         Shell.Current.GoToAsync(nameof(DashboardHistoryPage), navigationParameter);
     }
-    
+
     private void GoToDashboardStudyPage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
@@ -95,30 +121,7 @@ public partial class DashboardPage : ContentPage, IQueryAttributable, INotifyPro
         Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
     }
 
-    //will get the list of all StudySessionFlashcards
-    public async Task<List<StudySessionFlashCard>> GetAllStudySessionFlashCards()
-    {
-        List<StudySessionFlashCard> flashcards = new List<StudySessionFlashCard>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySessionFlashCard/maui/full/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                flashcards = JsonSerializer.Deserialize<List<StudySessionFlashCard>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return flashcards;
-    }
-
     public User LoggedInUser { get; set; }
 
-    public List<StudySessionFlashCard> StudySessionFlashCards { get; set; }
+    public List<StudySessionFlashCard> IncorrectCards { get; set; }
 }

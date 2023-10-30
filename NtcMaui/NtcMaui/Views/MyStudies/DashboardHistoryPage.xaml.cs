@@ -5,13 +5,9 @@ using ApiStudyBuddy.Models;
 
 namespace NtcMaui.Views.MyStudies;
 
-public partial class DashboardPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
+public partial class DashboardHistoryPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
-    //need these for the progress bar
-    int correctCount;
-    int incorrectCount;
-
-    public DashboardPage()
+	public DashboardHistoryPage()
 	{
 		InitializeComponent();
 	}
@@ -25,24 +21,10 @@ public partial class DashboardPage : ContentPage, IQueryAttributable, INotifyPro
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        StudySessionFlashCards = await GetAllStudySessionFlashCards();       
-        AllStudyFlashcardsListView.ItemsSource = StudySessionFlashCards;
-        int totalCount = StudySessionFlashCards.Count;
-       
-        foreach(var item in  StudySessionFlashCards)
-        {
-            if (item.IsCorrect)
-            {
-                correctCount++;
-            }
-
-        }
-        decimal progress = Math.Round(((decimal)correctCount / totalCount), 2);
-        StatsProgressBar.Progress = (double)progress;
-        ProgressLabel.Text = $"You are at {Math.Round(progress * 100)}% on your studying";
+        StudySessionFlashCards = await GetAllStudySessionFlashCards();
+        AllStudyFlashcardsListView.ItemsSource = StudySessionFlashCards; 
     }
-
-    private  void GoToDashboardPage(object sender, EventArgs e)
+    private void GoToDashboardPage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
                 {
@@ -60,7 +42,7 @@ public partial class DashboardPage : ContentPage, IQueryAttributable, INotifyPro
                 };
         Shell.Current.GoToAsync(nameof(DashboardHistoryPage), navigationParameter);
     }
-    
+
     private void GoToDashboardStudyPage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>

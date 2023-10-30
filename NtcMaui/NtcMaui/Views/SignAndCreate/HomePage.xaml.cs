@@ -26,7 +26,7 @@ public partial class HomePage : ContentPage, IQueryAttributable, INotifyProperty
                 {
                     { "Current User", LoggedInUser }
                 };
-        await Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
+        await Shell.Current.GoToAsync(nameof(DashboardPage), navigationParameter);
     }
 
     public async void GoToStudySession(object sender, EventArgs e)

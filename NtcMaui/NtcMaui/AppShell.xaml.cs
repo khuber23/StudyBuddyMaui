@@ -18,6 +18,8 @@
             Routing.RegisterRoute(nameof(Views.MyStudies.DeckGroupPage), typeof(Views.MyStudies.DeckGroupPage));
             Routing.RegisterRoute(nameof(Views.MyStudies.DeckPage), typeof(Views.MyStudies.DeckPage));
             Routing.RegisterRoute(nameof(Views.MyStudies.DashboardPage), typeof(Views.MyStudies.DashboardPage));
+            Routing.RegisterRoute(nameof(Views.MyStudies.DashboardStudyPage), typeof(Views.MyStudies.DashboardStudyPage));
+            Routing.RegisterRoute(nameof(Views.MyStudies.DashboardHistoryPage), typeof(Views.MyStudies.DashboardHistoryPage));
             Routing.RegisterRoute(nameof(Views.MyStudies.FlashcardPage), typeof(Views.MyStudies.FlashcardPage));
             Routing.RegisterRoute(nameof(Views.MyStudies.CreateDeckGroupPage), typeof(Views.MyStudies.CreateDeckGroupPage));
             Routing.RegisterRoute(nameof(Views.MyStudies.BuildDeckGroupPage), typeof(Views.MyStudies.BuildDeckGroupPage));
