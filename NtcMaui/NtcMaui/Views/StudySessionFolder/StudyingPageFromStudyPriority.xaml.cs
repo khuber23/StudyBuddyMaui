@@ -276,6 +276,20 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
         }
     }
 
+    private async void SoundButton_Clicked(object sender, EventArgs e)
+    {
+        //eventually use these to deal with different languages. For now I just want it to read
+        //IEnumerable<Locale> locales = await TextToSpeech.Default.GetLocalesAsync();
+
+        //SpeechOptions options = new SpeechOptions()
+        //{
+        //    Locale = locales.FirstOrDefault()
+        //};
+
+        //eventually add a comma and options to deal with different languages and tests
+        await TextToSpeech.Default.SpeakAsync(FlashcardText.Text);
+    }
+
     public StudySession ChosenStudySession { get; set; }
 
     public List<StudySessionFlashCard> CardsToStudy { get; set; }

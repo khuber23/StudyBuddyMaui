@@ -493,6 +493,20 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
         return studySessions;
     }
 
+    private async void SoundButton_Clicked(object sender, EventArgs e)
+    {
+        //eventually use these to deal with different languages. For now I just want it to read
+        //IEnumerable<Locale> locales = await TextToSpeech.Default.GetLocalesAsync();
+
+        //SpeechOptions options = new SpeechOptions()
+        //{
+        //    Locale = locales.FirstOrDefault()
+        //};
+
+        //eventually add a comma and options to deal with different languages and tests
+        await TextToSpeech.Default.SpeakAsync(FlashcardText.Text);
+    }
+
     public User LoggedInUser { get; set; }
     public DeckGroupDeck ChosenDeckGroupDeck { get; set; }
     public List<DeckFlashCard> FlashCards { get; set; }
@@ -512,4 +526,6 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
     public StudySessionFlashCard StudySessionFlashCard { get; set; }
 
     public FlashCard CurentFlashCard { get; set; }
+
+
 }

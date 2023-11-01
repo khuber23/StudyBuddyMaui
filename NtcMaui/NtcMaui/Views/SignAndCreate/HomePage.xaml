@@ -16,6 +16,7 @@
                 <StackLayout VerticalOptions="End" Orientation="Horizontal">
                     <Button Margin="30, 30" x:Name="MyStudiesBtn" Clicked="GoToMyStudies" Text="My Studies" HorizontalOptions="StartAndExpand"></Button>
                     <Button Margin="30, 30" x:Name="StudySessionBtn" Clicked="GoToStudySession" Text="Study Session" HorizontalOptions="EndAndExpand"></Button>
+         
                 </StackLayout>
             </StackLayout>
         </Grid>
