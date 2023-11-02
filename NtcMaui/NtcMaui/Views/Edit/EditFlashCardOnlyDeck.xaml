@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.Edit.EditFlashCardOnlyDeck"
-             Title="EditFlashCardOnlyDeck">
+             Title="EditFlashCardPage">
     <ScrollView>
         <Grid>
             <StackLayout Margin="5, 20">
