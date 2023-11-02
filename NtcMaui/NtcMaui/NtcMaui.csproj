@@ -68,10 +68,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\Edit\EditFlashCardPageWithDeckGroup.xaml.cs">
+	    <DependentUpon>EditFlashCardPageWithDeckGroup.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Views\Edit\EditDeckGroupPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\Edit\EditDeckPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Edit\EditFlashCardOnlyDeck.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\Edit\EditFlashCardPageWithDeckGroup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\MyStudies\AddFlashcardToDeckPage.xaml">

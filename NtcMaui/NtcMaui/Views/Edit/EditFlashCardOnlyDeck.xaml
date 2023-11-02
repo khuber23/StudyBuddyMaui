@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NtcMaui.Views.Edit.EditFlashCardOnlyDeck"
+             Title="EditFlashCardOnlyDeck">
+    <ScrollView>
+        <Grid>
+            <StackLayout Margin="5, 20">
+                <StackLayout>
+                    <Label Margin="5,20" Text="Change the values if you wish and hit the button when you are done editing."></Label>
+                    <Label Text="Flashcard Question" FontSize="16"></Label>
+                    <Grid Margin="0,5">
+                        <Frame BackgroundColor="White"/>
+                        <Entry x:Name="FlashCardQuestionEntry" TextColor="Black" Placeholder="Enter a Question"></Entry>
+                    </Grid>
+                    <Label Text="Flashcard Answer" FontSize="16"></Label>
+                    <Grid Margin="0,5">
+                        <Frame BackgroundColor="White"/>
+                        <Entry x:Name="FlashCardAnswerEntry" TextColor="Black" Placeholder="Enter an answer"></Entry>
+                    </Grid>
+                    <Grid Margin="0,5">
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout>
+                                <Label Text="FlashCard Question Image" FontSize="16"></Label>
+                                <ImageButton x:Name="UploadQuestionImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png"></ImageButton>
+                            </StackLayout>
+                            <!---Maybe make this instead of an image an entry of the actual file path?-->
+                            <Image x:Name="QuestionImage"  Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50"></Image>
+                        </StackLayout>
+                    </Grid>
+                    <Grid Margin="0,5">
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout>
+                                <Label Text="FlashCard Answer Image" FontSize="16"></Label>
+                                <ImageButton x:Name="UploadAnswerImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png"></ImageButton>
+                            </StackLayout>
+                            <Image x:Name="AnswerImage"  Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50"></Image>
+                        </StackLayout>
+                    </Grid>
+                    <Grid Margin="0,5">
+                        <HorizontalStackLayout>
+                            <Label Margin="0,10" Text="Do you want to make the flashcard public?"></Label>
+                            <CheckBox x:Name="IsPublicCheckBox"  CheckedChanged="CheckBox_CheckedChanged"></CheckBox>
+                        </HorizontalStackLayout>
+                    </Grid>
+                    <Button x:Name="FinishEditingBtn" Text="Finish Editing" Clicked="FinishEditingBtn_Clicked"></Button>
+                </StackLayout>
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

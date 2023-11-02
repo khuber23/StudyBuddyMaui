@@ -21,8 +21,14 @@
                         <Label Text="Create A FlashCard" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
                     </StackLayout>
                 </StackLayout>
+                
+                <HorizontalStackLayout Margin="0, 15">
+                    <Label Margin="0,10" Text="Enable Editing?"></Label>
+                    <CheckBox x:Name="EditingCheckBox" IsChecked="False"></CheckBox>
+                </HorizontalStackLayout>
+                
                 <StackLayout>
-                    <ListView x:Name="FlashcardListView">
+                    <ListView x:Name="FlashcardListView" ItemSelected="FlashcardListView_ItemSelected">
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>

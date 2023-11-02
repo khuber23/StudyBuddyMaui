@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
+using NtcMaui.Views.Edit;
 
 namespace NtcMaui.Views.MyStudies;
 
@@ -27,7 +28,7 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser },
-                    { "Current Deck", SelectedDeckGroupDeck.Deck}
+                    { "Current Deck", SelectedDeckGroupDeck.Deck},
                 };
         Shell.Current.GoToAsync(nameof(CreateFlashcardPage), navigationParameter);
     }
@@ -64,7 +65,35 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
         return flashCards;
     }
 
+    private void FlashcardListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem != null)
+        { 
+           if (EditingCheckBox.IsChecked == true)
+            {
+                SelectedDeckFlashCard = e.SelectedItem as DeckFlashCard;
+                var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
+                    {"Current FlashCard", SelectedDeckFlashCard.FlashCard},
+                    //need this to be able to go back to this page after editing flashcard
+                    {"Current Deck", SelectedDeckGroupDeck }
+                };
+                Shell.Current.GoToAsync(nameof(EditFlashCardPageWithDeckGroup), navigationParameter);
+            }
+            else
+            {
+                FlashcardListView.SelectedItem = null;
+            }
+        }
+    }
+
     public User LoggedInUser { get; set; }
 
     public DeckGroupDeck SelectedDeckGroupDeck { get; set; }
+
+    public DeckFlashCard SelectedDeckFlashCard { get; set; }
+
+
 }

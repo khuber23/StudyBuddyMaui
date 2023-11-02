@@ -42,6 +42,8 @@
             //editing routes
             Routing.RegisterRoute(nameof(Views.Edit.EditDeckGroupPage), typeof(Views.Edit.EditDeckGroupPage));
             Routing.RegisterRoute(nameof(Views.Edit.EditDeckPage), typeof(Views.Edit.EditDeckPage));
+            Routing.RegisterRoute(nameof(Views.Edit.EditFlashCardPageWithDeckGroup), typeof(Views.Edit.EditFlashCardPageWithDeckGroup));
+            Routing.RegisterRoute(nameof(Views.Edit.EditFlashCardOnlyDeck), typeof(Views.Edit.EditFlashCardOnlyDeck));
         }
     }
 }
