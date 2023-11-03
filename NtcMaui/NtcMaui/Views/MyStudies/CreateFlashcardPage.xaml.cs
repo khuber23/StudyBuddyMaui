@@ -28,7 +28,7 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         FlashCard flashCard = new FlashCard();
         flashCard.FlashCardQuestion = FlashcardQuestionEntry.Text;
         flashCard.FlashCardAnswer = FlashcardAnswerEntry.Text;
-        flashCard.IsPublic = IsFlashCardPublic;
+        flashCard.IsPublic = IsPublic;
         UsermadeFlashCards.Add(flashCard);
         FlashcardQuestionEntry.Text = String.Empty;
         FlashcardAnswerEntry.Text = String.Empty;
@@ -161,13 +161,32 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
     {
         if (e.Value == true)
         {
-            IsFlashCardPublic = true;
+            IsPublic = true;
+            ReadOnlyStack.IsVisible = true;
         }
         else
         {
-            IsFlashCardPublic = false;
+            IsPublic = false;
+            ReadOnlyStack.IsVisible = false;
+            //re-set this to false if it was checked after unsetting is public
+            ReadOnlyCheckBox.IsChecked = false;
+        }
+
+    }
+
+    private void ReadOnlyCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        if (e.Value == true)
+        {
+            ReadOnly = true;
+        }
+        else
+        {
+            ReadOnly = false;
         }
     }
+
+    public bool ReadOnly { get; set; }
 
     public List<FlashCard> UsermadeFlashCards { get; set; } = new List<FlashCard>();
 
@@ -175,5 +194,5 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
 
     public Deck SelectedDeck { get; set; }
 
-    public bool IsFlashCardPublic { get; set; }
+    public bool IsPublic { get; set; }
 }

@@ -37,11 +37,19 @@
                             <Image x:Name="AnswerImage"  Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50"></Image>
                         </StackLayout>
                     </Grid>
+
                     <Grid Margin="0,5">
-                        <HorizontalStackLayout>
-                            <Label Margin="0,10" Text="Do you want to make the flashcard public?"></Label>
-                            <CheckBox x:Name="IsPublicCheckBox"  CheckedChanged="CheckBox_CheckedChanged"></CheckBox>
-                        </HorizontalStackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout Margin="10, 10" x:Name="ReadOnlyStack" IsVisible="false" HorizontalOptions="StartAndExpand">
+                                <Label Text="Read Only"></Label>
+                                <CheckBox x:Name="ReadOnlyCheckBox" HorizontalOptions="Start"></CheckBox>
+                            </StackLayout>
+
+                            <StackLayout Margin="10, 10" HorizontalOptions="EndAndExpand">
+                                <Label Text="Make Public"></Label>
+                                <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="CheckBox_CheckedChanged" HorizontalOptions="End"></CheckBox>
+                            </StackLayout>
+                        </StackLayout>
                     </Grid>
                     <Button x:Name="FinishEditingBtn" Text="Finish Editing" Clicked="FinishEditingBtn_Clicked"></Button>
                 </StackLayout>

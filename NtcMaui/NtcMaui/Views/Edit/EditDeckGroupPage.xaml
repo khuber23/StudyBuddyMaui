@@ -18,6 +18,19 @@
                         <Frame BackgroundColor="White"/>
                         <Entry x:Name="DeckGroupDescriptionEntry" TextColor="Black" Placeholder="Enter a Description"></Entry>
                     </Grid>
+                    <Grid Margin="0,5">
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout Margin="10, 10" x:Name="ReadOnlyStack" IsVisible="false" HorizontalOptions="StartAndExpand">
+                                <Label Text="Read Only"></Label>
+                                <CheckBox x:Name="ReadOnlyCheckBox" HorizontalOptions="Start"></CheckBox>
+                            </StackLayout>
+
+                            <StackLayout Margin="10, 10" HorizontalOptions="EndAndExpand">
+                                <Label Text="Make Public"></Label>
+                                <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="IsPublicCheckBox_CheckedChanged" HorizontalOptions="End"></CheckBox>
+                            </StackLayout>
+                        </StackLayout>
+                    </Grid>
                     <Button x:Name="FinishEditingBtn" Text="Finish Editing" Clicked="FinishEditingBtn_Clicked"></Button>
                 </StackLayout>
             </StackLayout>

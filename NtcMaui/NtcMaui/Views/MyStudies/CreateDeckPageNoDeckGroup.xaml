@@ -22,6 +22,23 @@
                         <Frame BackgroundColor="White"/>
                         <Entry x:Name="DeckDescriptionEntry" TextColor="Black" Placeholder="Enter Text Description"></Entry>
                     </Grid>
+
+                    <!---Looks a bit weird like this but when the screen is smaller it looks good, just weird on computer-->
+                    <Grid Margin="0,5">
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout Margin="10, 10" x:Name="ReadOnlyStack" IsVisible="false" HorizontalOptions="StartAndExpand">
+                                <Label Text="Read Only"></Label>
+                                <CheckBox x:Name="ReadOnlyCheckBox" HorizontalOptions="Start"></CheckBox>
+                            </StackLayout>
+
+                            <StackLayout Margin="10, 10" HorizontalOptions="EndAndExpand">
+                                <Label Text="Make Public"></Label>
+                                <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="IsPublicCheckBox_CheckedChanged" HorizontalOptions="End"></CheckBox>
+                            </StackLayout>
+                        </StackLayout>
+                    </Grid>
+                  
+
                 </StackLayout>
                 <StackLayout>
                     <Button Text="Next" Clicked="GoToBuildDeckPage" x:Name="NextBtn" WidthRequest="100" HeightRequest="25"></Button>

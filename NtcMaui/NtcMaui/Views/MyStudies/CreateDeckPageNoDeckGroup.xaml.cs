@@ -129,6 +129,38 @@ public partial class CreateDeckPageNoDeckGroup : ContentPage, IQueryAttributable
         }
     }
 
+    private void IsPublicCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        if (e.Value == true)
+        {
+            IsPublic = true;
+            ReadOnlyStack.IsVisible = true;
+        }
+        else
+        {
+            IsPublic = false;
+            ReadOnlyStack.IsVisible = false;
+            //re-set this to false if it was checked after unsetting is public
+            ReadOnlyCheckBox.IsChecked = false;
+        }
+    }
+
+    private void ReadOnlyCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        if (e.Value == true)
+        {
+            ReadOnly = true;
+        }
+        else
+        {
+            ReadOnly = false;
+        }
+    }
+
+    public bool ReadOnly { get; set; }
+
+    public bool IsPublic { get; set; }
+
     public Deck Deck { get; set; }
 
     public UserDeck UserDeck { get; set; }

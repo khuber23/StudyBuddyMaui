@@ -21,12 +21,21 @@
                         <Frame BackgroundColor="White"/>
                         <Entry x:Name="FlashcardAnswerEntry" TextColor="Black" Placeholder="Enter Answer Text here."></Entry>
                     </Grid>
+
                     <Grid Margin="0,5">
-                        <HorizontalStackLayout>
-                            <Label Margin="0,10" Text="Do you want to make the flashcard public?"></Label>
-                            <CheckBox x:Name="IsPublicCheckBox"  CheckedChanged="CheckBox_CheckedChanged"></CheckBox>
-                        </HorizontalStackLayout>
+                        <StackLayout Orientation="Horizontal">
+                            <StackLayout Margin="10, 10" x:Name="ReadOnlyStack" IsVisible="false" HorizontalOptions="StartAndExpand">
+                                <Label Text="Read Only"></Label>
+                                <CheckBox x:Name="ReadOnlyCheckBox" CheckedChanged="ReadOnlyCheckBox_CheckedChanged" HorizontalOptions="Start"></CheckBox>
+                            </StackLayout>
+
+                            <StackLayout Margin="10, 10" HorizontalOptions="EndAndExpand">
+                                <Label Text="Make Public"></Label>
+                                <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="CheckBox_CheckedChanged" HorizontalOptions="End"></CheckBox>
+                            </StackLayout>
+                        </StackLayout>
                     </Grid>
+
                     <Label IsVisible="False" x:Name="FinishLabel" Text="Hit finish when you are done saving flashcards to add."></Label>
                 </StackLayout>
                 <HorizontalStackLayout Margin="10">
