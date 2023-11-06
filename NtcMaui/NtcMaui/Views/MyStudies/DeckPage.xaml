@@ -19,6 +19,9 @@
                         <Label Text="Create A Deck" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
                         <!--<Label Text="{Binding User.Username}" VerticalOptions="CenterAndExpand"></Label>-->
                     </StackLayout>
+                    <StackLayout HorizontalOptions="EndAndExpand">
+                        <Button x:Name="ShareDeckBtn" Margin="20, 0" Text="Share Decks" Clicked="GoToShareDeckPage"></Button>
+                    </StackLayout>
                 </StackLayout>
                 <HorizontalStackLayout>
                     <Label Margin="0,10" Text="Enable Editing?"></Label>

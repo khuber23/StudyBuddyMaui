@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NtcMaui.Views.Share.ShareDeckPage"
+             Title="ShareDeckPage">
+    <!--this page will let a user pick a deck and the option they want to do for sharing before moving on to pick a user-->
+    <ScrollView>
+        <Grid>
+            <StackLayout>
+                <StackLayout VerticalOptions="Start" HorizontalOptions="CenterAndExpand">
+                    <Label Margin="10,10" FontAttributes="Bold" FontSize="22" Text="Pick a Deck you wish to share and how you want to share it"></Label>
+                </StackLayout>
+
+                <StackLayout HorizontalOptions="Center">
+                    <Label x:Name="CurrentFlashCardLabel"></Label>
+                    <Picker x:Name="DeckPicker"
+        SelectedIndexChanged="DeckPicker_SelectedIndexChanged"
+ItemDisplayBinding="{Binding Deck.DeckName}" Title="Select a Deck you wish to share.">
+
+                    </Picker>
+                    <Label x:Name="ErrorLabel" IsVisible="false" TextColor="Red"></Label>
+                </StackLayout>
+
+                <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 5">
+                    <StackLayout Margin="20, 20">
+                        <Label Text="This will give a direct copy and access to your deck."></Label>
+                        <Button x:Name="CopyBtn" Clicked="CopyBtn_Clicked" Margin="20, 20" Text="Direct Copy"></Button>
+                    </StackLayout>
+
+                    <StackLayout Margin="20, 20">
+                        <Label Text="This will clone the deck and make it so they can't edit their copy."></Label>
+                        <Button x:Name="CloneBtn" Clicked="CloneBtn_Clicked" Margin="20, 20" Text="Clone"></Button>
+                    </StackLayout>
+                    
+                </HorizontalStackLayout>
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

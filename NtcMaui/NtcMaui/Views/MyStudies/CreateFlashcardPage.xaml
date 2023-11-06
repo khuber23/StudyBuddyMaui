@@ -24,10 +24,6 @@
 
                     <Grid Margin="0,5">
                         <StackLayout Orientation="Horizontal">
-                            <StackLayout Margin="10, 10" x:Name="ReadOnlyStack" IsVisible="false" HorizontalOptions="StartAndExpand">
-                                <Label Text="Read Only"></Label>
-                                <CheckBox x:Name="ReadOnlyCheckBox" CheckedChanged="ReadOnlyCheckBox_CheckedChanged" HorizontalOptions="Start"></CheckBox>
-                            </StackLayout>
 
                             <StackLayout Margin="10, 10" HorizontalOptions="EndAndExpand">
                                 <Label Text="Make Public"></Label>

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
 using NtcMaui.Views.Edit;
+using NtcMaui.Views.Share;
 
 namespace NtcMaui.Views.MyStudies;
 
@@ -84,6 +85,16 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
                     { "Current User", LoggedInUser }
                 };
         Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+    }
+
+    private void GoToShareDeckPage(object sender, EventArgs e)
+    {
+        //eventually make this the dashboard page and also send the user through to this page.
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(ShareDeckPage), navigationParameter);
     }
 
     private void GoToDeckGroupPage(object sender, EventArgs e)

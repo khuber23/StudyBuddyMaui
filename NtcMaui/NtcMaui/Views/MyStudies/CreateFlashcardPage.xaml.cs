@@ -162,31 +162,13 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         if (e.Value == true)
         {
             IsPublic = true;
-            ReadOnlyStack.IsVisible = true;
         }
         else
         {
             IsPublic = false;
-            ReadOnlyStack.IsVisible = false;
-            //re-set this to false if it was checked after unsetting is public
-            ReadOnlyCheckBox.IsChecked = false;
         }
 
     }
-
-    private void ReadOnlyCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
-    {
-        if (e.Value == true)
-        {
-            ReadOnly = true;
-        }
-        else
-        {
-            ReadOnly = false;
-        }
-    }
-
-    public bool ReadOnly { get; set; }
 
     public List<FlashCard> UsermadeFlashCards { get; set; } = new List<FlashCard>();
 

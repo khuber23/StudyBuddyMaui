@@ -44,6 +44,11 @@
             Routing.RegisterRoute(nameof(Views.Edit.EditDeckPage), typeof(Views.Edit.EditDeckPage));
             Routing.RegisterRoute(nameof(Views.Edit.EditFlashCardPageWithDeckGroup), typeof(Views.Edit.EditFlashCardPageWithDeckGroup));
             Routing.RegisterRoute(nameof(Views.Edit.EditFlashCardOnlyDeck), typeof(Views.Edit.EditFlashCardOnlyDeck));
+
+            //Sharing Routes
+            Routing.RegisterRoute(nameof(Views.Share.ShareDeckPage), typeof(Views.Share.ShareDeckPage));
+            Routing.RegisterRoute(nameof(Views.Share.ShareDeckGroupPage), typeof(Views.Share.ShareDeckGroupPage));
+            Routing.RegisterRoute(nameof(Views.Share.ShareDeckWithUserPage), typeof(Views.Share.ShareDeckWithUserPage));
         }
     }
 }

@@ -25,14 +25,10 @@
                     <!---Looks a bit weird like this but when the screen is smaller it looks good, just weird on computer-->
                     <Grid Margin="0,5">
                         <StackLayout Orientation="Horizontal">
-                            <StackLayout Margin="10, 10" x:Name="ReadOnlyStack" IsVisible="false" HorizontalOptions="StartAndExpand">
-                                <Label Text="Read Only"></Label>
-                                <CheckBox x:Name="ReadOnlyCheckBox" HorizontalOptions="Start"></CheckBox>
-                            </StackLayout>
 
-                            <StackLayout Margin="10, 10" HorizontalOptions="EndAndExpand">
-                                <Label Text="Make Public"></Label>
-                                <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="IsPublicCheckBox_CheckedChanged" HorizontalOptions="End"></CheckBox>
+                            <StackLayout Margin="10, 10" HorizontalOptions="StartAndExpand">
+                                <Label Text="Make Public: Will allow users to import your deck"></Label>
+                                <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="IsPublicCheckBox_CheckedChanged" HorizontalOptions="Start"></CheckBox>
                             </StackLayout>
                         </StackLayout>
                     </Grid>

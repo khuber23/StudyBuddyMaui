@@ -25,21 +25,29 @@ public partial class DashboardPage : ContentPage, IQueryAttributable, INotifyPro
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        StudySessionFlashCards = await GetAllStudySessionFlashCards();       
-        AllStudyFlashcardsListView.ItemsSource = StudySessionFlashCards;
-        int totalCount = StudySessionFlashCards.Count;
-       
-        foreach(var item in  StudySessionFlashCards)
+        StudySessionFlashCards = await GetAllStudySessionFlashCards();
+        if (StudySessionFlashCards.Count == 0 || StudySessionFlashCards == null)
         {
-            if (item.IsCorrect)
-            {
-                correctCount++;
-            }
-
+            //run a different code if no studySessionCards exist eventually if user goes to dashboard page with nothing made yet
+            //or tested out yet.
         }
-        decimal progress = Math.Round(((decimal)correctCount / totalCount), 2);
-        StatsProgressBar.Progress = (double)progress;
-        ProgressLabel.Text = $"You are at {Math.Round(progress * 100)}% on your studying";
+        else
+        {
+            AllStudyFlashcardsListView.ItemsSource = StudySessionFlashCards;
+            int totalCount = StudySessionFlashCards.Count;
+
+            foreach (var item in StudySessionFlashCards)
+            {
+                if (item.IsCorrect)
+                {
+                    correctCount++;
+                }
+
+            }
+            decimal progress = Math.Round(((decimal)correctCount / totalCount), 2);
+            StatsProgressBar.Progress = (double)progress;
+            ProgressLabel.Text = $"You are at {Math.Round(progress * 100)}% on your studying";
+        }
     }
 
     private  void GoToDashboardPage(object sender, EventArgs e)
