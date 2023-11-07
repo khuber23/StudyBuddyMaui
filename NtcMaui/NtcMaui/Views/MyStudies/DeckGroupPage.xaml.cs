@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
 using NtcMaui.Views.Edit;
+using NtcMaui.Views.Share;
 
 namespace NtcMaui.Views.MyStudies;
 
@@ -45,6 +46,16 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
         Shell.Current.GoToAsync(nameof(CreateDeckGroupPage), navigationParameter);
     }
 
+    //button click event
+    private void GoToShareDeckGroupPage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(ShareDeckGroupPage), navigationParameter);
+    }
+
     private void GoToFlashcardPage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
@@ -69,32 +80,6 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
                     { "Current User", LoggedInUser }
                 };
         Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
-    }
-
-    //trying a shitty fucking test due to kayla being a fucking moron
-    public async Task<List<DeckGroup>> GetAllDeckGroups()
-    {
-        List<DeckGroup> deckGroups = new List<DeckGroup>();
-
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup", string.Empty));
-
-        //originally
-        //Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/deckgroup/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                deckGroups = JsonSerializer.Deserialize<List<DeckGroup>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return deckGroups;
     }
 
     public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()

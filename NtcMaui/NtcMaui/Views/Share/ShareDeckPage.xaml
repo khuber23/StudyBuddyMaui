@@ -12,7 +12,6 @@
                 </StackLayout>
 
                 <StackLayout HorizontalOptions="Center">
-                    <Label x:Name="CurrentFlashCardLabel"></Label>
                     <Picker x:Name="DeckPicker"
         SelectedIndexChanged="DeckPicker_SelectedIndexChanged"
 ItemDisplayBinding="{Binding Deck.DeckName}" Title="Select a Deck you wish to share.">
