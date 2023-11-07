@@ -80,7 +80,7 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
                 clonedDeck.DeckDescription = SelectedDeck.DeckDescription;
                 clonedDeck.ReadOnly = true;
                 //then we need to post this new Deck
-                //await SaveDeckAsync(clonedDeck);
+                await SaveDeckAsync(clonedDeck);
                 //then we need to find the new deck...probably through indexes of finding decks by name? since there will now be multiple.
                 //then the last index is the newest one/the one that was cloned.
                 Decks = await GetAllDecks();
@@ -97,14 +97,14 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
                     DeckFlashCard newDeckFlashCard = new DeckFlashCard();
                     newDeckFlashCard.DeckId = clonedDeck.DeckId;
                     newDeckFlashCard.FlashCardId = deckFlashCard.FlashCardId;
-                    //await SaveDeckFlashCardAsync(newDeckFlashCard);
+                    await SaveDeckFlashCardAsync(newDeckFlashCard);
                 }
                 //then we can use the Shared User and the clonedDeckId to the userDeck.
 
                 UserDeck userDeck = new UserDeck();
                 userDeck.DeckId = clonedDeck.DeckId;
                 userDeck.UserId = SharedUser.UserId;
-                //await SaveUserDeckAsync(userDeck);
+                await SaveUserDeckAsync(userDeck);
 
                 //then go back to DeckPage
                 var navigationParameter = new Dictionary<string, object>
@@ -115,7 +115,18 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
             }
             else if (ShareType == "Copy")
             {
-                
+                SharedUser = selectedUser;
+                //with copying you are giving them a direct access so then it's just a basic userdeck they need.
+                UserDeck userDeck = new UserDeck();
+                userDeck.DeckId = SelectedDeck.DeckId;
+                userDeck.UserId = SharedUser.UserId;
+                await SaveUserDeckAsync(userDeck);
+
+                var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+                await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
             }
         }
     }

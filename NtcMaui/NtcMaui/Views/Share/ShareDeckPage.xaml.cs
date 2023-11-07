@@ -95,6 +95,21 @@ public partial class ShareDeckPage : ContentPage, IQueryAttributable, INotifyPro
             ErrorLabel.Text = "Please Select a deck from the drop-down";
             ErrorLabel.IsVisible = true;
         }
+        else
+        {
+            SelectedDeck = selectedDeck;
+            string chosenShareType = "Copy";
+            //then go to the ShareDeckWithUserPage
+            //just to also make it easier I might make a string to easily identify which option they chose for sharing, just to not
+            //have so many seperate pages for the shareDeckWithUserPage
+            var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                {"Current Deck" , SelectedDeck},
+                {"Share Type", chosenShareType }
+                };
+            await Shell.Current.GoToAsync(nameof(ShareDeckWithUserPage), navigationParameter);
+        }
     }
 
     //will take them to the next page dealing with cloning a deck to a user
