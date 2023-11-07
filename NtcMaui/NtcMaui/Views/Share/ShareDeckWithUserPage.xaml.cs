@@ -67,68 +67,100 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
         }
         else
         {
-            if (ShareType == "Clone")
+            List<UserDeck> userDecks = await GetAllUserDecks(selectedUser.UserId);
+            var UserDeckMatchingSelected = userDecks.Where(ud => ud.Deck.DeckName == SelectedDeck.DeckName).FirstOrDefault();
+            if (UserDeckMatchingSelected != null)
             {
-                SharedUser = selectedUser;
-                //add an if else check after test to see if the SharedUser already has a deckname similiar
-                //probably by user deck and checking to see if there is a userdeck that has a deckname to the Selected.
-                Deck clonedDeck = new Deck();
-                clonedDeck.IsPublic = false;
-                //might have caused error re-test
-                //clonedDeck.DeckFlashCards = SelectedDeck.DeckFlashCards;
-                clonedDeck.DeckName = SelectedDeck.DeckName;
-                clonedDeck.DeckDescription = SelectedDeck.DeckDescription;
-                clonedDeck.ReadOnly = true;
-                //then we need to post this new Deck
-                await SaveDeckAsync(clonedDeck);
-                //then we need to find the new deck...probably through indexes of finding decks by name? since there will now be multiple.
-                //then the last index is the newest one/the one that was cloned.
-                Decks = await GetAllDecks();
-
-                //multiple decks with same name test
-                List<Deck> multipleSameNameDecks = Decks.Where(d => d.DeckName.Contains(clonedDeck.DeckName)).ToList();
-                //with this code we should have the newest created deck
-                clonedDeck = multipleSameNameDecks.Last();
-                clonedDeck.DeckFlashCards = SelectedDeck.DeckFlashCards;
-
-                //then we can use the deck and upload deckflashcards.
-                foreach (DeckFlashCard deckFlashCard in clonedDeck.DeckFlashCards)
-                {
-                    DeckFlashCard newDeckFlashCard = new DeckFlashCard();
-                    newDeckFlashCard.DeckId = clonedDeck.DeckId;
-                    newDeckFlashCard.FlashCardId = deckFlashCard.FlashCardId;
-                    await SaveDeckFlashCardAsync(newDeckFlashCard);
-                }
-                //then we can use the Shared User and the clonedDeckId to the userDeck.
-
-                UserDeck userDeck = new UserDeck();
-                userDeck.DeckId = clonedDeck.DeckId;
-                userDeck.UserId = SharedUser.UserId;
-                await SaveUserDeckAsync(userDeck);
-
-                //then go back to DeckPage
-                var navigationParameter = new Dictionary<string, object>
-                {
-                    { "Current User", LoggedInUser }
-                };
-                await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+                ErrorLabel.Text = "User already has this deck. Please go back and select a different deck or a different user please";
+                ErrorLabel.IsVisible = true;
             }
-            else if (ShareType == "Copy")
+            else
             {
-                SharedUser = selectedUser;
-                //with copying you are giving them a direct access so then it's just a basic userdeck they need.
-                UserDeck userDeck = new UserDeck();
-                userDeck.DeckId = SelectedDeck.DeckId;
-                userDeck.UserId = SharedUser.UserId;
-                await SaveUserDeckAsync(userDeck);
+                if (ShareType == "Clone")
+                {
+                    SharedUser = selectedUser;
+                    //add an if else check after test to see if the SharedUser already has a deckname similiar
+                    //probably by user deck and checking to see if there is a userdeck that has a deckname to the Selected.
 
-                var navigationParameter = new Dictionary<string, object>
+                    Deck clonedDeck = new Deck();
+                    clonedDeck.IsPublic = false;
+                    //might have caused error re-test
+                    //clonedDeck.DeckFlashCards = SelectedDeck.DeckFlashCards;
+                    clonedDeck.DeckName = SelectedDeck.DeckName;
+                    clonedDeck.DeckDescription = SelectedDeck.DeckDescription;
+                    clonedDeck.ReadOnly = true;
+                    //then we need to post this new Deck
+                    //await SaveDeckAsync(clonedDeck);
+                    //then we need to find the new deck...probably through indexes of finding decks by name? since there will now be multiple.
+                    //then the last index is the newest one/the one that was cloned.
+                    Decks = await GetAllDecks();
+
+                    //multiple decks with same name test
+                    List<Deck> multipleSameNameDecks = Decks.Where(d => d.DeckName.Contains(clonedDeck.DeckName)).ToList();
+                    //with this code we should have the newest created deck
+                    clonedDeck = multipleSameNameDecks.Last();
+                    clonedDeck.DeckFlashCards = SelectedDeck.DeckFlashCards;
+
+                    //then we can use the deck and upload deckflashcards.
+                    foreach (DeckFlashCard deckFlashCard in clonedDeck.DeckFlashCards)
+                    {
+                        DeckFlashCard newDeckFlashCard = new DeckFlashCard();
+                        newDeckFlashCard.DeckId = clonedDeck.DeckId;
+                        newDeckFlashCard.FlashCardId = deckFlashCard.FlashCardId;
+                        //await SaveDeckFlashCardAsync(newDeckFlashCard);
+                    }
+                    //then we can use the Shared User and the clonedDeckId to the userDeck.
+
+                    UserDeck userDeck = new UserDeck();
+                    userDeck.DeckId = clonedDeck.DeckId;
+                    userDeck.UserId = SharedUser.UserId;
+                    //await SaveUserDeckAsync(userDeck);
+
+                    //then go back to DeckPage
+                    var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }
                 };
-                await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+                    await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+                }
+                else if (ShareType == "Copy")
+                {
+                    SharedUser = selectedUser;
+                    //with copying you are giving them a direct access so then it's just a basic userdeck they need.
+                    UserDeck userDeck = new UserDeck();
+                    userDeck.DeckId = SelectedDeck.DeckId;
+                    userDeck.UserId = SharedUser.UserId;
+                    await SaveUserDeckAsync(userDeck);
+
+                    var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+                    await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+                }
+            }
+        }     
+    }
+
+    public async Task<List<UserDeck>> GetAllUserDecks(int userId)
+    {
+        List<UserDeck> decks = new List<UserDeck>();
+
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/maui/user/{userId}", string.Empty));
+        try
+        {
+            HttpResponseMessage response = await Constants._client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                decks = JsonSerializer.Deserialize<List<UserDeck>>(content, Constants._serializerOptions);
             }
         }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+        return decks;
     }
 
     //pass in the UserName from the DeckPicker here to get specific user by username.

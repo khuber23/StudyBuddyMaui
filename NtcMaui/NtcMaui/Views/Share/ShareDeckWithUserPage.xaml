@@ -17,6 +17,10 @@
 ItemDisplayBinding="{Binding Username}" Title="Select a user you wish to share to.">
 
                     </Picker>
+                 
+                </StackLayout>
+
+                <StackLayout HorizontalOptions="Center" Margin="10,10">
                     <Label x:Name="ErrorLabel" IsVisible="false" TextColor="Red"></Label>
                 </StackLayout>
 
