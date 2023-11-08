@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
@@ -33,6 +34,8 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
         {
             TopLabel.Text = $"Copy {SelectedDeck.DeckName} to another User.";
         }
+        RecipientsListView.ItemsSource = Recipients;
+        
         Users = await GetAllUsers();
         //this code will get rid of the logged in user so that they don't appear in the list when sharing.
         var userToRemove = Users.Where(user => user.Username == LoggedInUser.Username).FirstOrDefault();
@@ -53,6 +56,46 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
             //use this to eventually find a user in the Finish btn.
             ErrorLabel.IsVisible = false;
             UserName = picker.Items[selectedIndex];
+        }
+        else
+        {
+            ErrorLabel.IsVisible = true;
+        }
+    }
+
+    private async void AddUserBtn_Clicked(object sender, EventArgs e)
+    {
+        bool found = false;
+        ErrorLabel.IsVisible = false;
+        User selectedUser = await GetUserByUsername(UserName);
+        if (selectedUser != null || selectedUser.UserId != 0) 
+        {
+            if (Recipients.Count == 0)
+            {
+                Recipients.Add(selectedUser);
+            }
+            else
+            {
+                foreach (User user in Recipients)
+                {
+                    if (user.Username == selectedUser.Username)
+                    {
+                        ErrorLabel.Text = "User already added to Recipients";
+                        ErrorLabel.IsVisible = true;
+                        found = true;
+                        break;
+                    }
+                    else
+                    {
+                        found = false;
+                    }
+                }
+
+                if (found == false)
+                {
+                    Recipients.Add(selectedUser);
+                }
+            }  
         }
     }
 
@@ -128,7 +171,7 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
                     UserDeck userDeck = new UserDeck();
                     userDeck.DeckId = SelectedDeck.DeckId;
                     userDeck.UserId = SharedUser.UserId;
-                    await SaveUserDeckAsync(userDeck);
+                    //await SaveUserDeckAsync(userDeck);
 
                     var navigationParameter = new Dictionary<string, object>
                 {
@@ -310,6 +353,10 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
     public string ShareType { get; set; }
 
     public List<User> Users { get; set; }
+
+    public ObservableCollection<User> Recipients { get; set; } = new ObservableCollection<User>();
+
+
 
 
 }

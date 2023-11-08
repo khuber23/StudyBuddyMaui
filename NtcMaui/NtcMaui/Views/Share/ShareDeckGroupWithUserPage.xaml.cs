@@ -87,7 +87,7 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                     clonedDeckGroup.DeckGroupDescription = SelectedDeckGroup.DeckGroupDescription;
                     clonedDeckGroup.ReadOnly = true;
                     //then we need to post this new Deck
-                    await SaveDeckGroupAsync(clonedDeckGroup);
+                    //await SaveDeckGroupAsync(clonedDeckGroup);
                     //then we need to find the new deckGroup...probably through indexes of finding deckgroups by name? since there will now be multiple.
                     //then the last index is the newest one/the one that was cloned.
                     DeckGroups = await GetAllDeckGroups();
@@ -107,7 +107,7 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                         clonedDeck.DeckDescription = deckGroupDeck.Deck.DeckDescription;
                         clonedDeck.IsPublic = false;
                         clonedDeck.ReadOnly = true;
-                        await SaveDeckAsync(clonedDeck);
+                        //await SaveDeckAsync(clonedDeck);
 
                         //retrieve it
                         Decks = await GetAllDecks();
@@ -121,7 +121,7 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                         UserDeck userDeck = new UserDeck();
                         userDeck.DeckId = clonedDeck.DeckId;
                         userDeck.UserId = SharedUser.UserId;
-                        await SaveUserDeckAsync(userDeck);
+                        //await SaveUserDeckAsync(userDeck);
 
                         clonedDeck.DeckFlashCards = deckGroupDeck.Deck.DeckFlashCards;
                         //then copy the flashcards within the copied deck?
@@ -130,7 +130,7 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                             DeckFlashCard newDeckFlashCard = new DeckFlashCard();
                             newDeckFlashCard.DeckId = clonedDeck.DeckId;
                             newDeckFlashCard.FlashCardId = deckFlashCard.FlashCardId;
-                            await SaveDeckFlashCardAsync(newDeckFlashCard);
+                            //await SaveDeckFlashCardAsync(newDeckFlashCard);
                         }
 
                         //then save the DeckGroupDeck
@@ -138,7 +138,7 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                         clonedDeckGroupDeck.DeckGroupId = clonedDeckGroup.DeckGroupId;
                         clonedDeckGroupDeck.DeckId = clonedDeck.DeckId;
                         //double check to make sure that anything that isn't postable is null.
-                        await SaveDeckGroupDeckAsync(clonedDeckGroupDeck);
+                        //await SaveDeckGroupDeckAsync(clonedDeckGroupDeck);
 
                     }
                     //then we can use the Shared User and the clonedDeckGroupId to the userDeckGroup.
@@ -146,7 +146,7 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                     UserDeckGroup userDeckGroup = new UserDeckGroup();
                     userDeckGroup.DeckGroupId = clonedDeckGroup.DeckGroupId;
                     userDeckGroup.UserId = SharedUser.UserId;
-                    await SaveUserDeckGroupAsync(userDeckGroup);
+                    //await SaveUserDeckGroupAsync(userDeckGroup);
 
                     //then go back to DeckGroupPage
                     var navigationParameter = new Dictionary<string, object>
