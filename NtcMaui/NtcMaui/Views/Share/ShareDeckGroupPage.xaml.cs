@@ -60,37 +60,38 @@ public partial class ShareDeckGroupPage : ContentPage, IQueryAttributable, INoti
                 {"Current DeckGroup" , SelectedDeckGroup},
                 {"Share Type", chosenShareType }
                 };
-            //make this page next
-            //await Shell.Current.GoToAsync(nameof(ShareDeckWithUserPage), navigationParameter);
+            
+            await Shell.Current.GoToAsync(nameof(ShareDeckGroupWithUserPage), navigationParameter);
         }
     }
 
         //will take them to the next page dealing with cloning a deck to a user
         private async void CloneBtn_Clicked(object sender, EventArgs e)
         {
-            //ErrorLabel.IsVisible = false;
-            //Deck selectedDeck = await GetDeckByDeckName(DeckName);
-            //if (selectedDeck == null || selectedDeck.DeckId == 0)
-            //{
-            //    ErrorLabel.Text = "Please Select a deck from the drop-down";
-            //    ErrorLabel.IsVisible = true;
-            //}
-            //else
-            //{
-            //    SelectedDeck = selectedDeck;
-            //    string chosenShareType = "Clone";
-            //    //then go to the ShareDeckWithUserPage
-            //    //just to also make it easier I might make a string to easily identify which option they chose for sharing, just to not
-            //    //have so many seperate pages for the shareDeckWithUserPage
-            //    var navigationParameter = new Dictionary<string, object>
-            //        {
-            //            { "Current User", LoggedInUser },
-            //        {"Current Deck" , SelectedDeck},
-            //        {"Share Type", chosenShareType }
-            //        };
-            //    await Shell.Current.GoToAsync(nameof(ShareDeckWithUserPage), navigationParameter);
-            //}
+        ErrorLabel.IsVisible = false;
+        DeckGroup selectedDeckGroup = await GetDeckGroupByDeckGroupName(DeckGroupName);
+        if (selectedDeckGroup == null || selectedDeckGroup.DeckGroupId == 0)
+        {
+            ErrorLabel.Text = "Please Select a deck group from the drop-down";
+            ErrorLabel.IsVisible = true;
         }
+        else
+        {
+            SelectedDeckGroup = selectedDeckGroup;
+            string chosenShareType = "Clone";
+            //then go to the ShareDeckWithUserPage
+            //just to also make it easier I might make a string to easily identify which option they chose for sharing, just to not
+            //have so many seperate pages for the shareDeckWithUserPage
+            var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                {"Current DeckGroup" , SelectedDeckGroup},
+                {"Share Type", chosenShareType }
+                };
+
+            await Shell.Current.GoToAsync(nameof(ShareDeckGroupWithUserPage), navigationParameter);
+        }
+    }
 
         public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
         {

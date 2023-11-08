@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NtcMaui.Views.Share.ShareDeckGroupWithUserPage"
+             Title="ShareDeckGroupWithUserPage">
+    <ScrollView>
+        <Grid>
+            <StackLayout Margin="0, 5">
+                <StackLayout Margin="20, 10">
+                    <Label x:Name="TopLabel" FontSize="22" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"></Label>
+                </StackLayout>
+
+                <StackLayout HorizontalOptions="Center">
+                    <Label x:Name="CurrentUserLabel"></Label>
+                    <Picker x:Name="UserPicker"
+        SelectedIndexChanged="UserPicker_SelectedIndexChanged"
+ItemDisplayBinding="{Binding Username}" Title="Select a user you wish to share to.">
+
+                    </Picker>
+
+                </StackLayout>
+
+                <StackLayout HorizontalOptions="Center" Margin="10,10">
+                    <Label x:Name="ErrorLabel" IsVisible="false" TextColor="Red"></Label>
+                </StackLayout>
+
+                <HorizontalStackLayout Margin="10,10" HorizontalOptions="Center">
+                    <Button Margin="0, 20" x:Name="FinishBtn" Text="Finish" Clicked="FinishBtn_Clicked"></Button>
+                    <Button Margin="0, 20" x:Name="CancelBtn" Text="Cancel"></Button>
+                </HorizontalStackLayout>
+
+            </StackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>

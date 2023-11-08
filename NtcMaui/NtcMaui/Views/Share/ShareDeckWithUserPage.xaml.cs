@@ -84,8 +84,6 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
 
                     Deck clonedDeck = new Deck();
                     clonedDeck.IsPublic = false;
-                    //might have caused error re-test
-                    //clonedDeck.DeckFlashCards = SelectedDeck.DeckFlashCards;
                     clonedDeck.DeckName = SelectedDeck.DeckName;
                     clonedDeck.DeckDescription = SelectedDeck.DeckDescription;
                     clonedDeck.ReadOnly = true;
