@@ -39,26 +39,7 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
         Shell.Current.GoToAsync(nameof(CreateDeckPageNoDeckGroup), navigationParameter);
     }
 
-    public async Task<List<UserDeck>> GetAllDecks()
-    {
-        List<UserDeck> decks = new List<UserDeck>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/maui/user/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                decks = JsonSerializer.Deserialize<List<UserDeck>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return decks;
-    }
+   
 
     private void GoToDashboardPage(object sender, EventArgs e)
     {
@@ -116,13 +97,25 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
             //if checked go to edit Deck Page
             if (EditingCheckBox.IsChecked == true)
             {
-                var navigationParameter = new Dictionary<string, object>
+                if (SelectedDeck.Deck.ReadOnly == true)
+                {
+                    ErrorLabel.Text = $"{SelectedDeck.Deck.DeckName} isn't editable";
+                    ErrorLabel.IsVisible = true;
+                    //it's weird but this is the work around for dealing with re-selecting options for the item.
+                    SelectedDeck = null;
+                    DeckListView.SelectedItem = null;
+                }
+                else
+                {
+                    var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser },
                     //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
                     {"Current Deck", SelectedDeck.Deck}
                 };
-                Shell.Current.GoToAsync(nameof(EditDeckPage), navigationParameter);
+                    Shell.Current.GoToAsync(nameof(EditDeckPage), navigationParameter);
+                }
+                
             }
             else
             //go to view/build screen
@@ -137,6 +130,27 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
             }
 
         }
+    }
+
+    public async Task<List<UserDeck>> GetAllDecks()
+    {
+        List<UserDeck> decks = new List<UserDeck>();
+
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/maui/user/{LoggedInUser.UserId}", string.Empty));
+        try
+        {
+            HttpResponseMessage response = await Constants._client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                decks = JsonSerializer.Deserialize<List<UserDeck>>(content, Constants._serializerOptions);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+        return decks;
     }
 
     public User LoggedInUser { get; set; }

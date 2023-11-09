@@ -19,17 +19,6 @@ public partial class BuildDeckPageOnlyDeck : ContentPage, IQueryAttributable, IN
         OnPropertyChanged("Current User");
     }
 
-    //button Click For CreateFlashcardPage
-    private void GoToCreateFlashcardPage(object sender, EventArgs e)
-    {
-        var navigationParameter = new Dictionary<string, object>
-                {
-                    { "Current User", LoggedInUser },
-                    { "Current Deck", SelectedDeck}
-                };
-        Shell.Current.GoToAsync(nameof(CreateFlashcardPage), navigationParameter);
-    }
-
     protected override void OnAppearing()
     {
         base.OnAppearing();
@@ -40,6 +29,27 @@ public partial class BuildDeckPageOnlyDeck : ContentPage, IQueryAttributable, IN
         BuildDeckNameLabel.Text = $"Building: {SelectedDeck.DeckName}";
     }
 
+    //button Click For CreateFlashcardPage
+    private void GoToCreateFlashcardPage(object sender, EventArgs e)
+    {
+        if (SelectedDeck.ReadOnly == true)
+        {
+            ErrorLabel.Text = $"You can't add to {SelectedDeck.DeckName} as it isn't editable";
+            ErrorLabel.IsVisible = true;
+        }
+        else
+        {
+            var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    { "Current Deck", SelectedDeck}
+                };
+            Shell.Current.GoToAsync(nameof(CreateFlashcardPage), navigationParameter);
+        }
+
+    }
+
+
     private void FlashcardListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
         if (e.SelectedItem != null)
@@ -47,15 +57,26 @@ public partial class BuildDeckPageOnlyDeck : ContentPage, IQueryAttributable, IN
             if (EditingCheckBox.IsChecked == true)
             {
                 SelectedFlashCard = e.SelectedItem as DeckFlashCard;
-                var navigationParameter = new Dictionary<string, object>
+                if (SelectedDeck.ReadOnly == true)
+                {
+                    ErrorLabel.Text = $"{SelectedDeck.DeckName} isn't editable";
+                    ErrorLabel.IsVisible = true;
+                    //it's weird but this is the work around for dealing with re-selecting options for the item.
+                    SelectedFlashCard = null;
+                    FlashcardListView.SelectedItem = null;
+                }
+                else
+                {
+                    var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser },
                     {"Current FlashCard", SelectedFlashCard.FlashCard},
                     //need this to be able to go back to this page after editing flashcard
                     {"Current Deck", SelectedDeck }
                 };
-                Shell.Current.GoToAsync(nameof(EditFlashCardOnlyDeck), navigationParameter);
-                SelectedFlashCard = null;
+                    Shell.Current.GoToAsync(nameof(EditFlashCardOnlyDeck), navigationParameter);
+                }
+                
             }
             else
             {

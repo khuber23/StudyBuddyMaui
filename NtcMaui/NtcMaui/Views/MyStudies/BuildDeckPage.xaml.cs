@@ -22,17 +22,6 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
         OnPropertyChanged("Current User");
     }
 
-    //button Click For CreateFlashcardPage
-    private void GoToCreateFlashcardPage(object sender, EventArgs e)
-    {
-        var navigationParameter = new Dictionary<string, object>
-                {
-                    { "Current User", LoggedInUser },
-                    { "Current Deck", SelectedDeckGroupDeck.Deck},
-                };
-        Shell.Current.GoToAsync(nameof(CreateFlashcardPage), navigationParameter);
-    }
-
     protected override void OnAppearing()
     {
         base.OnAppearing();
@@ -41,6 +30,62 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
         //FlashcardListView.ItemsSource = await GetAllFlashcards();
         FlashcardListView.ItemsSource = SelectedDeckGroupDeck.Deck.DeckFlashCards;
         BuildDeckNameLabel.Text = $"Building: {SelectedDeckGroupDeck.Deck.DeckName}";
+    }
+
+    //button Click For CreateFlashcardPage
+    private void GoToCreateFlashcardPage(object sender, EventArgs e)
+    {
+        if (SelectedDeckGroupDeck.Deck.ReadOnly == true)
+        {
+            ErrorLabel.Text = $"You can't add to {SelectedDeckGroupDeck.Deck.DeckName} as it isn't editable";
+            ErrorLabel.IsVisible = true;
+        }
+        else
+        {
+            var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    { "Current Deck", SelectedDeckGroupDeck.Deck},
+                };
+            Shell.Current.GoToAsync(nameof(CreateFlashcardPage), navigationParameter);
+        }
+        
+    }
+
+    private void FlashcardListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem != null)
+        { 
+           if (EditingCheckBox.IsChecked == true)
+            {
+                SelectedDeckFlashCard = e.SelectedItem as DeckFlashCard;
+                if (SelectedDeckGroupDeck.Deck.ReadOnly == true)
+                {
+                    ErrorLabel.Text = $"{SelectedDeckGroupDeck.Deck.DeckName} isn't editable";
+                    ErrorLabel.IsVisible = true;
+                    //it's weird but this is the work around for dealing with re-selecting options for the item.
+                    SelectedDeckFlashCard = null;
+                    FlashcardListView.SelectedItem = null;
+                }
+                else
+                {
+                    var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
+                    {"Current FlashCard", SelectedDeckFlashCard.FlashCard},
+                    //need this to be able to go back to this page after editing flashcard
+                    {"Current Deck", SelectedDeckGroupDeck }
+                };
+                    Shell.Current.GoToAsync(nameof(EditFlashCardPageWithDeckGroup), navigationParameter);
+                }
+                
+            }
+            else
+            {
+                FlashcardListView.SelectedItem = null;
+            }
+        }
     }
 
     //might straight up get rid of this and just display all of the DeckFlashCards of the deck/deckGroupDeck
@@ -63,30 +108,6 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
         return flashCards;
-    }
-
-    private void FlashcardListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-    {
-        if (e.SelectedItem != null)
-        { 
-           if (EditingCheckBox.IsChecked == true)
-            {
-                SelectedDeckFlashCard = e.SelectedItem as DeckFlashCard;
-                var navigationParameter = new Dictionary<string, object>
-                {
-                    { "Current User", LoggedInUser },
-                    //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
-                    {"Current FlashCard", SelectedDeckFlashCard.FlashCard},
-                    //need this to be able to go back to this page after editing flashcard
-                    {"Current Deck", SelectedDeckGroupDeck }
-                };
-                Shell.Current.GoToAsync(nameof(EditFlashCardPageWithDeckGroup), navigationParameter);
-            }
-            else
-            {
-                FlashcardListView.SelectedItem = null;
-            }
-        }
     }
 
     public User LoggedInUser { get; set; }

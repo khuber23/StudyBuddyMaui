@@ -42,6 +42,8 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
+
+                    <Label HorizontalOptions="Center" x:Name="ErrorLabel" TextColor="Red" IsVisible="False"></Label>
                 </StackLayout>
 
             </StackLayout>

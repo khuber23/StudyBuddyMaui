@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.Json;
@@ -13,12 +14,12 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
     {
         InitializeComponent();
     }
-    //NEED TO FIX ALL MY ENDPOINTS EVENTUALLY
+
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-
-        DeckGroupListView.ItemsSource = await GetAllUserDeckGroups();
+        UserDeckGroups = await GetAllUserDeckGroups();
+        DeckGroupListView.ItemsSource = UserDeckGroups;
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -39,6 +40,7 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
     //button click event
     private void GoToCreateDeckGroupPage(object sender, EventArgs e)
     {
+
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }
@@ -82,49 +84,37 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
         Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
     }
 
-    public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
-    {
-        List<UserDeckGroup> deckGroups = new List<UserDeckGroup>();
-
-        //originally
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/maui/deckgroup/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                deckGroups = JsonSerializer.Deserialize<List<UserDeckGroup>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return deckGroups;
-    }
-
-    //Note to Brody: might just get rid of this for button clicks or maybe for a viewing page/editing process.
-    // for editing maybe add a checkbox that will enable editing and disable clicking on items and add an edit screen to change the name and stuff.
-    //otherwise clicking on an item will allow you to navigate through it
-
     //When user clicks on an item in the listView it will take the item and send it through to the neck Page
     private void DeckGroupListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
+        
         if (e.SelectedItem != null)
         {
+            ErrorLabel.IsVisible = false;
             UserDeckGroup = e.SelectedItem as UserDeckGroup;
             //add an if statement showing if a user has the checkbox checked for editing. 
             //if editischecked
             if (EditingCheckBox.IsChecked == true)
             {
-                var navigationParameter = new Dictionary<string, object>
+                if (UserDeckGroup.DeckGroup.ReadOnly == true)
+                {
+                    ErrorLabel.Text = $"{UserDeckGroup.DeckGroup.DeckGroupName} isn't editable";
+                    ErrorLabel.IsVisible = true;
+                    //it's weird but this is the work around for dealing with re-selecting options for the item.
+                    UserDeckGroup = null;
+                    DeckGroupListView.SelectedItem = null;
+                }
+                else
+                {
+                    var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser },
                     //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
                     {"Current DeckGroup", UserDeckGroup.DeckGroup}
                 };
-                Shell.Current.GoToAsync(nameof(EditDeckGroupPage), navigationParameter);
+                    Shell.Current.GoToAsync(nameof(EditDeckGroupPage), navigationParameter);
+                }
+                
             }
             else
             {
@@ -140,9 +130,32 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
         }
     }
 
+    public async Task<ObservableCollection<UserDeckGroup>> GetAllUserDeckGroups()
+    {
+        ObservableCollection<UserDeckGroup> deckGroups = new ObservableCollection<UserDeckGroup>();
+
+        //originally
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/maui/deckgroup/{LoggedInUser.UserId}", string.Empty));
+        try
+        {
+            HttpResponseMessage response = await Constants._client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                deckGroups = JsonSerializer.Deserialize<ObservableCollection<UserDeckGroup>>(content, Constants._serializerOptions);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+        return deckGroups;
+    }
+
+
     public User LoggedInUser { get; set; }
 
     public UserDeckGroup UserDeckGroup { get; set; }
 
-    public List<UserDeckGroup> UserDeckGroups { get; set; } 
+    public ObservableCollection<UserDeckGroup> UserDeckGroups { get; set; } 
 }
