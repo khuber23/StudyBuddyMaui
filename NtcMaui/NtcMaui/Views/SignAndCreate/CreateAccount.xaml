@@ -2,13 +2,15 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.SignAndCreate.CreateAccount"
-             Title="Create Account">
+             Title="">
     
     <ScrollView>
         <Grid>
             <VerticalStackLayout Padding="8" Spacing="8">
                 <Label HorizontalOptions="Center" FontSize="24" FontAttributes="Bold" Text="Create New Account"></Label>
                     <!--<Label FontSize="12" Text="Boxes marked with * are required"></Label>-->
+
+                <Border BackgroundColor="{StaticResource Primary}" WidthRequest="800" HeightRequest="5" />
 
                 <Label WidthRequest="400" Text="First Name*" FontSize="16"></Label>
                     <Grid Padding="5" WidthRequest="400">

@@ -2,21 +2,42 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.SignAndCreate.Success"
-             Title="Success">
+             Title="">
+  
     <ScrollView>
         <ScrollView.GestureRecognizers>
             <TapGestureRecognizer Tapped="OnTapRecognized" NumberOfTapsRequired="1"></TapGestureRecognizer>
         </ScrollView.GestureRecognizers>
-        <Grid>
-            <StackLayout Margin="0,10">
-                <StackLayout>
+        
+        <VerticalStackLayout>
+            <Grid ColumnDefinitions="*,auto,*"
+                  RowDefinitions="160,auto">
+
+                <BoxView Color="{x:StaticResource Primary}"
+                         Grid.ColumnSpan="3"                         
+                         HorizontalOptions="Fill"/>
+
+                <Frame Grid.RowSpan="2"
+                       Grid.Column="1"
+                       CornerRadius="95"
+                       HorizontalOptions="Center"
+                       Padding="0"
+                       Margin="0,100,0,0">
                     <Image x:Name="UserImage"  WidthRequest="100" HeightRequest="100" Source="stockprofileimage.png"></Image>
-                    <Label HorizontalOptions="Center" x:Name="WelcomeUserMessage"></Label>
-                </StackLayout>
-                <StackLayout Margin="0, 60">
+                </Frame>
+            </Grid>
+            <VerticalStackLayout Padding="10" Spacing="10">
+
+                <Label HorizontalOptions="Center" FontSize="24" FontAttributes="Bold" x:Name="WelcomeUserMessage"></Label>
+                <Label HorizontalOptions="Center" Text="You were successfully logged in. Tap to continue."/>
+
+                <StackLayout>
                     <Image WidthRequest="400" HeightRequest="400" Source="green_checkmark.jpg"></Image>
                 </StackLayout>
-            </StackLayout>
-        </Grid>
+                
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
     </ScrollView>
+
 </ContentPage>
