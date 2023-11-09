@@ -87,24 +87,6 @@ public partial class EditFlashCardOnlyDeck : ContentPage, IQueryAttributable, IN
         }
     }
 
-    private void ReadOnlyCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
-    {
-        if (e.Value == true)
-        {
-            IsPublic = true;
-            ReadOnlyStack.IsVisible = true;
-        }
-        else
-        {
-            IsPublic = false;
-            ReadOnlyStack.IsVisible = false;
-            //re-set this to false if it was checked after unsetting is public
-            ReadOnlyCheckBox.IsChecked = false;
-        }
-    }
-
-    public bool ReadOnly { get; set; }
-
     public User LoggedInUser { get; set; }
 
     public FlashCard SelectedFlashCard { get; set; }

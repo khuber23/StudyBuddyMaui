@@ -37,14 +37,10 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
         if (e.Value == true)
         {
             IsPublic = true;
-            ReadOnlyStack.IsVisible = true;
         }
         else
         {
             IsPublic = false;
-            ReadOnlyStack.IsVisible = false;
-            //re-set this to false if it was checked after unsetting is public
-            ReadOnlyCheckBox.IsChecked = false;
         }
     }
 
@@ -92,20 +88,6 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
     }
-
-    private void ReadOnlyCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
-    {
-        if (e.Value == true)
-        {
-            ReadOnly = true;
-        }
-        else
-        {
-            ReadOnly = false;
-        }
-    }
-
-    public bool ReadOnly { get; set; }
 
     public DeckGroupDeck SelectedDeckGroupDeck { get; set; }
     public User LoggedInUser { get; set; }
