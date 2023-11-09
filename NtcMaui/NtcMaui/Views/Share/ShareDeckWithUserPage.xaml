@@ -47,7 +47,7 @@ ItemDisplayBinding="{Binding Username}" Title="Select a user you wish to share t
 
                     <HorizontalStackLayout Margin="10,10" HorizontalOptions="Center">
                         <Button Margin="20, 20" x:Name="FinishBtn" Text="Finish" Clicked="FinishBtn_Clicked"></Button>
-                        <Button Margin="20, 20" x:Name="CancelBtn" Text="Cancel"></Button>
+                        <Button Margin="20, 20" x:Name="CancelBtn" Text="Cancel" Clicked="CancelBtn_Clicked"></Button>
                     </HorizontalStackLayout>
 
                 </StackLayout>
