@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Text;
@@ -33,6 +34,7 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
         {
             TopLabel.Text = $"Copy {SelectedDeckGroup.DeckGroupName} to another User.";
         }
+        RecipientsListView.ItemsSource = Recipients;
         Users = await GetAllUsers();
         //this code will get rid of the logged in user so that they don't appear in the list when sharing.
         var userToRemove = Users.Where(user => user.Username == LoggedInUser.Username).FirstOrDefault();
@@ -56,98 +58,147 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
         }
     }
 
-    private async void FinishBtn_Clicked(object sender, EventArgs e)
+    private async void AddUserBtn_Clicked(object sender, EventArgs e)
     {
+        bool found = false;
         ErrorLabel.IsVisible = false;
         User selectedUser = await GetUserByUsername(UserName);
-        if (selectedUser == null || selectedUser.UserId == 0)
+        if (selectedUser != null || selectedUser.UserId != 0)
         {
-            ErrorLabel.Text = "Please Select a User from the drop-down";
+            if (Recipients.Count == 0)
+            {
+                Recipients.Add(selectedUser);
+            }
+            else
+            {
+                foreach (User user in Recipients)
+                {
+                    if (user.Username == selectedUser.Username)
+                    {
+                        ErrorUser = selectedUser;
+                        ErrorLabel.Text = $"{ErrorUser.Username} already added to Recipients";
+                        ErrorLabel.IsVisible = true;
+                        found = true;
+                        break;
+                    }
+                    else
+                    {
+                        found = false;
+                    }
+                }
+
+                if (found == false)
+                {
+                    Recipients.Add(selectedUser);
+                }
+            }
+        }
+    }
+
+    private async void FinishBtn_Clicked(object sender, EventArgs e)
+    {
+        bool hasDeckGroup = false;
+        ErrorLabel.IsVisible = false;
+        if (Recipients.Count == 0)
+        {
+            ErrorLabel.Text = "Please add a user to recipients";
             ErrorLabel.IsVisible = true;
         }
         else
         {
-            List<UserDeckGroup> userDeckGroups = await GetAllUserDeckGroups(selectedUser.UserId);
-            var UserDeckGroupMatchingSelected = userDeckGroups.Where(ud => ud.DeckGroup.DeckGroupName == SelectedDeckGroup.DeckGroupName).FirstOrDefault();
-            if (UserDeckGroupMatchingSelected != null)
+            foreach (User selectedUser in Recipients)
             {
-                ErrorLabel.Text = "User already has this deck. Please go back and select a different deck or a different user please";
+                ErrorUser = selectedUser;
+                List<UserDeckGroup> userDeckGroups = await GetAllUserDeckGroups(selectedUser.UserId);
+                var UserDeckGroupMatchingSelected = userDeckGroups.Where(ud => ud.DeckGroup.DeckGroupName == SelectedDeckGroup.DeckGroupName).FirstOrDefault();
+                if (UserDeckGroupMatchingSelected != null)
+                {
+
+                    hasDeckGroup = true;
+                    break;
+                }
+            }
+            if (hasDeckGroup == true)
+            {
+                ErrorLabel.Text = $"{ErrorUser.Username} already has this deckGroup. Please go back and select a different deckGroup or a different user please";
                 ErrorLabel.IsVisible = true;
             }
             else
             {
                 if (ShareType == "Clone")
                 {
-                    SharedUser = selectedUser;
-
-                    DeckGroup clonedDeckGroup = new DeckGroup();
-                    clonedDeckGroup.IsPublic = false;
-                    
-                    clonedDeckGroup.DeckGroupName = SelectedDeckGroup.DeckGroupName;
-                    clonedDeckGroup.DeckGroupDescription = SelectedDeckGroup.DeckGroupDescription;
-                    clonedDeckGroup.ReadOnly = true;
-                    //then we need to post this new Deck
-                    //await SaveDeckGroupAsync(clonedDeckGroup);
-                    //then we need to find the new deckGroup...probably through indexes of finding deckgroups by name? since there will now be multiple.
-                    //then the last index is the newest one/the one that was cloned.
-                    DeckGroups = await GetAllDeckGroups();
-
-                    //multiple decks with same name test
-                    List<DeckGroup> multipleSameNameDeckGroups = DeckGroups.Where(d => d.DeckGroupName.Contains(clonedDeckGroup.DeckGroupName)).ToList();
-                    //with this code we should have the newest created deckGroup
-                    clonedDeckGroup = multipleSameNameDeckGroups.Last();
-                    clonedDeckGroup.DeckGroupDecks = SelectedDeckGroup.DeckGroupDecks;
-
-                    //then we can use the DeckGrop decks to clone the decks within for a deckgroup as well as flashcards for deck
-                    foreach (DeckGroupDeck deckGroupDeck in clonedDeckGroup.DeckGroupDecks)
+                    foreach (User selectedUser in Recipients)
                     {
-                        //make a copy of the deck
-                        Deck clonedDeck = new Deck();
-                        clonedDeck.DeckName = deckGroupDeck.Deck.DeckName;
-                        clonedDeck.DeckDescription = deckGroupDeck.Deck.DeckDescription;
-                        clonedDeck.IsPublic = false;
-                        clonedDeck.ReadOnly = true;
-                        //await SaveDeckAsync(clonedDeck);
+                        SharedUser = selectedUser;
 
-                        //retrieve it
-                        Decks = await GetAllDecks();
+                        DeckGroup clonedDeckGroup = new DeckGroup();
+                        clonedDeckGroup.IsPublic = false;
+
+                        clonedDeckGroup.DeckGroupName = SelectedDeckGroup.DeckGroupName;
+                        clonedDeckGroup.DeckGroupDescription = SelectedDeckGroup.DeckGroupDescription;
+                        clonedDeckGroup.ReadOnly = true;
+                        //then we need to post this new Deck
+                        //await SaveDeckGroupAsync(clonedDeckGroup);
+                        //then we need to find the new deckGroup...probably through indexes of finding deckgroups by name? since there will now be multiple.
+                        //then the last index is the newest one/the one that was cloned.
+                        DeckGroups = await GetAllDeckGroups();
 
                         //multiple decks with same name test
-                        List<Deck> multipleSameNameDecks = Decks.Where(d => d.DeckName.Contains(clonedDeck.DeckName)).ToList();
-                        //with this code we should have the newest created deck
-                        clonedDeck = multipleSameNameDecks.Last();
+                        List<DeckGroup> multipleSameNameDeckGroups = DeckGroups.Where(d => d.DeckGroupName.Contains(clonedDeckGroup.DeckGroupName)).ToList();
+                        //with this code we should have the newest created deckGroup
+                        clonedDeckGroup = multipleSameNameDeckGroups.Last();
+                        clonedDeckGroup.DeckGroupDecks = SelectedDeckGroup.DeckGroupDecks;
 
-                        //after getting clonedDeck we need to make it a userDeck, originally forgot
-                        UserDeck userDeck = new UserDeck();
-                        userDeck.DeckId = clonedDeck.DeckId;
-                        userDeck.UserId = SharedUser.UserId;
-                        //await SaveUserDeckAsync(userDeck);
-
-                        clonedDeck.DeckFlashCards = deckGroupDeck.Deck.DeckFlashCards;
-                        //then copy the flashcards within the copied deck?
-                        foreach (DeckFlashCard deckFlashCard in clonedDeck.DeckFlashCards)
+                        //then we can use the DeckGrop decks to clone the decks within for a deckgroup as well as flashcards for deck
+                        foreach (DeckGroupDeck deckGroupDeck in clonedDeckGroup.DeckGroupDecks)
                         {
-                            DeckFlashCard newDeckFlashCard = new DeckFlashCard();
-                            newDeckFlashCard.DeckId = clonedDeck.DeckId;
-                            newDeckFlashCard.FlashCardId = deckFlashCard.FlashCardId;
-                            //await SaveDeckFlashCardAsync(newDeckFlashCard);
+                            //make a copy of the deck
+                            Deck clonedDeck = new Deck();
+                            clonedDeck.DeckName = deckGroupDeck.Deck.DeckName;
+                            clonedDeck.DeckDescription = deckGroupDeck.Deck.DeckDescription;
+                            clonedDeck.IsPublic = false;
+                            clonedDeck.ReadOnly = true;
+                            //await SaveDeckAsync(clonedDeck);
+
+                            //retrieve it
+                            Decks = await GetAllDecks();
+
+                            //multiple decks with same name test
+                            List<Deck> multipleSameNameDecks = Decks.Where(d => d.DeckName.Contains(clonedDeck.DeckName)).ToList();
+                            //with this code we should have the newest created deck
+                            clonedDeck = multipleSameNameDecks.Last();
+
+                            //after getting clonedDeck we need to make it a userDeck, originally forgot
+                            UserDeck userDeck = new UserDeck();
+                            userDeck.DeckId = clonedDeck.DeckId;
+                            userDeck.UserId = SharedUser.UserId;
+                            //await SaveUserDeckAsync(userDeck);
+
+                            clonedDeck.DeckFlashCards = deckGroupDeck.Deck.DeckFlashCards;
+                            //then copy the flashcards within the copied deck?
+                            foreach (DeckFlashCard deckFlashCard in clonedDeck.DeckFlashCards)
+                            {
+                                DeckFlashCard newDeckFlashCard = new DeckFlashCard();
+                                newDeckFlashCard.DeckId = clonedDeck.DeckId;
+                                newDeckFlashCard.FlashCardId = deckFlashCard.FlashCardId;
+                                //await SaveDeckFlashCardAsync(newDeckFlashCard);
+                            }
+
+                            //then save the DeckGroupDeck
+                            DeckGroupDeck clonedDeckGroupDeck = new DeckGroupDeck();
+                            clonedDeckGroupDeck.DeckGroupId = clonedDeckGroup.DeckGroupId;
+                            clonedDeckGroupDeck.DeckId = clonedDeck.DeckId;
+                            //double check to make sure that anything that isn't postable is null.
+                            //await SaveDeckGroupDeckAsync(clonedDeckGroupDeck);
+
                         }
+                        //then we can use the Shared User and the clonedDeckGroupId to the userDeckGroup.
 
-                        //then save the DeckGroupDeck
-                        DeckGroupDeck clonedDeckGroupDeck = new DeckGroupDeck();
-                        clonedDeckGroupDeck.DeckGroupId = clonedDeckGroup.DeckGroupId;
-                        clonedDeckGroupDeck.DeckId = clonedDeck.DeckId;
-                        //double check to make sure that anything that isn't postable is null.
-                        //await SaveDeckGroupDeckAsync(clonedDeckGroupDeck);
-
+                        UserDeckGroup userDeckGroup = new UserDeckGroup();
+                        userDeckGroup.DeckGroupId = clonedDeckGroup.DeckGroupId;
+                        userDeckGroup.UserId = SharedUser.UserId;
+                        //await SaveUserDeckGroupAsync(userDeckGroup);
                     }
-                    //then we can use the Shared User and the clonedDeckGroupId to the userDeckGroup.
-
-                    UserDeckGroup userDeckGroup = new UserDeckGroup();
-                    userDeckGroup.DeckGroupId = clonedDeckGroup.DeckGroupId;
-                    userDeckGroup.UserId = SharedUser.UserId;
-                    //await SaveUserDeckGroupAsync(userDeckGroup);
-
                     //then go back to DeckGroupPage
                     var navigationParameter = new Dictionary<string, object>
                     {
@@ -157,21 +208,24 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                 }
                 else if (ShareType == "Copy")
                 {
-                    SharedUser = selectedUser;
-                    //with copying you are giving them a direct access so then it's just a basic userdeck they need.
-                    UserDeckGroup userDeckGroup = new UserDeckGroup();
-                    userDeckGroup.DeckGroupId = SelectedDeckGroup.DeckGroupId;
-                    userDeckGroup.UserId = SharedUser.UserId;
-                    //await SaveUserDeckGroupAsync(userDeckGroup);
-                    foreach (DeckGroupDeck deckGroupDeck in SelectedDeckGroup.DeckGroupDecks)
+                    foreach (User selectedUser in Recipients)
                     {
-                        UserDeck userDeck = new UserDeck();
-                        userDeck.UserId = SharedUser.UserId;
-                        userDeck.DeckId = deckGroupDeck.DeckId;
-                        //await SaveUserDeckAsync(userDeck);
-                    }
-                    
+                        SharedUser = selectedUser;
+                        //with copying you are giving them a direct access so then it's just a basic userdeck they need.
+                        UserDeckGroup userDeckGroup = new UserDeckGroup();
+                        userDeckGroup.DeckGroupId = SelectedDeckGroup.DeckGroupId;
+                        userDeckGroup.UserId = SharedUser.UserId;
+                        //await SaveUserDeckGroupAsync(userDeckGroup);
+                        foreach (DeckGroupDeck deckGroupDeck in SelectedDeckGroup.DeckGroupDecks)
+                        {
+                            UserDeck userDeck = new UserDeck();
+                            userDeck.UserId = SharedUser.UserId;
+                            userDeck.DeckId = deckGroupDeck.DeckId;
+                            //await SaveUserDeckAsync(userDeck);
+                        }
 
+
+                    }
                     var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }
@@ -180,6 +234,7 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                 }
             }
         }
+                
     }
 
     //Posts a Deckflashcard
@@ -438,4 +493,9 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
     public DeckGroup SelectedDeckGroup { get; set; }
 
     public string ShareType { get; set; }
+
+    //this user is just used for error continuity and lets yoy know if there was an issue when trying to share something with this user.
+    public User ErrorUser { get; set; }
+
+    public ObservableCollection<User> Recipients { get; set; } = new ObservableCollection<User>();
 }

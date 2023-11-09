@@ -80,7 +80,8 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
                 {
                     if (user.Username == selectedUser.Username)
                     {
-                        ErrorLabel.Text = "User already added to Recipients";
+                        ErrorUser = selectedUser;
+                        ErrorLabel.Text = $"{ErrorUser.Username} already added to Recipients";
                         ErrorLabel.IsVisible = true;
                         found = true;
                         break;
@@ -101,30 +102,41 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
 
     private async void FinishBtn_Clicked(object sender, EventArgs e)
     {
+        bool hasDeck = false;
         ErrorLabel.IsVisible = false;
-        User selectedUser = await GetUserByUsername(UserName);
-        if (selectedUser == null || selectedUser.UserId == 0)
+        if (Recipients.Count == 0)
         {
-            ErrorLabel.Text = "Please Select a User from the drop-down";
+            ErrorLabel.Text = "Please add a user to recipients";
             ErrorLabel.IsVisible = true;
         }
         else
         {
-            List<UserDeck> userDecks = await GetAllUserDecks(selectedUser.UserId);
+        foreach (User selectedUser in Recipients)
+        {
+                ErrorUser = selectedUser;
+                List<UserDeck> userDecks = await GetAllUserDecks(selectedUser.UserId);
             var UserDeckMatchingSelected = userDecks.Where(ud => ud.Deck.DeckName == SelectedDeck.DeckName).FirstOrDefault();
             if (UserDeckMatchingSelected != null)
             {
-                ErrorLabel.Text = "User already has this deck. Please go back and select a different deck or a different user please";
-                ErrorLabel.IsVisible = true;
+                
+                hasDeck = true;
+                break;
             }
-            else
-            {
+        }
+           if (hasDeck == true)
+        {
+            ErrorLabel.Text = $"{ErrorUser.Username} already has this deck. Please go back and select a different deck or a different user please";
+            ErrorLabel.IsVisible = true;
+        }
+        else
+        {
                 if (ShareType == "Clone")
                 {
-                    SharedUser = selectedUser;
+                foreach ( User selectedUser in Recipients)
+                {
                     //add an if else check after test to see if the SharedUser already has a deckname similiar
                     //probably by user deck and checking to see if there is a userdeck that has a deckname to the Selected.
-
+                    SharedUser = selectedUser;
                     Deck clonedDeck = new Deck();
                     clonedDeck.IsPublic = false;
                     clonedDeck.DeckName = SelectedDeck.DeckName;
@@ -156,31 +168,34 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
                     userDeck.DeckId = clonedDeck.DeckId;
                     userDeck.UserId = SharedUser.UserId;
                     //await SaveUserDeckAsync(userDeck);
-
-                    //then go back to DeckPage
-                    var navigationParameter = new Dictionary<string, object>
+                }
+                //then go back to DeckPage
+                var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }
                 };
-                    await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
-                }
+                await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+            }
+                
                 else if (ShareType == "Copy")
                 {
-                    SharedUser = selectedUser;
+                foreach (User selectedUser in Recipients)
+                {
                     //with copying you are giving them a direct access so then it's just a basic userdeck they need.
+                    SharedUser = selectedUser;
                     UserDeck userDeck = new UserDeck();
                     userDeck.DeckId = SelectedDeck.DeckId;
                     userDeck.UserId = SharedUser.UserId;
                     //await SaveUserDeckAsync(userDeck);
-
-                    var navigationParameter = new Dictionary<string, object>
+                }
+                var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }
                 };
-                    await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
-                }
+                await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
             }
-        }     
+            }
+        }
     }
 
     public async Task<List<UserDeck>> GetAllUserDecks(int userId)
@@ -351,6 +366,10 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
     public Deck SelectedDeck { get; set; }
 
     public string ShareType { get; set; }
+
+
+    //this user is just used for error continuity and lets yoy know if there was an issue when trying to share something with this user.
+    public User ErrorUser { get; set; }
 
     public List<User> Users { get; set; }
 

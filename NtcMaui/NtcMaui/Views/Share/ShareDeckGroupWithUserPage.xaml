@@ -11,12 +11,34 @@
                 </StackLayout>
 
                 <StackLayout HorizontalOptions="Center">
-                    <Label x:Name="CurrentUserLabel"></Label>
-                    <Picker x:Name="UserPicker"
+                    <Picker HorizontalOptions="Center" x:Name="UserPicker"
         SelectedIndexChanged="UserPicker_SelectedIndexChanged"
 ItemDisplayBinding="{Binding Username}" Title="Select a user you wish to share to.">
 
                     </Picker>
+
+                    <StackLayout HorizontalOptions="Center"  Margin="10, 10">
+                        <Button x:Name="AddUserBtn" Text="Add" Clicked="AddUserBtn_Clicked"></Button>
+                    </StackLayout>
+
+                    <StackLayout Margin="10,10">
+                        <Label Margin="10,10" Text="Recipients:" FontSize="18" HorizontalOptions="Start" FontAttributes="Bold"></Label>
+
+                        <StackLayout Margin="10, 10">
+                            <ScrollView>
+                                <ListView x:Name="RecipientsListView">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <Label Margin="0,5" Text="{Binding Username}"></Label>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </ScrollView>
+                        </StackLayout>
+
+                    </StackLayout>
 
                 </StackLayout>
 
