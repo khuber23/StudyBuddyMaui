@@ -14,7 +14,7 @@ public partial class Success : ContentPage, IQueryAttributable, INotifyPropertyC
     {
         LoggedInUser = query["Current User"] as User;
         OnPropertyChanged("Current User");
-        WelcomeUserMessage.Text = $"Hello {LoggedInUser.Username}. You were successfully logged in. Tap to continue.";
+        WelcomeUserMessage.Text = $"Hello {LoggedInUser.Username}, Welcome Buddy!";
     }
 
     void OnTapRecognized(object sender, TappedEventArgs args)

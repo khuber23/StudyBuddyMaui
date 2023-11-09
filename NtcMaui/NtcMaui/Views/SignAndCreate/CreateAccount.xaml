@@ -2,57 +2,61 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.SignAndCreate.CreateAccount"
-             Title="CreateAccount">
+             Title="">
+    
     <ScrollView>
         <Grid>
-            <StackLayout Margin="20">
-                <StackLayout Margin="0, 20">
-                    <Label FontSize="18" FontAttributes="Bold" Text="Create New Account"></Label>
+            <VerticalStackLayout Padding="8" Spacing="8">
+                <Label HorizontalOptions="Center" FontSize="24" FontAttributes="Bold" Text="Create New Account"></Label>
                     <!--<Label FontSize="12" Text="Boxes marked with * are required"></Label>-->
-                </StackLayout>
 
-                <StackLayout>
-                    <Label Text="First Name*" FontSize="16"></Label>
-                    <Grid Margin="0,5">
+                <Border BackgroundColor="{StaticResource Primary}" WidthRequest="800" HeightRequest="5" />
+
+                <Label WidthRequest="400" Text="First Name*" FontSize="16"></Label>
+                    <Grid Padding="5" WidthRequest="400">
                         <Frame BackgroundColor="White"/>
                         <Entry x:Name="FirstNameEntry" TextColor="Black" Placeholder="First Name"></Entry>
                     </Grid>
-                    <Label Text="Last Name*" FontSize="16"></Label>
-                    <Grid Margin="0,5">
+
+                    <Label WidthRequest="400" Text="Last Name*" FontSize="16"></Label>
+                    <Grid Padding="5" WidthRequest="400">
                         <Frame BackgroundColor="White"/>
                         <Entry x:Name="LastNameEntry" TextColor="Black" Placeholder="Last Name"></Entry>
                     </Grid>
-                    <Label Text="Email*" FontSize="16"></Label>
-                    <Grid Margin="0,5">
+
+                    <Label WidthRequest="400" Text="Email*" FontSize="16"></Label>
+                    <Grid Padding="5" WidthRequest="400">
                         <Frame BackgroundColor="White"/>
                         <Entry x:Name="EmailEntry" TextColor="Black" Placeholder="Email"></Entry>
                     </Grid>
-                    <Label Text="Username*" FontSize="16"></Label>
-                    <Grid Margin="0,5">
+
+                    <Label WidthRequest="400" Text="Username*" FontSize="16"></Label>
+                    <Grid Padding="5" WidthRequest="400">
                         <Frame BackgroundColor="White"/>
-                        <Entry x:Name="UserNameEntry" TextColor="Black" Placeholder="User Name"></Entry>
+                        <Entry x:Name="UserNameEntry" TextColor="Black" Placeholder="Username"></Entry>
                     </Grid>
-                    <Label Text="Password*" FontSize="16"></Label>
-                    <Grid Margin="0,5">
+
+                    <Label WidthRequest="400" Text="Password*" FontSize="16"></Label>
+                    <Grid Padding="5" WidthRequest="400">
                         <Frame BackgroundColor="White"/>
                         <Entry x:Name="PasswordEntry" TextColor="Black" Placeholder="Password"></Entry>
                     </Grid>
-                    <Label Text="Re-type Password*" FontSize="16"></Label>
-                    <Grid Margin="0,5">
+
+                    <Label WidthRequest="400" Text="Re-type Password*" FontSize="16"></Label>
+                    <Grid Padding="5" WidthRequest="400">
                         <Frame BackgroundColor="White"/>
                         <Entry x:Name="ReTypedPasswordEntry" TextColor="Black" Placeholder="Password"></Entry>
                     </Grid>
-                    <Label Margin="0,10" Text="Upload Profile Picture" FontSize="16"></Label>
 
-                    <StackLayout Orientation="Horizontal">
-                        <ImageButton x:Name="UploadImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png"></ImageButton>
+                    <Label WidthRequest="400" Margin="0,10" Text="Upload Profile Picture" FontSize="16"></Label>
+                    <HorizontalStackLayout WidthRequest="400">
+                    <ImageButton x:Name="UploadImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png"></ImageButton>
                         <Image x:Name="ProfileImage"  Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50"></Image>
-                    </StackLayout>
-                </StackLayout>
-                <StackLayout>
-                    <Button x:Name="SaveBtn" Text="Save" Margin="0, 50" WidthRequest="200" HorizontalOptions="Start" Clicked="CompleteCreation"></Button>
-                </StackLayout>
-            </StackLayout>
+                    </HorizontalStackLayout>
+                                              
+                    <Button x:Name="SaveBtn" Text="Save" Margin="0, 30" WidthRequest="250" HorizontalOptions="Center" Clicked="CompleteCreation"></Button>
+               
+            </VerticalStackLayout>
 
         </Grid>
     </ScrollView>
