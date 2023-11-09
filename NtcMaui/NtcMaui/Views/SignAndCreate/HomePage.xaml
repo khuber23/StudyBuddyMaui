@@ -2,23 +2,40 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.SignAndCreate.HomePage"
-             Title="Home">
+             Title="Study Buddy">
+   
     <ScrollView>
-        <Grid>
-            <StackLayout Margin="0,5">
-                <StackLayout>
-                    <Image Margin="25, 25" WidthRequest="50" HeightRequest="50" Source="ntclogo.png" HorizontalOptions="Start"></Image>
-                </StackLayout>
+        <VerticalStackLayout>
+            <Grid ColumnDefinitions="160,auto,*"
+                  RowDefinitions="160,auto">
+
+                <BoxView Color="{x:StaticResource Primary}"
+                         Grid.ColumnSpan="3"                         
+                         HorizontalOptions="Fill"/>
+
+                <Frame Grid.RowSpan="2"
+                       Grid.Column="0"
+                       CornerRadius="55"
+                       HorizontalOptions="Center"
+                       Padding="0"
+                       Margin="0,100,0,0">
+                    <Image WidthRequest="100" HeightRequest="100" Source="ntclogo.png"></Image>
+                </Frame>
+            </Grid>
+            <VerticalStackLayout Padding="10" Spacing="10">
+
                 <StackLayout Margin="0, 30">
                     <Image x:Name="UserImage" WidthRequest="150" HeightRequest="150" Source="stockprofileimage.png"></Image>
                     <Label HorizontalOptions="Center" x:Name="UserNameText"></Label>
                 </StackLayout>
-                <StackLayout VerticalOptions="End" Orientation="Horizontal">
-                    <Button Margin="30, 30" x:Name="MyStudiesBtn" Clicked="GoToMyStudies" Text="My Studies" HorizontalOptions="StartAndExpand"></Button>
-                    <Button Margin="30, 30" x:Name="StudySessionBtn" Clicked="GoToStudySession" Text="Study Session" HorizontalOptions="EndAndExpand"></Button>
-         
-                </StackLayout>
-            </StackLayout>
-        </Grid>
+                <HorizontalStackLayout HorizontalOptions="Center" Padding="10" Spacing="30">
+                    <Button WidthRequest="200" FontSize="Medium" x:Name="MyStudiesBtn" Clicked="GoToMyStudies" Text="My Studies"></Button>
+                    <Button WidthRequest="200" FontSize="Medium" x:Name="StudySessionBtn" Clicked="GoToStudySession" Text="Study Session"></Button>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
     </ScrollView>
+
 </ContentPage>
