@@ -2,35 +2,6 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.SignAndCreate.SignIn">
-    <!--<ScrollView>
-        <Grid RowDefinitions="*,auto">
-
-            <VerticalStackLayout Padding="40">
-                <Image Source="ntclogo.png" HeightRequest="200" WidthRequest="200" HorizontalOptions="Center" VerticalOptions="Center"></Image>
-
-                <Label FontSize="24" FontAttributes="Bold" Text="Sign In"></Label>
-
-                <Label Text="Username" FontSize="16"></Label>
-                <Grid Padding="10">
-                    <Frame BackgroundColor="White"/>
-                    <Entry x:Name="UserNameEntry" TextColor="Black" Placeholder="UserName"></Entry>
-                </Grid>
-
-                <Label Text="Password" FontSize="16"></Label>
-                <Grid Padding="10">
-                    <Frame BackgroundColor="White"/>
-                    <Entry x:Name="PasswordEntry" TextColor="Black" Placeholder="Password"></Entry>
-                </Grid>
-
-                <Label x:Name="Error"></Label>
-                <Button x:Name="ForgotPassword" Text="Forgot Password?" VerticalOptions="Center" WidthRequest="200" BorderColor="White" TextColor="Blue" BackgroundColor="White" Clicked="ForgotPassword_Clicked"></Button>
-
-                <Button x:Name="SignInBtn" Margin="0,10" Text="Sign in" WidthRequest="200" VerticalOptions="Center" Clicked="CompleteSignIn"></Button>
-                <Button x:Name="CreateAccountBtn" Margin="0,10" Text="Create Account" WidthRequest="200" Clicked="GoToAccountCreation" VerticalOptions="Center"></Button>
-
-            </VerticalStackLayout>
-        </Grid>
-    </ScrollView>-->
 
     <ScrollView>
         <VerticalStackLayout>
