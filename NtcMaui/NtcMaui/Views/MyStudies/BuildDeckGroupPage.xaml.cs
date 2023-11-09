@@ -36,13 +36,66 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
     //button click event for Building off of DeckGroup
     private void GoToCreateDeckPage(object sender, EventArgs e)
     {
-        var navigationParameter = new Dictionary<string, object>
+        if (SelectedDeckGroup.ReadOnly == true)
+        {
+            ErrorLabel.Text = $"You can't add to {SelectedDeckGroup.DeckGroupName} as it isn't editable";
+            ErrorLabel.IsVisible = true;
+        }
+        else
+        {
+            var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser },
                     //needs to be DeckGroup for later for connecting Everything.
             {"Current DeckGroup", SelectedDeckGroup }
                 };
-        Shell.Current.GoToAsync(nameof(CreateDeckPage), navigationParameter);
+            Shell.Current.GoToAsync(nameof(CreateDeckPage), navigationParameter);
+        }
+    }
+
+    
+
+    private void DeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        //eventually change this to be for editing or just button clicks later, for now not worrying about it
+        if (e.SelectedItem != null)
+        {
+            //if checked go to edit Deck Page
+            if (EditingCheckBox.IsChecked == true)
+            {
+                SelectedDeckGroupDeck = e.SelectedItem as DeckGroupDeck;
+                if (SelectedDeckGroupDeck.Deck.ReadOnly == true)
+                {
+                    ErrorLabel.Text = $"{SelectedDeckGroupDeck.Deck.DeckName} isn't editable";
+                    ErrorLabel.IsVisible = true;
+                    //it's weird but this is the work around for dealing with re-selecting options for the item.
+                    SelectedDeckGroupDeck = null;
+                    DeckListView.SelectedItem = null;
+                }
+                else
+                {
+                    var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
+                    {"Current Deck", SelectedDeckGroupDeck.Deck}
+                };
+                    Shell.Current.GoToAsync(nameof(EditDeckPage), navigationParameter);
+                }   
+            }
+            else
+            {
+                //its a deckGroupDeck
+                SelectedDeckGroupDeck = e.SelectedItem as DeckGroupDeck;
+                var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    {"Current Deck", SelectedDeckGroupDeck }
+                };
+                Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
+            }
+
+        }
     }
 
     public async Task<List<DeckGroupDeck>> GetAllDecksbyDeckGroup()
@@ -64,38 +117,6 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
         return deckGroupDecks;
-    }
-
-    private void DeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-    {
-        //eventually change this to be for editing or just button clicks later, for now not worrying about it
-        if (e.SelectedItem != null)
-        {
-            //if checked go to edit Deck Page
-            if (EditingCheckBox.IsChecked == true)
-            {
-                SelectedDeckGroupDeck = e.SelectedItem as DeckGroupDeck;
-                var navigationParameter = new Dictionary<string, object>
-                {
-                    { "Current User", LoggedInUser },
-                    //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
-                    {"Current Deck", SelectedDeckGroupDeck.Deck}
-                };
-                Shell.Current.GoToAsync(nameof(EditDeckPage), navigationParameter);
-            }
-            else
-            {
-                //its a deckGroupDeck
-                SelectedDeckGroupDeck = e.SelectedItem as DeckGroupDeck;
-                var navigationParameter = new Dictionary<string, object>
-                {
-                    { "Current User", LoggedInUser },
-                    {"Current Deck", SelectedDeckGroupDeck }
-                };
-                Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
-            }
-
-        }
     }
 
     public User LoggedInUser { get; set; }
