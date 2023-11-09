@@ -100,6 +100,21 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
         }
     }
 
+    private void DeleteUserBtn_Clicked(object sender, EventArgs e)
+    {
+        foreach (User user in Recipients)
+        {
+            if (user.Username == SelectedUser.Username)
+            {
+                Recipients.Remove(user);
+                SelectedUser = null;
+                DeleteUserBtn.IsVisible = false;
+                ErrorLabel.IsVisible = false;
+                break;
+            }
+        }
+    }
+
     private async void FinishBtn_Clicked(object sender, EventArgs e)
     {
         bool hasDeck = false;
@@ -195,6 +210,15 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
                 await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
             }
             }
+        }
+    }
+
+    private void RecipientsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem != null)
+        {
+            SelectedUser = e.SelectedItem as User;
+            DeleteUserBtn.IsVisible = true;
         }
     }
 
@@ -356,6 +380,9 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
         }
     }
 
+    //this will be the User you select from the recipients List
+    public User SelectedUser { get; set; }
+
     public List<Deck> Decks { get; set; }
 
     public User SharedUser { get; set; }
@@ -374,8 +401,6 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
     public List<User> Users { get; set; }
 
     public ObservableCollection<User> Recipients { get; set; } = new ObservableCollection<User>();
-
-
 
 
 }

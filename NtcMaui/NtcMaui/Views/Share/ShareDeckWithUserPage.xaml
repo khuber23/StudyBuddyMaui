@@ -17,16 +17,17 @@ ItemDisplayBinding="{Binding Username}" Title="Select a user you wish to share t
 
                     </Picker>
                     
-                    <StackLayout HorizontalOptions="Center"  Margin="10, 10">
-                        <Button x:Name="AddUserBtn" Text="Add" Clicked="AddUserBtn_Clicked"></Button>
-                    </StackLayout>
+                    <HorizontalStackLayout HorizontalOptions="Center"  Margin="10, 10">
+                        <Button Margin="10,10" x:Name="AddUserBtn" Text="Add" Clicked="AddUserBtn_Clicked"></Button>
+                        <Button Margin="10,10" IsVisible="false" x:Name="DeleteUserBtn" Text="Delete" Clicked="DeleteUserBtn_Clicked"></Button>
+                    </HorizontalStackLayout>
 
                     <StackLayout Margin="10,10">
                         <Label Margin="10,10" Text="Recipients:" FontSize="18" HorizontalOptions="Start" FontAttributes="Bold"></Label>
                         
                         <StackLayout Margin="10, 10">
                             <ScrollView>
-                                <ListView x:Name="RecipientsListView">
+                                <ListView x:Name="RecipientsListView" ItemSelected="RecipientsListView_ItemSelected">
                                     <ListView.ItemTemplate>
                                         <DataTemplate>
                                             <ViewCell>
@@ -39,17 +40,19 @@ ItemDisplayBinding="{Binding Username}" Title="Select a user you wish to share t
                         </StackLayout>
                         
                     </StackLayout>
-                 
+
+                    <StackLayout HorizontalOptions="Center" Margin="10,10">
+                        <Label x:Name="ErrorLabel" IsVisible="false" TextColor="Red"></Label>
+                    </StackLayout>
+
+                    <HorizontalStackLayout Margin="10,10" HorizontalOptions="Center">
+                        <Button Margin="20, 20" x:Name="FinishBtn" Text="Finish" Clicked="FinishBtn_Clicked"></Button>
+                        <Button Margin="20, 20" x:Name="CancelBtn" Text="Cancel"></Button>
+                    </HorizontalStackLayout>
+
                 </StackLayout>
 
-                <StackLayout HorizontalOptions="Center" Margin="10,10">
-                    <Label x:Name="ErrorLabel" IsVisible="false" TextColor="Red"></Label>
-                </StackLayout>
 
-                <HorizontalStackLayout Margin="10,10" HorizontalOptions="Center">
-                    <Button Margin="20, 20" x:Name="FinishBtn" Text="Finish" Clicked="FinishBtn_Clicked"></Button>
-                    <Button Margin="20, 20" x:Name="CancelBtn" Text="Cancel"></Button>
-                </HorizontalStackLayout>
                 
             </StackLayout>
         </Grid>

@@ -95,6 +95,21 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
         }
     }
 
+    private void DeleteUserBtn_Clicked(object sender, EventArgs e)
+    {
+        foreach (User user in Recipients)
+        {
+            if (user.Username == SelectedUser.Username)
+            {
+                Recipients.Remove(user);
+                SelectedUser = null;
+                DeleteUserBtn.IsVisible = false;
+                ErrorLabel.IsVisible = false;
+                break;
+            }
+        }
+    }
+
     private async void FinishBtn_Clicked(object sender, EventArgs e)
     {
         bool hasDeckGroup = false;
@@ -235,6 +250,15 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
             }
         }
                 
+    }
+
+    private void RecipientsListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem != null)
+        {
+            SelectedUser = e.SelectedItem as User;
+            DeleteUserBtn.IsVisible = true;
+        }
     }
 
     //Posts a Deckflashcard
@@ -489,6 +513,9 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
     public List<User> Users { get; set; }
 
     public User LoggedInUser { get; set; }
+
+    //this will be the User you select from the recipients List
+    public User SelectedUser { get; set; }
 
     public DeckGroup SelectedDeckGroup { get; set; }
 
