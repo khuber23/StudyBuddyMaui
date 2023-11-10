@@ -130,9 +130,9 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
         }
     }
 
-    public async Task<ObservableCollection<UserDeckGroup>> GetAllUserDeckGroups()
+    public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
     {
-        ObservableCollection<UserDeckGroup> deckGroups = new ObservableCollection<UserDeckGroup>();
+        List<UserDeckGroup> deckGroups = new List<UserDeckGroup>();
 
         //originally
         Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/maui/deckgroup/{LoggedInUser.UserId}", string.Empty));
@@ -142,7 +142,7 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
             if (response.IsSuccessStatusCode)
             {
                 string content = await response.Content.ReadAsStringAsync();
-                deckGroups = JsonSerializer.Deserialize<ObservableCollection<UserDeckGroup>>(content, Constants._serializerOptions);
+                deckGroups = JsonSerializer.Deserialize<List<UserDeckGroup>>(content, Constants._serializerOptions);
             }
         }
         catch (Exception ex)
@@ -157,5 +157,5 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
 
     public UserDeckGroup UserDeckGroup { get; set; }
 
-    public ObservableCollection<UserDeckGroup> UserDeckGroups { get; set; } 
+    public List<UserDeckGroup> UserDeckGroups { get; set; } 
 }

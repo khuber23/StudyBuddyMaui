@@ -23,7 +23,6 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
         OnPropertyChanged("Current User");
     }
 
-    
     protected async override void OnAppearing()
     {
         base.OnAppearing();
