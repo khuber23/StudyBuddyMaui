@@ -12,53 +12,92 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style x:Key="CardView" TargetType="Frame">
+            <Setter Property="BorderColor" Value="#DDDDDD"/>
+            <Setter Property="HasShadow" Value="{OnPlatform iOS=false, MacCatalyst=false, Default=true}"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="50,0,50,0"/>
+            <Setter Property="Background" Value="{StaticResource LightBackground}"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="IsClippedToBounds" Value="True"/>
+        </Style>
     </ContentPage.Resources>
-    <ScrollView>
-        <Grid>
-            <StackLayout Margin="0, 5">
-                <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 5">
-                    <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage"  Margin="5, 5" Text="Dash Board"></Button>
-                    <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Margin="5, 5" Text="Flashcard"></Button>
-                    <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Margin="5, 5" Text="Deck"></Button>
-                    <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Margin="5, 5" Text="Deck Groups"></Button>
-                </HorizontalStackLayout>
-              
-                <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 30">
-                    <!---This first button is the default one that you navigate to when user clicks on dashboard-->
-                    <Button x:Name="DashboardStatsBtn" Clicked="GoToDashboardPage"  Margin="5, 5" Text="Stats"></Button>
-                    <Button x:Name="DashboardStudyBtn" Clicked="GoToDashboardStudyPage" Margin="5, 5" Text="Study"></Button>
-                    <Button x:Name="DashboardHistoryBtn" Clicked="GoToDashboardHistoryPage" Margin="5, 5" Text="History"></Button>
-                </HorizontalStackLayout>
-                <StackLayout>
-                    <Label Text="Card Stats" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20" FontAttributes="Bold"></Label>
-                    <ProgressBar WidthRequest="200" HeightRequest="50" ProgressColor="Green" x:Name="StatsProgressBar"></ProgressBar>
-                    <Label HorizontalOptions="Center" Margin="0,5" x:Name="ProgressLabel"></Label>
-                    <ScrollView>
-                        <ListView x:Name="AllStudyFlashcardsListView" Margin="10,10">
-                            <ListView.ItemTemplate>
-                                <DataTemplate>
-                                    <ViewCell>
-                                        <HorizontalStackLayout>
-                                            <StackLayout Margin="10, 5">
-                                                <Label Style="{StaticResource LabelStyle}" Text="{Binding FlashCard.FlashCardQuestion}" FontSize="20" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
-                                                <Label Margin="5, 10" x:Name="TestLabel">
-                                                    <Label.Text>
-                                                        <MultiBinding StringFormat="{} From {0}-{1}">
-                                                            <Binding Path="StudySession.Deck.DeckName"/>
-                                                            <Binding Path="StudySession.StartTime"/>
-                                                        </MultiBinding>
-                                                    </Label.Text>
-                                                </Label>
-                                            </StackLayout>
-                                        </HorizontalStackLayout>
-                                    </ViewCell>
-                                </DataTemplate>
-                            </ListView.ItemTemplate>
-                        </ListView>
-                    </ScrollView>
-                    
-                </StackLayout>
-            </StackLayout>
-        </Grid>
-    </ScrollView>
+  
+    <Shell.TitleView>
+        <HorizontalStackLayout>
+            <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
+            <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage" Text="Dashboard"></Button>
+            <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"></Button>
+            <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Text="Decks"></Button>
+            <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"></Button>
+        </HorizontalStackLayout>
+    </Shell.TitleView>
+
+    <Grid ColumnDefinitions="*,*,*"
+          ColumnSpacing="5"
+          RowDefinitions="*,Auto"
+          RowSpacing="0">
+
+        <StackLayout Grid.Column="1">
+            <Label Text="Card Stats" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="20" FontAttributes="Bold"/>
+            <ProgressBar WidthRequest="200" HeightRequest="50" ProgressColor="Green" x:Name="StatsProgressBar"/>
+            <Label HorizontalOptions="Center" x:Name="ProgressLabel"/>
+        </StackLayout>
+
+        <CollectionView Margin="0,120,0,0"
+                        BackgroundColor="Transparent"
+                        Grid.ColumnSpan="3"
+                        x:Name="AllStudyFlashcardsListView"                      
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Frame HeightRequest="125"
+                               Padding="0"
+                               Style="{StaticResource CardView}">
+                            <Grid Padding="0"
+                                  ColumnDefinitions="125, *">
+                                <Image Aspect="AspectFill"
+                                   Source="stockprofileimage.png"
+                                   WidthRequest="125"
+                                   HeightRequest="125"/>
+                                <VerticalStackLayout Grid.Column="1"
+                                                     Padding="10"
+                                                     VerticalOptions="Center">
+                                    <Label Style="{StaticResource LabelStyle}" Text="{Binding FlashCard.FlashCardQuestion}"/>
+                                    <Label x:Name="TestLabel">
+                                        <Label.Text>
+                                            <MultiBinding StringFormat="{} From {0}-{1}">
+                                                <Binding Path="StudySession.Deck.DeckName"/>
+                                                <Binding Path="StudySession.StartTime"/>
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Text="Stats"
+                x:Name="DashboardStatsBtn"
+                Clicked="GoToDashboardPage"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="8"/>
+        <Button Text="Study"
+                x:Name="DashboardStudyBtn"
+                Clicked="GoToDashboardStudyPage"
+                Grid.Row="1"              
+                Margin="8"/>
+        <Button Text="History"
+                x:Name="DashboardHistoryBtn"
+                Clicked="GoToDashboardHistoryPage"
+                Grid.Row="1"
+                Grid.Column="3"
+                Margin="8"/>
+    </Grid>
+
 </ContentPage>
