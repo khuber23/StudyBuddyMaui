@@ -32,7 +32,7 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
             {
                 SameDeckGroupsById.Add(group);
             }
-            else
+            else if (group.DeckGroupId != SelectedDeckGroup.DeckGroupId && group.DeckGroup.DeckGroupName == SelectedDeckGroup.DeckGroupName)
             {
                 NotSameDeckGroupsById.Add(group);
             }
