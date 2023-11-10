@@ -59,6 +59,7 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         {
             foreach (FlashCard userMadeFlashCard in UsermadeFlashCards)
             {
+                //right here is where we would likely need to sit there and add to all deck similiar.
                 if (flashCard.FlashCardQuestion == userMadeFlashCard.FlashCardQuestion && flashCard.FlashCardAnswer == userMadeFlashCard.FlashCardAnswer)
                 {
                     DeckFlashCard deckFlashCard = new DeckFlashCard();

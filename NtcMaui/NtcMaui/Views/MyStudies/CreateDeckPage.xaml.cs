@@ -25,25 +25,16 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        //List<DeckGroup> deckGroups = await GetAllDeckGroups();
-        //DeckGroupsWithShared = deckGroups.Where(d => d.DeckGroupName == SelectedDeckGroup.DeckGroupName).ToList();
-        ////need a list of all the users related to the SelectedDeckGroup
-        ////then as we go through the finishing we can slowly get rid of 
-
-        //List<UserDeckGroup> userGroups = await GetAllUserDeckGroups();
-        //userGroups.RemoveAll(i => i.DeckGroupId == SelectedDeckGroup.DeckGroupId && i.UserId != LoggedInUser.UserId);
         UserDeckGroups = await GetAllUserDeckGroups();
-        List<UserDeckGroup> sameDeckGroupsByIds = new List<UserDeckGroup>();
-        List<UserDeckGroup> notSameDeckGroupsByIds = new List<UserDeckGroup>();
         foreach (UserDeckGroup group in UserDeckGroups)
         {
             if (group.DeckGroupId == SelectedDeckGroup.DeckGroupId)
             {
-                sameDeckGroupsByIds.Add(group);
+                SameDeckGroupsById.Add(group);
             }
             else
             {
-                notSameDeckGroupsByIds.Add(group);
+                NotSameDeckGroupsById.Add(group);
             }
         }
 
@@ -52,69 +43,119 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
     private async void GoToBuildDeckPage(object sender, EventArgs e)
     {
         //maybe split it up?
-        foreach(UserDeckGroup userDeckGroup in UserDeckGroups)
+        //bool for this
+        bool deckCreated = false;
+           foreach(UserDeckGroup deckgroup in SameDeckGroupsById)
         {
-            var test = userDeckGroup.DeckGroup.DeckGroupDecks.Where(d => d.DeckId == Deck.DeckId).ToList();
+            if (deckCreated == false)
+            {
+                Deck = new Deck();
+                Deck.DeckName = DeckNameEntry.Text;
+                Deck.DeckDescription = DeckDescriptionEntry.Text;
+                Deck.IsPublic = IsPublic;
+                Deck.ReadOnly = false;
 
-            //need only 2
+                await SaveDeckAsync(Deck);
+
+                //get all the Decks and re-find the one so we have an ID...since when posting it the Id would be 0.
+                List<Deck> decks = await GetAllDecks();
+                Deck = decks.FirstOrDefault(d => d.DeckName == Deck.DeckName && d.DeckDescription == Deck.DeckDescription);
+                deckCreated = true;
+
+                //after getting the right Deck With an ID from the database we make it a userDeck and post it to database.
+                //need all 3
+                UserDeck userDeck = new UserDeck();
+                userDeck.DeckId = Deck.DeckId;
+                userDeck.UserId = deckgroup.UserId;
+                //creates the User Deck
+                await SaveUserDeckAsync(userDeck);
+
+                //need a method to create the DeckGroupDeck part to combine the DeckGroup with the Created Deck.
+                DeckGroupDeck deckGroupDeck = new DeckGroupDeck();
+                deckGroupDeck.DeckGroupId = deckgroup.DeckGroupId;
+                deckGroupDeck.DeckId = Deck.DeckId;
+                DirectCopiedDeckGroupDeck = deckGroupDeck;
+                await SaveDeckGroupDeckAsync(deckGroupDeck);
+                if (LoggedInUser.UserId == deckgroup.UserId)
+                {
+                    CurrentDeckGroupDeck = await GetSpecificDeckGroupDeck(deckGroupDeck.DeckGroupId, deckGroupDeck.DeckId);
+                }
+
+            }
+            //deckGroupDeck and Deck will already be made once, since direct shared access.
+            //we only need to make a userDeck showing each user shared has access to the same deck.
+            else
+            {
+                UserDeck userDeck = new UserDeck();
+                userDeck.DeckId = Deck.DeckId;
+                userDeck.UserId = deckgroup.UserId;
+                //creates the User Deck
+                await SaveUserDeckAsync(userDeck);
+
+                //need a method to create the DeckGroupDeck part to combine the DeckGroup with the Created Deck.
+                //already would be created
+                //DeckGroupDeck deckGroupDeck = new DeckGroupDeck();
+                //deckGroupDeck.DeckGroupId = deckgroup.DeckGroupId;
+                //deckGroupDeck.DeckId = Deck.DeckId;
+                //await SaveDeckGroupDeckAsync(deckGroupDeck);
+
+                if (LoggedInUser.UserId == deckgroup.UserId)
+                {
+                    CurrentDeckGroupDeck = await GetSpecificDeckGroupDeck(DirectCopiedDeckGroupDeck.DeckGroupId, DirectCopiedDeckGroupDeck.DeckId);
+                }
+            }
+            
+        }
+
+           foreach(UserDeckGroup deckgroup in NotSameDeckGroupsById)
+        {
             Deck = new Deck();
             Deck.DeckName = DeckNameEntry.Text;
             Deck.DeckDescription = DeckDescriptionEntry.Text;
-            if (userDeckGroup.DeckGroupId == SelectedDeckGroup.DeckGroupId)
-            {
-                Deck.ReadOnly = false;
-                Deck.IsPublic = IsPublic;
-            }
-            else
-            {
-                Deck.ReadOnly = true;
-                Deck.IsPublic = false;
-            }
-            
-            //await SaveDeckAsync(Deck);
+            Deck.IsPublic = false;
+            Deck.ReadOnly = true;
+
+            await SaveDeckAsync(Deck);
 
             //get all the Decks and re-find the one so we have an ID...since when posting it the Id would be 0.
             List<Deck> decks = await GetAllDecks();
-            foreach (Deck deck in decks)
-            {
-                if (deck.DeckName == Deck.DeckName && deck.DeckDescription == Deck.DeckDescription)
-                {
-                    Deck = deck;
-                    break;
-                }
-            }
+            List<Deck> sameDecks = decks.Where(d => d.DeckName == Deck.DeckName && d.DeckDescription == Deck.DeckDescription).ToList();
+            //gets the newest item/most recently created Deck that will be used for the cloning
+            Deck = sameDecks.Last();
 
             //after getting the right Deck With an ID from the database we make it a userDeck and post it to database.
             //need all 3
             UserDeck userDeck = new UserDeck();
             userDeck.DeckId = Deck.DeckId;
-            userDeck.UserId = LoggedInUser.UserId;
-            //userDeck.UserId = LoggedInUser.UserId;
+            userDeck.UserId = deckgroup.UserId;
             //creates the User Deck
-            //await SaveUserDeckAsync(userDeck);
+            await SaveUserDeckAsync(userDeck);
 
             //need a method to create the DeckGroupDeck part to combine the DeckGroup with the Created Deck.
             DeckGroupDeck deckGroupDeck = new DeckGroupDeck();
-            deckGroupDeck.DeckGroupId = SelectedDeckGroup.DeckGroupId;
+            deckGroupDeck.DeckGroupId = deckgroup.DeckGroupId;
             deckGroupDeck.DeckId = Deck.DeckId;
-
-
-            //await SaveDeckGroupDeckAsync(deckGroupDeck);
-
-            //may need to re-find the first DeckGroupDeck to assign it below
+            await SaveDeckGroupDeckAsync(deckGroupDeck);
+            if (LoggedInUser.UserId == deckgroup.UserId)
+            {
+                CurrentDeckGroupDeck = await GetSpecificDeckGroupDeck(deckGroupDeck.DeckGroupId, deckGroupDeck.DeckId);
+            }
         }
 
-        ////need to refind that DeckGroupDeck
-        //CurrentDeckGroupDeck = await GetSpecificDeckGroupDeck(deckGroupDeck.DeckGroupId, deckGroupDeck.DeckId);
+            
 
-        ////pass in Deck so then Users can eventually add Flashcards to the deck.
-        //var navigationParameter = new Dictionary<string, object>
-        //        {
-        //            { "Current User", LoggedInUser },
-        //            {"Current Deck",  CurrentDeckGroupDeck}
-        //        };
-        ////Finishing up making a DeckGroup so now it will take the user to Build Deck
-        //    await Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
+        ////may need to re-find the first DeckGroupDeck to assign it below
+
+        ////need to refind that DeckGroupDeck
+
+        //pass in Deck so then Users can eventually add Flashcards to the deck.
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    {"Current Deck",  CurrentDeckGroupDeck}
+                };
+        //Finishing up making a DeckGroup so now it will take the user to Build Deck
+        await Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
     }
 
     public async Task SaveDeckAsync(Deck deck)
@@ -306,5 +347,15 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
 
     public DeckGroupDeck CurrentDeckGroupDeck { get; set; }
 
+    //need this for the deckgroups by same id.
+    public DeckGroupDeck DirectCopiedDeckGroupDeck { get; set; }
+
+    
     public List<UserDeckGroup> UserDeckGroups { get; set; }
+
+    public List<UserDeckGroup> SameDeckGroupsById { get; set; } = new List<UserDeckGroup>();
+
+    public List<UserDeckGroup> NotSameDeckGroupsById { get; set; } = new List<UserDeckGroup>();
+
+
 }
