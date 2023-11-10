@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text;
 using ApiStudyBuddy.Models;
 using NtcMaui.Views.MyStudies;
+using ThreadNetwork;
 
 namespace NtcMaui.Views.Edit;
 
@@ -57,6 +58,28 @@ public partial class EditDeckGroupPage : ContentPage, IQueryAttributable, INotif
        await Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
     }
 
+    private void DeleteBtn_Clicked(object sender, EventArgs e)
+    {
+        FinishEditingBtn.IsVisible = false;
+        FinishDeleteBtn.IsVisible = true;
+        CancelBtn.IsVisible = true;
+        WarningLabel.Text = $"Warning: You are about to delete {SelectedDeckGroup.DeckGroupName}. Hitting finish will delete yours and your shared users' deckGroup";
+        WarningLabel.IsVisible = true;
+    }
+
+    private void FinishDeleteBtn_Clicked(object sender, EventArgs e)
+    {
+       //get the userDeckGroups and get the ones where by the name.
+    }
+
+    private void CancelBtn_Clicked(object sender, EventArgs e)
+    {
+        FinishEditingBtn.IsVisible = true;
+        FinishDeleteBtn.IsVisible = false;
+        CancelBtn.IsVisible = false;
+        WarningLabel.IsVisible = false;
+    }
+
     private void IsPublicCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         if (e.Value == true)
@@ -68,6 +91,23 @@ public partial class EditDeckGroupPage : ContentPage, IQueryAttributable, INotif
             IsPublic = false;
         }
     }
+
+    //update the api to deal with endpoint for userId and DeckGroupId for deleting userDeckGroup
+    //public async Task DeleteDeckGroupAsync(int userId, int userDeckGroupId)
+    //{
+    //    Uri uri = new Uri(string.Format($"{Constants.TestUrl}", id));
+
+    //    try
+    //    {
+    //        HttpResponseMessage response = await _client.DeleteAsync(uri);
+    //        if (response.IsSuccessStatusCode)
+    //            Debug.WriteLine(@"\tTodoItem successfully deleted.");
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        Debug.WriteLine(@"\tERROR {0}", ex.Message);
+    //    }
+    //}
 
     /// <summary>
     /// Does a Put command on the deckgroup
@@ -130,4 +170,6 @@ public partial class EditDeckGroupPage : ContentPage, IQueryAttributable, INotif
 
     //gets all the deckgroups needed to be edited (dealing with shared stuff)
     public List<DeckGroup> DeckGroupsToEdit { get; set; }
+
+
 }
