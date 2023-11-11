@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
+using NtcMaui.Views.SignAndCreate;
 using NtcMaui.Views.StudySessionFolder;
 
 namespace NtcMaui.Views.MyStudies;
@@ -37,8 +38,18 @@ public partial class DashboardStudyPage : ContentPage, IQueryAttributable, INoti
         }
     }
 
+	private void GoToHomePage(object sender, EventArgs e)
+	{
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+	}
+
+
     //when user clicks a flashcard it should take him straight to study priority page.
-    private void FlashCardSelected(object sender, SelectedItemChangedEventArgs e)
+	private void FlashCardSelected(object sender, TappedEventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
                 {

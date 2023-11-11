@@ -50,6 +50,7 @@
 
 	<ItemGroup>
 	  <None Remove="Resources\Images\green_checkmark.jpg" />
+	  <None Remove="Resources\Images\home.png" />
 	  <None Remove="Resources\Images\ntclogo.png" />
 	  <None Remove="Resources\Images\stockprofileimage.png" />
 	  <None Remove="Resources\Images\upload.png" />

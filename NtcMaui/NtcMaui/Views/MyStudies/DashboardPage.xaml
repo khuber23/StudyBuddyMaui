@@ -33,12 +33,12 @@
         </HorizontalStackLayout>
     </Shell.TitleView>
 
-    <Grid ColumnDefinitions="*,*,*"
+    <Grid ColumnDefinitions="*,*"
           ColumnSpacing="5"
           RowDefinitions="*,Auto"
           RowSpacing="0">
 
-        <StackLayout Grid.Column="1">
+        <StackLayout Grid.ColumnSpan="2">
             <Label Text="Card Stats" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="20" FontAttributes="Bold"/>
             <ProgressBar WidthRequest="200" HeightRequest="50" ProgressColor="Green" x:Name="StatsProgressBar"/>
             <Label HorizontalOptions="Center" x:Name="ProgressLabel"/>
@@ -85,18 +85,18 @@
                 x:Name="DashboardStatsBtn"
                 Clicked="GoToDashboardPage"
                 Grid.Row="1"
-                Grid.Column="1"
+                Grid.Column="0"
                 Margin="8"/>
-        <Button Text="Study"
+        <!--<Button Text="Study"
                 x:Name="DashboardStudyBtn"
                 Clicked="GoToDashboardStudyPage"
                 Grid.Row="1"              
-                Margin="8"/>
+                Margin="8"/>-->
         <Button Text="History"
                 x:Name="DashboardHistoryBtn"
                 Clicked="GoToDashboardHistoryPage"
                 Grid.Row="1"
-                Grid.Column="3"
+                Grid.Column="1"
                 Margin="8"/>
     </Grid>
 
