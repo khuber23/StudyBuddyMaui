@@ -3,35 +3,71 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.MyStudies.FlashcardPage"
              Title="FlashcardPage">
-    <ScrollView>
-        <Grid>
-            <StackLayout Margin="0, 5">
-                <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 5">
-                    <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage"  Margin="5, 5" Text="Dash Board"></Button>
-                    <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Margin="5, 5" Text="Flashcard"></Button>
-                    <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Margin="5, 5" Text="Deck"></Button>
-                    <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Margin="5, 5" Text="Deck Groups"></Button>
-                </HorizontalStackLayout>
+    
+    <ContentPage.Resources>
+        <Style x:Key="CardView" TargetType="Frame">
+            <Setter Property="BorderColor" Value="#DDDDDD"/>
+            <Setter Property="HasShadow" Value="{OnPlatform iOS=false, MacCatalyst=false, Default=true}"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="50,0,50,0"/>
+            <Setter Property="Background" Value="{StaticResource LightBackground}"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="IsClippedToBounds" Value="True"/>
+        </Style>
+    </ContentPage.Resources>
 
-                <SearchBar HorizontalOptions="StartAndExpand" Placeholder="Search Flash Cards" TextChanged="SearchBar_TextChanged"></SearchBar>
-                <!--<ListView x:Name="searchFlashCards"></ListView>-->
-                <StackLayout>
-                    <ListView x:Name="FlashcardListView" ItemSelected="FlashcardListView_ItemSelected">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout Orientation="Horizontal">
-                                        <StackLayout Orientation="Vertical" Margin="10, 5">
-                                            <Label Text="{Binding FlashCardQuestion}" FontSize="20" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
-                                            <Label Text="{Binding FlashCardAnswer}"></Label>
-                                        </StackLayout>
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </StackLayout>
-            </StackLayout>
-        </Grid>
-    </ScrollView>
+    <Shell.TitleView>
+        <HorizontalStackLayout>
+            <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
+            <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage" Text="Dashboard"></Button>
+            <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"></Button>
+            <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Text="Decks"></Button>
+            <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"></Button>
+        </HorizontalStackLayout>
+    </Shell.TitleView>
+
+    <Grid ColumnDefinitions="*,*"
+          ColumnSpacing="5"
+          RowDefinitions="*,Auto"
+          RowSpacing="0">
+
+        <StackLayout Grid.ColumnSpan="2"  Margin="0,50,0,0">
+                <Label Text="Flashcards" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="24" FontAttributes="Bold"/>
+                <SearchBar Margin="0,30,0,0" WidthRequest="400" HorizontalOptions="Center" Placeholder="Search Flashcards" TextChanged="SearchBar_TextChanged"/>
+        </StackLayout>
+
+        <ListView Margin="0,160,0,0"
+                        BackgroundColor="Transparent"
+                        Grid.ColumnSpan="3"
+                        x:Name="FlashcardListView"
+                        ItemSelected="FlashcardListView_ItemSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="10">
+                            <Frame HeightRequest="125"
+                                   Padding="0"
+                                   Style="{StaticResource CardView}">
+                                <Grid Padding="0"
+                                      ColumnDefinitions="125, *">
+                                    <Image Aspect="AspectFill"
+                                       Source="stockprofileimage.png"
+                                       WidthRequest="125"
+                                       HeightRequest="125"/>
+                                    <VerticalStackLayout Grid.Column="1"
+                                                         Padding="10"
+                                                         VerticalOptions="Center">
+                                        <Label Text="{Binding FlashCardQuestion}" FontAttributes="Bold"/>
+                                        <Label Text="{Binding FlashCardAnswer}"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+
+
 </ContentPage>

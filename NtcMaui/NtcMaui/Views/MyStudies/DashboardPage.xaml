@@ -38,8 +38,8 @@
           RowDefinitions="*,Auto"
           RowSpacing="0">
 
-        <StackLayout Grid.ColumnSpan="2">
-            <Label Text="Card Stats" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="20" FontAttributes="Bold"/>
+        <StackLayout Grid.ColumnSpan="2"  Margin="0,10,0,0">
+            <Label Text="Card Stats" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="24" FontAttributes="Bold"/>
             <ProgressBar WidthRequest="200" HeightRequest="50" ProgressColor="Green" x:Name="StatsProgressBar"/>
             <Label HorizontalOptions="Center" x:Name="ProgressLabel"/>
         </StackLayout>
@@ -87,11 +87,6 @@
                 Grid.Row="1"
                 Grid.Column="0"
                 Margin="8"/>
-        <!--<Button Text="Study"
-                x:Name="DashboardStudyBtn"
-                Clicked="GoToDashboardStudyPage"
-                Grid.Row="1"              
-                Margin="8"/>-->
         <Button Text="History"
                 x:Name="DashboardHistoryBtn"
                 Clicked="GoToDashboardHistoryPage"
