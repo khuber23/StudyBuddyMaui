@@ -21,13 +21,13 @@
                     <Grid Margin="0,5">
                         <StackLayout Orientation="Horizontal">
                             <StackLayout Margin="10, 10" HorizontalOptions="StartAndExpand">
-                                <Label Text="Make Public" Margin="10,10"></Label>
-                                <CheckBox Margin="10,10" x:Name="IsPublicCheckBox" CheckedChanged="IsPublicCheckBox_CheckedChanged" HorizontalOptions="Start"></CheckBox>
+                                <Label Text="Make Public"></Label>
+                                <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="IsPublicCheckBox_CheckedChanged" HorizontalOptions="Start"></CheckBox>
                             </StackLayout>
 
                             <StackLayout Margin="10,10" HorizontalOptions="EndAndExpand">
-                                <Label Text="Click if you wish to delete the DeckGroup." Margin="10, 10"></Label>
-                                <Button HorizontalOptions="End" x:Name="DeleteBtn" Margin="10,10" Text="Delete" Clicked="DeleteBtn_Clicked"></Button>
+                                <Label Text="Click if you wish to delete the DeckGroup." Margin="0, 10"></Label>
+                                <Button HorizontalOptions="End" x:Name="DeleteBtn" Margin="0,10" Text="Delete" Clicked="DeleteBtn_Clicked"></Button>
                             </StackLayout>
                         </StackLayout>
                     </Grid>
