@@ -28,6 +28,8 @@ public partial class EditFlashCardOnlyDeck : ContentPage, IQueryAttributable, IN
         FlashCardQuestionEntry.Text = SelectedFlashCard.FlashCardQuestion;
         FlashCardAnswerEntry.Text = SelectedFlashCard.FlashCardAnswer;
         IsPublicCheckBox.IsChecked = SelectedFlashCard.IsPublic;
+        DeckFlashcards = await GetAllDeckFlashCards();
+        DeckFlashcards = DeckFlashcards.Where(deckflashcard => deckflashcard.DeckId == SelectedDeck.DeckId || deckflashcard.Deck.DeckName == SelectedDeck.DeckName).ToList();
     }
 
     private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -40,6 +42,38 @@ public partial class EditFlashCardOnlyDeck : ContentPage, IQueryAttributable, IN
         {
             IsPublic = false;
         }
+    }
+
+    private void CancelBtn_Clicked(object sender, EventArgs e)
+    {
+        FinishEditingBtn.IsVisible = true;
+        FinishDeleteBtn.IsVisible = false;
+        CancelBtn.IsVisible = false;
+        WarningLabel.IsVisible = false;
+    }
+
+    private void DeleteBtn_Clicked(object sender, EventArgs e)
+    {
+        FinishEditingBtn.IsVisible = false;
+        FinishDeleteBtn.IsVisible = true;
+        CancelBtn.IsVisible = true;
+        WarningLabel.Text = $"Warning: You are about to delete {SelectedFlashCard.FlashCardQuestion}. Hitting finish will delete yours and your shared users' flashcards from the deck.";
+        WarningLabel.IsVisible = true;
+    }
+
+    private async void FinishDeleteBtn_Clicked(object sender, EventArgs e)
+    {
+        foreach(DeckFlashCard deckFlashCard in DeckFlashcards)
+        {
+            await DeleteDeckFlashCardAsync(deckFlashCard.DeckId, deckFlashCard.FlashCardId);
+        }
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        //don't know where to take them so take them to the deck page lol
+        await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+
     }
 
     private async void FinishEditingBtn_Clicked(object sender, EventArgs e)
@@ -87,23 +121,45 @@ public partial class EditFlashCardOnlyDeck : ContentPage, IQueryAttributable, IN
         }
     }
 
-    private void ReadOnlyCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    public async Task DeleteDeckFlashCardAsync(int deckId, int flashCardId)
     {
-        if (e.Value == true)
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckFlashCard/{deckId}/{flashCardId}", string.Empty));
+
+        try
         {
-            IsPublic = true;
-            ReadOnlyStack.IsVisible = true;
+            HttpResponseMessage response = await Constants._client.DeleteAsync(uri);
+            if (response.IsSuccessStatusCode)
+                Debug.WriteLine(@"\Item successfully deleted.");
         }
-        else
+        catch (Exception ex)
         {
-            IsPublic = false;
-            ReadOnlyStack.IsVisible = false;
-            //re-set this to false if it was checked after unsetting is public
-            ReadOnlyCheckBox.IsChecked = false;
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
     }
 
-    public bool ReadOnly { get; set; }
+    //is going to get all of the Deck Groups
+    public async Task<List<DeckFlashCard>> GetAllDeckFlashCards()
+    {
+        List<DeckFlashCard> deckFlashCards = new List<DeckFlashCard>();
+
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckFlashCard", string.Empty));
+        try
+        {
+            HttpResponseMessage response = await Constants._client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                deckFlashCards = JsonSerializer.Deserialize<List<DeckFlashCard>>(content, Constants._serializerOptions);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+
+        return deckFlashCards;
+    }
+
 
     public User LoggedInUser { get; set; }
 
@@ -112,4 +168,6 @@ public partial class EditFlashCardOnlyDeck : ContentPage, IQueryAttributable, IN
     public Deck SelectedDeck { get; set; }
 
     public bool IsPublic { get; set; }
+
+    public List<DeckFlashCard> DeckFlashcards { get; set; }
 }

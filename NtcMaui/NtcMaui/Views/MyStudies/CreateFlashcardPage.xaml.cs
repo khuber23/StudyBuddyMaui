@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Text;
 using ApiStudyBuddy.Models;
+using System.Collections.Generic;
 
 namespace NtcMaui.Views.MyStudies;
 
@@ -21,6 +22,15 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         OnPropertyChanged("Current User");
     }
 
+    protected async override void OnAppearing()
+    {
+        base.OnAppearing();
+        Decks = await GetAllDecks();
+        DecksToUpdate = Decks.Where(d => d.DeckName == SelectedDeck.DeckName && d.DeckDescription == SelectedDeck.DeckDescription).ToList();
+
+
+    }
+
     //So when a user saves a FlashCard it will end up in a list until a User decides to Finish making the Deck.
     //eventually handle making images but for now i can handle if flashcard is public.
     private void SaveFlashCard(object sender, EventArgs e)
@@ -29,7 +39,14 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         flashCard.FlashCardQuestion = FlashcardQuestionEntry.Text;
         flashCard.FlashCardAnswer = FlashcardAnswerEntry.Text;
         flashCard.IsPublic = IsPublic;
+        
+        //contreversial but Readonly will be set to false...I am not too worried about the editing for flashcards.
+        //if a user would import a public flashcard it would clone a copy for that user to use and even eventually delete from it and use as they wish.
+       
+        flashCard.ReadOnly = false;
         UsermadeFlashCards.Add(flashCard);
+        //added this for later use of dealing with getting all the flashcards by question that have been created (mostly re-get proper Id's)
+        FlashCardQuestions.Add(flashCard.FlashCardQuestion);
         FlashcardQuestionEntry.Text = String.Empty;
         FlashcardAnswerEntry.Text = String.Empty;
         IsPublicCheckBox.IsChecked = false;
@@ -55,22 +72,18 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         }
         //after that we neeed to make retrieve the right flashcards with the Id in the database and then make them into DeckFlashcards.
         List<FlashCard> flashcards = await GetAllFlashCards();
-        foreach(FlashCard flashCard in flashcards)
+        UsermadeFlashCards = flashcards.Where(item => FlashCardQuestions.Contains(item.FlashCardQuestion)).ToList();
+        foreach (Deck deck in DecksToUpdate)
         {
             foreach (FlashCard userMadeFlashCard in UsermadeFlashCards)
             {
-                if (flashCard.FlashCardQuestion == userMadeFlashCard.FlashCardQuestion && flashCard.FlashCardAnswer == userMadeFlashCard.FlashCardAnswer)
-                {
-                    DeckFlashCard deckFlashCard = new DeckFlashCard();
-                    deckFlashCard.FlashCardId = flashCard.FlashCardId;
-                    deckFlashCard.DeckId = SelectedDeck.DeckId;
-                    await SaveDeckFlashcardAsync(deckFlashCard);
-                    //we break out here so that it doesn't keep looping through all of the userMade Flashcards. Since we will need to keep looping
-                    //through the flashcard in the database anyway.
-                    break;
-                }
+                DeckFlashCard deckFlashCard = new DeckFlashCard();
+                deckFlashCard.FlashCardId = userMadeFlashCard.FlashCardId;
+                deckFlashCard.DeckId = deck.DeckId;
+                await SaveDeckFlashcardAsync(deckFlashCard);
             }
         }
+            
         //then we can probably go back to the DecksPage
         var navigationParameter = new Dictionary<string, object>
                 {
@@ -157,6 +170,28 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         return flashCards;
     }
 
+    public async Task<List<Deck>> GetAllDecks()
+    {
+        List<Deck> decks = new List<Deck>();
+
+        //originally
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck", string.Empty));
+        try
+        {
+            HttpResponseMessage response = await Constants._client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                decks = JsonSerializer.Deserialize<List<Deck>>(content, Constants._serializerOptions);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+        return decks;
+    }
+
     private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         if (e.Value == true)
@@ -177,4 +212,10 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
     public Deck SelectedDeck { get; set; }
 
     public bool IsPublic { get; set; }
+
+    public List<Deck> Decks { get; set; }
+
+    public List<Deck> DecksToUpdate { get; set; }
+
+    public List<string> FlashCardQuestions { get; set;} = new List<string>();
 }

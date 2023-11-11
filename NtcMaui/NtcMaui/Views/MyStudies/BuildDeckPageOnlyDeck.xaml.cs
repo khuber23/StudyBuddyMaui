@@ -57,6 +57,7 @@ public partial class BuildDeckPageOnlyDeck : ContentPage, IQueryAttributable, IN
             if (EditingCheckBox.IsChecked == true)
             {
                 SelectedFlashCard = e.SelectedItem as DeckFlashCard;
+                //if they try an imported card it will not work as when they import it it should clone it.
                 if (SelectedDeck.ReadOnly == true)
                 {
                     ErrorLabel.Text = $"{SelectedDeck.DeckName} isn't editable";

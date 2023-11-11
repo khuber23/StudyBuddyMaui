@@ -21,25 +21,100 @@ public partial class EditDeckPage : ContentPage, IQueryAttributable, INotifyProp
         OnPropertyChanged("Current User");
     }
 
-    protected override void OnAppearing()
+    protected async override void OnAppearing()
     {
         base.OnAppearing();
-
+        List<Deck> decks = await GetAllDecks();
+        DecksToEdit = decks.Where(d => d.DeckName == SelectedDeck.DeckName).ToList();
+        UserDecks = await GetAllUserDecks();
+        UserDecks = UserDecks.Where(d => d.DeckId == SelectedDeck.DeckId || d.Deck.DeckName == SelectedDeck.DeckName).ToList();
+        DeckGroupDecks = await GetAllDeckGroupDecks();
+        DeckGroupDecks = DeckGroupDecks.Where(deckgroupdeck => deckgroupdeck.DeckId == SelectedDeck.DeckId).ToList();
         DeckNameEntry.Text = SelectedDeck.DeckName;
         DeckDescriptionEntry.Text = SelectedDeck.DeckDescription;
     }
 
+    private void CancelBtn_Clicked(object sender, EventArgs e)
+    {
+        FinishEditingBtn.IsVisible = true;
+        FinishDeleteBtn.IsVisible = false;
+        CancelBtn.IsVisible = false;
+        WarningLabel.IsVisible = false;
+    }
+
+    private void DeleteBtn_Clicked(object sender, EventArgs e)
+    {
+        FinishEditingBtn.IsVisible = false;
+        FinishDeleteBtn.IsVisible = true;
+        CancelBtn.IsVisible = true;
+        WarningLabel.Text = $"Warning: You are about to delete {SelectedDeck.DeckName}. Hitting finish will delete yours and your shared users' deck";
+        WarningLabel.IsVisible = true;
+    }
+
+    private async void FinishDeleteBtn_Clicked(object sender, EventArgs e)
+    {
+        //get the userDeckGroups and get the ones where by the name.
+        foreach (UserDeck userDeck in UserDecks)
+        {
+            await DeleteUserDeckAsync(userDeck.UserId, userDeck.DeckId);
+        }
+        //essentially if there is a deck relating to DeckGroupDecks
+        //so if a user is trying to delete a deck in a deckgroup we need to delete the userDeck as well as the deckgroupdeck
+        if (DeckGroupDecks.Count > 0)
+        {
+            foreach (DeckGroupDeck groupDeck in DeckGroupDecks)
+            {
+                await DeleteDeckGroupDeckAsync(groupDeck.DeckGroupId, groupDeck.DeckId);
+            }
+        }
+
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+
+    }
+
+
     private async void FinishEditingBtn_Clicked(object sender, EventArgs e)
     {
-        SelectedDeck.DeckName = DeckNameEntry.Text;
-        SelectedDeck.DeckDescription = DeckDescriptionEntry.Text;
-        await PutDeckAsync(SelectedDeck);
+        foreach(Deck deck in DecksToEdit)
+        {
+            SelectedDeck = deck;
+            SelectedDeck.DeckName = DeckNameEntry.Text;
+            SelectedDeck.DeckDescription = DeckDescriptionEntry.Text;
+            SelectedDeck.IsPublic = IsPublic;
+            //the first item should be the one similiar to the one needing to be edited...so anything after are the shared dekcs.
+            if(DecksToEdit.First().DeckId == SelectedDeck.DeckId)
+            {
+                SelectedDeck.IsPublic = IsPublic;
+            }
+            else
+            {
+                SelectedDeck.IsPublic = false;
+            }
+            await PutDeckAsync(SelectedDeck);
+        }
+        
         //then navigate back to DeckGroupPage
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }
                 };
         await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+    }
+
+    private void IsPublicCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        if (e.Value == true)
+        {
+            IsPublic = true;
+        }
+        else
+        {
+            IsPublic = false;
+        }
     }
 
     /// <summary>
@@ -69,42 +144,122 @@ public partial class EditDeckPage : ContentPage, IQueryAttributable, INotifyProp
         }
     }
 
-
-    private void IsPublicCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    public async Task DeleteDeckGroupDeckAsync(int deckGroupId, int deckId)
     {
-        if (e.Value == true)
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck/{deckGroupId}/{deckId}", string.Empty));
+
+        try
         {
-            IsPublic = true;
-            ReadOnlyStack.IsVisible = true;
+            HttpResponseMessage response = await Constants._client.DeleteAsync(uri);
+            if (response.IsSuccessStatusCode)
+                Debug.WriteLine(@"\Item successfully deleted.");
         }
-        else
+        catch (Exception ex)
         {
-            IsPublic = false;
-            ReadOnlyStack.IsVisible = false;
-            //re-set this to false if it was checked after unsetting is public
-            ReadOnlyCheckBox.IsChecked = false;
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
     }
 
-    private void ReadOnlyCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    public async Task DeleteUserDeckAsync(int userId, int deckId)
     {
-        if (e.Value == true)
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/{userId}/{deckId}", string.Empty));
+
+        try
         {
-            ReadOnly = true;
+            HttpResponseMessage response = await Constants._client.DeleteAsync(uri);
+            if (response.IsSuccessStatusCode)
+                Debug.WriteLine(@"\Item successfully deleted.");
         }
-        else
+        catch (Exception ex)
         {
-            ReadOnly = false;
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
     }
 
-    public bool ReadOnly { get; set; }
+    //is going to get all of the Deck
+    public async Task<List<Deck>> GetAllDecks()
+    {
+        List<Deck> decks = new List<Deck>();
+
+
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck", string.Empty));
+        try
+        {
+            HttpResponseMessage response = await Constants._client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                decks = JsonSerializer.Deserialize<List<Deck>>(content, Constants._serializerOptions);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+
+        return decks;
+    }
+
+    //is going to get all of the Deck
+    public async Task<List<UserDeck>> GetAllUserDecks()
+    {
+        List<UserDeck> userDecks = new List<UserDeck>();
+
+
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck", string.Empty));
+        try
+        {
+            HttpResponseMessage response = await Constants._client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                userDecks = JsonSerializer.Deserialize<List<UserDeck>>(content, Constants._serializerOptions);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+
+        return userDecks;
+    }
+
+    //is going to get all of the Deck
+    public async Task<List<DeckGroupDeck>> GetAllDeckGroupDecks()
+    {
+        List<DeckGroupDeck> deckGroupDecks = new List<DeckGroupDeck>();
+
+
+        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck", string.Empty));
+        try
+        {
+            HttpResponseMessage response = await Constants._client.GetAsync(uri);
+            if (response.IsSuccessStatusCode)
+            {
+                string content = await response.Content.ReadAsStringAsync();
+                deckGroupDecks = JsonSerializer.Deserialize<List<DeckGroupDeck>>(content, Constants._serializerOptions);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(@"\tERROR {0}", ex.Message);
+        }
+
+        return deckGroupDecks;
+    }
 
     public bool IsPublic { get; set; }
 
     public User LoggedInUser { get; set; }
 
     public Deck SelectedDeck { get; set; }
+
+    //gets a list of all the decks that can be editable (used for shared decks mostly to updated stuff for shared)
+    public List<Deck> DecksToEdit { get; set; }
+
+    public List<DeckGroupDeck> DeckGroupDecks { get; set; }
+
+    public List<UserDeck> UserDecks { get; set; }
 
 
 }

@@ -31,8 +31,6 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
         OnPropertyChanged("Current User");
     }
 
-
-
     //button click event for Building off of DeckGroup
     private void GoToCreateDeckPage(object sender, EventArgs e)
     {
@@ -53,7 +51,6 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
         }
     }
 
-    
 
     private void DeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
