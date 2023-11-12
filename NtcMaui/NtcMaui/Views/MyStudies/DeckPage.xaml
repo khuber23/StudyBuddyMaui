@@ -3,54 +3,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.MyStudies.DeckPage"
              Title="DeckPage">
-    <!--<ScrollView>
-        <Grid>
-            <StackLayout Margin="0, 5">
-                <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 5">
-                    <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage"  Margin="5, 5" Text="Dash Board"></Button>
-                    <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Margin="5, 5" Text="Flashcard"></Button>
-                    <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Margin="5, 5" Text="Deck"></Button>
-                    <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Margin="5, 5" Text="Deck Groups"></Button>
-                </HorizontalStackLayout>
-
-                <StackLayout Orientation="Horizontal">
-                    <ImageButton x:Name="AddDeckBtn" Clicked="GoToCreateDeckPage" Margin="10, 10" Source="plussign.png" VerticalOptions="Start" WidthRequest="25" HeightRequest="25"></ImageButton>
-                    <StackLayout Orientation="Vertical" Margin="10, 5">
-                        <Label Text="Create A Deck" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
-                        --><!--<Label Text="{Binding User.Username}" VerticalOptions="CenterAndExpand"></Label>--><!--
-                    </StackLayout>
-                    <StackLayout HorizontalOptions="EndAndExpand">
-                        <Button x:Name="ShareDeckBtn" Margin="20, 0" Text="Share Decks" Clicked="GoToShareDeckPage"></Button>
-                    </StackLayout>
-                </StackLayout>
-                <HorizontalStackLayout>
-                    <Label Margin="0,10" Text="Enable Editing?"></Label>
-                    <CheckBox x:Name="EditingCheckBox" IsChecked="False"></CheckBox>
-                </HorizontalStackLayout>
-                <StackLayout>
-                    <ListView x:Name="DeckListView" ItemSelected="DeckListView_ItemSelected">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout Orientation="Horizontal">
-                                        <Image x:Name="ProfileImage"  Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50" VerticalOptions="Start"></Image>
-                                        <StackLayout Orientation="Vertical" Margin="10, 5">
-                                            <Label Text="{Binding Deck.DeckName}" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
-                                            <Label Text="{Binding User.Username}"></Label>
-                                        </StackLayout>
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-
-                    <Label HorizontalOptions="Center" x:Name="ErrorLabel" TextColor="Red" IsVisible="False"></Label>
-
-                </StackLayout>
-
-            </StackLayout>
-        </Grid>
-    </ScrollView>-->
 
     <ContentPage.Resources>
         <Style x:Key="CardView" TargetType="Frame">
@@ -79,25 +31,15 @@
           RowDefinitions="*,Auto"
           RowSpacing="0">
 
-        <!--<StackLayout Grid.ColumnSpan="1" Margin="0,20,0,0">
-            <Label Text="Create A Deck" FontSize="18" FontAttributes="Bold"/>
-            <ImageButton x:Name="AddDeckBtn" Clicked="GoToCreateDeckPage" Source="plussign.png" WidthRequest="25" HeightRequest="25"/>
-        </StackLayout>-->
-        <!--<StackLayout Grid.ColumnSpan="3"  Margin="0,70,0,0">
-            <Button x:Name="ShareDeckBtn" WidthRequest="150" Text="Share Decks" Clicked="GoToShareDeckPage"/>
-            <Label Text="Enable Editing?"/>
-            <CheckBox x:Name="EditingCheckBox" IsChecked="False"/>
-        </StackLayout>-->
-
         <StackLayout Grid.ColumnSpan="2"  Margin="0,50,0,0">
-            <Label Text="Decks" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="24" FontAttributes="Bold"/>
-            <HorizontalStackLayout Spacing="10">
+            <Label Text="Decks" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="30" FontAttributes="Bold"/>
+            <HorizontalStackLayout Padding="10" Spacing="10">
                 <Label FontSize="12" Text="Enable Editing?"/>
                 <CheckBox x:Name="EditingCheckBox" IsChecked="False"/>
             </HorizontalStackLayout>
         </StackLayout>
 
-        <ListView Margin="0,130,0,0"
+        <ListView Margin="0,140,0,0"
                         BackgroundColor="Transparent"
                         Grid.ColumnSpan="3"
                         x:Name="DeckListView"
@@ -140,7 +82,7 @@
                 Grid.Column="0"
                 Margin="8"/>
         <Button x:Name="ShareDeckBtn" 
-                Text="Share Decks" 
+                Text="Share Deck" 
                 Clicked="GoToShareDeckPage"
                 Grid.Row="1"
                 Grid.Column="1"
