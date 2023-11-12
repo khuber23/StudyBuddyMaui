@@ -4,6 +4,7 @@ using System.Text.Json;
 using ApiStudyBuddy.Models;
 using NtcMaui.Views.Edit;
 using NtcMaui.Views.Share;
+using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.MyStudies;
 
@@ -39,9 +40,17 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
         Shell.Current.GoToAsync(nameof(CreateDeckPageNoDeckGroup), navigationParameter);
     }
 
-   
 
-    private void GoToDashboardPage(object sender, EventArgs e)
+	private void GoToHomePage(object sender, EventArgs e)
+	{
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+	}
+
+	private void GoToDashboardPage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
                 {
