@@ -55,31 +55,28 @@ public partial class CreateAccount : ContentPage
         user.LastName = LastNameEntry.Text;
         //eventually add profile picture stuff here
         user.IsAdmin = false;
+        if (ImagePath == string.Empty || ImagePath == null)
+        {
+            ImagePath = "stockprofileimage.png";
+        }
+        else
+        {
+            user.ProfilePicture = ImagePath;
+        }
+        
         return user;
     }
 
-    public async Task<FileResult> PickImage(PickOptions options)
+    private async void UploadImageBtn_Clicked(object sender, EventArgs e)
     {
-        try
+        FileResult result = await FilePicker.PickAsync(new PickOptions
         {
-            var result = await FilePicker.Default.PickAsync(options);
-            if (result != null)
-            {
-                if (result.FileName.EndsWith("jpg", StringComparison.OrdinalIgnoreCase) ||
-                    result.FileName.EndsWith("png", StringComparison.OrdinalIgnoreCase))
-                {
-                    using var stream = await result.OpenReadAsync();
-                    var image = ImageSource.FromStream(() => stream);
-                }
-            }
+            FileTypes = FilePickerFileType.Images
+        });
 
-            return result;
-        }
-        catch (Exception ex)
-        {
-            // The user canceled or something went wrong
-        }
-
-        return null;
+        ImagePath = result.FullPath;
+        ProfileImage.Source = ImagePath;
     }
+
+    public string ImagePath { get; set; }
 }

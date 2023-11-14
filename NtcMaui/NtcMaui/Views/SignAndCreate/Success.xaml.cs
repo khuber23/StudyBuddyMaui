@@ -10,6 +10,20 @@ public partial class Success : ContentPage, IQueryAttributable, INotifyPropertyC
         InitializeComponent();
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        if (LoggedInUser.ProfilePicture == null || LoggedInUser.ProfilePicture == string.Empty)
+        {
+            UserImage.Source = "stockprofileimage.png";
+        }
+        else
+        {
+            UserImage.Source = LoggedInUser.ProfilePicture;
+        }
+        
+    }
+
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         LoggedInUser = query["Current User"] as User;

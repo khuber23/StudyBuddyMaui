@@ -19,6 +19,19 @@ public partial class HomePage : ContentPage, IQueryAttributable, INotifyProperty
         UserNameText.Text = LoggedInUser.Username;
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        if (LoggedInUser.ProfilePicture == null || LoggedInUser.ProfilePicture == string.Empty)
+        {
+            UserImage.Source = "stockprofileimage.png";
+        }
+        else
+        {
+            UserImage.Source = LoggedInUser.ProfilePicture;
+        }
+    }
+
     public async void GoToMyStudies(object sender, EventArgs e)
     {
         //eventually make this the dashboard page and also send the user through to this page.
