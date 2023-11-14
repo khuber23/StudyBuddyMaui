@@ -6,7 +6,7 @@
 
     <ContentPage.Resources>
         <Style x:Key="CardView" TargetType="Frame">
-            <Setter Property="BorderColor" Value="#DDDDDD"/>
+            <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
             <Setter Property="HasShadow" Value="{OnPlatform iOS=false, MacCatalyst=false, Default=true}"/>
             <Setter Property="Padding" Value="0"/>
             <Setter Property="Margin" Value="50,0,50,0"/>
