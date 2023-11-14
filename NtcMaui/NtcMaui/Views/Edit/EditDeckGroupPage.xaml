@@ -27,7 +27,7 @@
 
                             <StackLayout Margin="10,10" HorizontalOptions="EndAndExpand">
                                 <Label Text="Click if you wish to delete the DeckGroup." Margin="0, 10"></Label>
-                                <Button HorizontalOptions="End" x:Name="DeleteBtn" Margin="0,10" Text="Delete" Clicked="DeleteBtn_Clicked"></Button>
+                                <Button BackgroundColor="Red" HorizontalOptions="End" x:Name="DeleteBtn" Margin="0,10" Text="Delete" Clicked="DeleteBtn_Clicked"></Button>
                             </StackLayout>
                         </StackLayout>
                     </Grid>
@@ -38,7 +38,7 @@
                     
                     <HorizontalStackLayout HorizontalOptions="Center">
                         <Button Margin="10,10" HorizontalOptions="Center" x:Name="FinishEditingBtn" Text="Finish Editing" Clicked="FinishEditingBtn_Clicked"></Button>
-                        <Button Margin="10,10" HorizontalOptions="Center" IsVisible="false" x:Name="FinishDeleteBtn" Text="Finish Delete" Clicked="FinishDeleteBtn_Clicked"></Button>
+                        <Button BackgroundColor="Red" Margin="10,10" HorizontalOptions="Center" IsVisible="false" x:Name="FinishDeleteBtn" Text="Finish Delete" Clicked="FinishDeleteBtn_Clicked"></Button>
                         <Button Margin="10,10" HorizontalOptions="Center" IsVisible="false" x:Name="CancelBtn" Text="Cancel" Clicked="CancelBtn_Clicked"></Button>
                     </HorizontalStackLayout>
                     
