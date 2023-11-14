@@ -51,6 +51,18 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
         }
     }
 
+    //will take the user to an importDeckPage
+    private void ImportDeckBtn_Clicked(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    //needs to be DeckGroup for later for connecting Everything.
+            {"Current DeckGroup", SelectedDeckGroup }
+                };
+        Shell.Current.GoToAsync(nameof(ImportDeckPage), navigationParameter);
+    }
+
 
     private void DeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NtcMaui.Views.MyStudies.ImportDeckPage"
+             Title="ImportDeckPage">
+    <Shell.TitleView>
+        <HorizontalStackLayout>
+            <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
+            <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage" Text="Dashboard"/>
+            <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"/>
+            <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Text="Decks"/>
+            <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"/>
+        </HorizontalStackLayout>
+    </Shell.TitleView>
+
+    <Border WidthRequest="500" HeightRequest="450"
+        Stroke="{StaticResource Primary}"
+        StrokeThickness="4" 
+        StrokeShape="RoundRectangle 10,10,10,10" >
+        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+            <Label Text="DeckGroup Details" HorizontalOptions="Center" FontAttributes="Bold" FontSize="24" Margin="0,10,0,80"/>
+            <Label x:Name="CurrentDeckGroupLabel" HorizontalOptions="Center" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" Margin="0,0,0,80"/>
+            <Picker x:Name="DeckPicker"
+            SelectedItem="{Binding SelectedUserDeck}"
+            SelectedIndexChanged="DeckPicker_SelectedIndexChanged"              
+            ItemDisplayBinding="{Binding Deck.DeckName}"
+            Title="Choose a Deck:" 
+            WidthRequest="275"
+                HorizontalOptions="Center"/>
+
+            <Button Margin="0,50,0,0" WidthRequest="150" x:Name="AddDeckToDeckGroupBtn" Text="Add to DeckGroup" Clicked="AddDeckToDeckGroupBtn_Clicked"/>
+
+            <Label x:Name="ErrorLabel" IsVisible="false" TextColor="Red" Text="Please Select a deck from the drop-down"/>
+        </VerticalStackLayout>
+    </Border>
+</ContentPage>
