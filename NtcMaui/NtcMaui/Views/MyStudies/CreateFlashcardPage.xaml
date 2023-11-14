@@ -21,6 +21,17 @@
                         <Frame BackgroundColor="White"/>
                         <Entry x:Name="FlashcardAnswerEntry" TextColor="Black" Placeholder="Enter Answer Text here."></Entry>
                     </Grid>
+                    <Label Text="Flashcard Question Image" FontSize="16"></Label>
+                    <Grid Margin="0,5">
+                        <Frame BackgroundColor="White"/>
+                        <Entry x:Name="FlashcardQuestionImageEntry" TextColor="Black" Placeholder="Paste a link to an image here (Optional)"></Entry>
+                    </Grid>
+
+                    <Label Text="Flashcard Answer Image" FontSize="16"></Label>
+                    <Grid Margin="0,5">
+                        <Frame BackgroundColor="White"/>
+                        <Entry x:Name="FlashcardAnswerImageEntry" TextColor="Black" Placeholder="Paste a link to an image here (Optional)"></Entry>
+                    </Grid>
 
                     <Grid Margin="0,5">
                         <StackLayout Orientation="Horizontal">

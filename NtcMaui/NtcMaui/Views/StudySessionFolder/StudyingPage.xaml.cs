@@ -5,6 +5,7 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text;
 using ApiStudyBuddy.Models;
+using static System.Net.WebRequestMethods;
 
 namespace NtcMaui.Views.StudySessionFolder;
 

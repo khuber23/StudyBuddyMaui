@@ -38,6 +38,8 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         FlashCard flashCard = new FlashCard();
         flashCard.FlashCardQuestion = FlashcardQuestionEntry.Text;
         flashCard.FlashCardAnswer = FlashcardAnswerEntry.Text;
+        flashCard.FlashCardQuestionImage = FlashcardQuestionImageEntry.Text;
+        flashCard.FlashCardAnswerImage = FlashcardAnswerImageEntry.Text;
         flashCard.IsPublic = IsPublic;
         
         //contreversial but Readonly will be set to false...I am not too worried about the editing for flashcards.
@@ -49,6 +51,8 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         FlashCardQuestions.Add(flashCard.FlashCardQuestion);
         FlashcardQuestionEntry.Text = String.Empty;
         FlashcardAnswerEntry.Text = String.Empty;
+        FlashcardAnswerImageEntry.Text = String.Empty;
+        FlashcardQuestionImageEntry.Text = String.Empty;
         IsPublicCheckBox.IsChecked = false;
         if (UsermadeFlashCards.Count > 0)
         {
