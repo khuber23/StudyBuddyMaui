@@ -58,10 +58,11 @@ public partial class CreateAccount : ContentPage
         if (ImagePath == string.Empty || ImagePath == null)
         {
             ImagePath = "stockprofileimage.png";
+            UserImageEntry.Text = ImagePath;
         }
         else
         {
-            user.ProfilePicture = ImagePath;
+            user.ProfilePicture = UserImageEntry.Text;
         }
         
         return user;
@@ -76,6 +77,7 @@ public partial class CreateAccount : ContentPage
 
         ImagePath = result.FullPath;
         ProfileImage.Source = ImagePath;
+        UserImageEntry.Text = ImagePath;
     }
 
     public string ImagePath { get; set; }

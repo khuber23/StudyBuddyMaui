@@ -18,25 +18,28 @@
                         <Frame BackgroundColor="White"/>
                         <Entry x:Name="FlashCardAnswerEntry" TextColor="Black" Placeholder="Enter an answer"></Entry>
                     </Grid>
+                    <Label Text="Flashcard Question Image" FontSize="16"></Label>
                     <Grid Margin="0,5">
-                        <StackLayout Orientation="Horizontal">
-                            <StackLayout>
-                                <Label Text="FlashCard Question Image" FontSize="16"></Label>
-                                <ImageButton x:Name="UploadQuestionImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png"></ImageButton>
-                            </StackLayout>
-                            <!---Maybe make this instead of an image an entry of the actual file path?-->
-                            <Image x:Name="QuestionImage"  Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50"></Image>
-                        </StackLayout>
+                        <Frame BackgroundColor="White"/>
+                        <Entry x:Name="FlashcardQuestionImageEntry" TextColor="Black" Placeholder="Paste a link to an image here (Optional)"></Entry>
+
                     </Grid>
+
+                    <Label Margin="0,10" Text="Upload Question Picture" FontSize="16"></Label>
+                    <HorizontalStackLayout>
+                        <ImageButton x:Name="UploadQuestionImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png" Clicked="UploadQuestionImageBtn_Clicked"></ImageButton>
+                    </HorizontalStackLayout>
+
+                    <Label Text="Flashcard Answer Image" FontSize="16"></Label>
                     <Grid Margin="0,5">
-                        <StackLayout Orientation="Horizontal">
-                            <StackLayout>
-                                <Label Text="FlashCard Answer Image" FontSize="16"></Label>
-                                <ImageButton x:Name="UploadAnswerImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png"></ImageButton>
-                            </StackLayout>
-                            <Image x:Name="AnswerImage"  Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50"></Image>
-                        </StackLayout>
+                        <Frame BackgroundColor="White"/>
+                        <Entry x:Name="FlashcardAnswerImageEntry" TextColor="Black" Placeholder="Paste a link to an image here (Optional)"></Entry>
                     </Grid>
+
+                    <Label Margin="0,10" Text="Upload Answer Picture" FontSize="16"></Label>
+                    <HorizontalStackLayout>
+                        <ImageButton x:Name="UploadAnswerImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png" Clicked="UploadAnswerImageBtn_Clicked"></ImageButton>
+                    </HorizontalStackLayout>
                     <Grid Margin="0,5">
                         <StackLayout Orientation="Horizontal">
 

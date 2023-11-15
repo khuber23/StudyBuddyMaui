@@ -77,11 +77,33 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
 
     }
 
+    private async void UploadQuestionImageBtn_Clicked(object sender, EventArgs e)
+    {
+        FileResult result = await FilePicker.PickAsync(new PickOptions
+        {
+            FileTypes = FilePickerFileType.Images
+        });
+
+        FlashcardQuestionImageEntry.Text = result.FullPath;
+    }
+
+    private async void UploadAnswerImageBtn_Clicked(object sender, EventArgs e)
+    {
+        FileResult result = await FilePicker.PickAsync(new PickOptions
+        {
+            FileTypes = FilePickerFileType.Images
+        });
+
+        FlashcardAnswerImageEntry.Text = result.FullPath;
+    }
+
     private async void FinishEditingBtn_Clicked(object sender, EventArgs e)
     {
         //change to deal with flashcard
         SelectedFlashCard.FlashCardQuestion = FlashCardQuestionEntry.Text;
         SelectedFlashCard.FlashCardAnswer = FlashCardAnswerEntry.Text;
+        SelectedFlashCard.FlashCardAnswerImage = FlashcardAnswerImageEntry.Text;
+        SelectedFlashCard.FlashCardQuestionImage = FlashcardQuestionImageEntry.Text;
         //eventually deal with images here as well.
 
         await PutFlashCardAsync(SelectedFlashCard);

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using System.Text;
 using ApiStudyBuddy.Models;
-using System.Collections.Generic;
+using Microsoft.Maui.Controls.PlatformConfiguration;
 
 namespace NtcMaui.Views.MyStudies;
 
@@ -27,9 +27,9 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         base.OnAppearing();
         Decks = await GetAllDecks();
         DecksToUpdate = Decks.Where(d => d.DeckName == SelectedDeck.DeckName && d.DeckDescription == SelectedDeck.DeckDescription).ToList();
-
-
     }
+
+
 
     //So when a user saves a FlashCard it will end up in a list until a User decides to Finish making the Deck.
     //eventually handle making images but for now i can handle if flashcard is public.
@@ -207,6 +207,26 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
             IsPublic = false;
         }
 
+    }
+
+    private async void UploadQuestionImageBtn_Clicked(object sender, EventArgs e)
+    {
+        FileResult result = await FilePicker.PickAsync(new PickOptions
+        {
+            FileTypes = FilePickerFileType.Images
+        });
+
+        FlashcardQuestionImageEntry.Text = result.FullPath;
+    }
+
+    private async void UploadAnswerImageBtn_Clicked(object sender, EventArgs e)
+    {
+        FileResult result = await FilePicker.PickAsync(new PickOptions
+        {
+            FileTypes = FilePickerFileType.Images
+        });
+
+        FlashcardAnswerImageEntry.Text = result.FullPath;
     }
 
     public List<FlashCard> UsermadeFlashCards { get; set; } = new List<FlashCard>();

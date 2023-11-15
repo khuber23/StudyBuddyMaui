@@ -28,6 +28,8 @@ public partial class EditFlashCardOnlyDeck : ContentPage, IQueryAttributable, IN
         FlashCardQuestionEntry.Text = SelectedFlashCard.FlashCardQuestion;
         FlashCardAnswerEntry.Text = SelectedFlashCard.FlashCardAnswer;
         IsPublicCheckBox.IsChecked = SelectedFlashCard.IsPublic;
+        FlashcardQuestionImageEntry.Text = SelectedFlashCard.FlashCardQuestionImage;
+        FlashcardQuestionImageEntry.Text = SelectedFlashCard.FlashCardAnswerImage;
         DeckFlashcards = await GetAllDeckFlashCards();
         DeckFlashcards = DeckFlashcards.Where(deckflashcard => deckflashcard.DeckId == SelectedDeck.DeckId || deckflashcard.Deck.DeckName == SelectedDeck.DeckName).ToList();
     }
@@ -61,6 +63,26 @@ public partial class EditFlashCardOnlyDeck : ContentPage, IQueryAttributable, IN
         WarningLabel.IsVisible = true;
     }
 
+    private async void UploadQuestionImageBtn_Clicked(object sender, EventArgs e)
+    {
+        FileResult result = await FilePicker.PickAsync(new PickOptions
+        {
+            FileTypes = FilePickerFileType.Images
+        });
+
+        FlashcardQuestionImageEntry.Text = result.FullPath;
+    }
+
+    private async void UploadAnswerImageBtn_Clicked(object sender, EventArgs e)
+    {
+        FileResult result = await FilePicker.PickAsync(new PickOptions
+        {
+            FileTypes = FilePickerFileType.Images
+        });
+
+        FlashcardAnswerImageEntry.Text = result.FullPath;
+    }
+
     private async void FinishDeleteBtn_Clicked(object sender, EventArgs e)
     {
         foreach(DeckFlashCard deckFlashCard in DeckFlashcards)
@@ -81,6 +103,8 @@ public partial class EditFlashCardOnlyDeck : ContentPage, IQueryAttributable, IN
         //change to deal with flashcard
         SelectedFlashCard.FlashCardQuestion = FlashCardQuestionEntry.Text;
         SelectedFlashCard.FlashCardAnswer = FlashCardAnswerEntry.Text;
+        SelectedFlashCard.FlashCardAnswerImage = FlashcardAnswerImageEntry.Text;
+        SelectedFlashCard.FlashCardQuestionImage = FlashcardQuestionImageEntry.Text;
         //eventually deal with images here as well.
 
         await PutFlashCardAsync(SelectedFlashCard);
