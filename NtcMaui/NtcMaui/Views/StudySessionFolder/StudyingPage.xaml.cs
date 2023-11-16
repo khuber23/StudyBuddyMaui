@@ -49,6 +49,87 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
         }
     }
 
+    protected override void OnDisappearing()
+    {
+        //need a way to check if user is going to previous page or the next page.
+        if (BackButtonPressed == false && CompletedSession == false)
+        {
+            //due to weird error, testing something, I am going to add all the flashcards left into the InCorrectFlashCards List.
+            foreach (DeckFlashCard flashcard in FlashCards)
+            {
+                if (!IncorrectFlashCards.Contains(flashcard.FlashCard) && !CorrectFlashCards.Contains(flashcard.FlashCard))
+                {
+                    IncorrectFlashCards.Add(flashcard.FlashCard);
+                }
+
+            }
+            SaveStudySession();
+        }
+    }
+
+    private async void SaveStudySession()
+    {
+        EndSessionTime = DateTime.Now;
+
+        StudySession = new StudySession();
+        StudySession.StartTime = StartSessionTime;
+        StudySession.EndTime = EndSessionTime;
+        StudySession.UserId = LoggedInUser.UserId;
+        StudySession.DeckGroupId = ChosenDeckGroupDeck.DeckGroupId;
+        StudySession.DeckId = ChosenDeckGroupDeck.DeckId;
+        //might check this later but if they exit early the study Session would not be complete.
+        StudySession.IsCompleted = false;
+        SaveStudySessionAsync(StudySession);
+
+
+
+        //re - get that StudySession to save the studySessionFlashCards
+        //eventually also change the foreach to a Linq query for faster use.
+        StudySessions = await GetAllStudySessions();
+
+        StudySession = StudySessions.FirstOrDefault(studySession => studySession.EndTime == StudySession.EndTime
+                && studySession.StartTime == StudySession.StartTime
+                && studySession.UserId == StudySession.UserId
+                && studySession.DeckGroupId == StudySession.DeckGroupId
+                && studySession.DeckId == StudySession.DeckId);
+
+        foreach (FlashCard flashCard in CorrectFlashCards)
+        {
+            if (CorrectFlashCards.Count > 0)
+            {
+                StudySessionFlashCard = new StudySessionFlashCard();
+                StudySessionFlashCard.FlashCardId = flashCard.FlashCardId;
+                StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
+                StudySessionFlashCard.IsCorrect = true;
+                //DO NOT ADD AWAIT IN FRONT IT WILL NOT WORK OTHERWISE
+                SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+            }
+        }
+
+
+
+        foreach (FlashCard flashCard in IncorrectFlashCards)
+        {
+            if (IncorrectFlashCards.Count > 0)
+            {
+                StudySessionFlashCard = new StudySessionFlashCard();
+                StudySessionFlashCard.FlashCardId = flashCard.FlashCardId;
+                StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
+                StudySessionFlashCard.IsCorrect = false;
+                //DO NOT ADD AWAIT IN FRONT IT WILL NOT WORK OTHERWISE
+                SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+            }
+        }
+    }
+
+    //code that just is there to check if a user clicked the back button.
+    protected override bool OnBackButtonPressed()
+    {
+        // Do something here 
+        BackButtonPressed = true;
+        return base.OnBackButtonPressed();
+    }
+
     async void OnTapRecognized(object sender, TappedEventArgs args)
     {
         //old code for testing.
@@ -578,5 +659,10 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
 
     public FlashCard CurentFlashCard { get; set; }
 
+    //bool checking if the backbutton was pressed
+    public bool BackButtonPressed { get; set; }
+
+    //bool for checking if user is navigating to a new page (completed study session)
+    public bool CompletedSession { get; set; }
 
 }

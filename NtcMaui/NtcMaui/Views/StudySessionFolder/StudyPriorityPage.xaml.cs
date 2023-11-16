@@ -115,7 +115,7 @@ public partial class StudyPriorityPage : ContentPage, IQueryAttributable, INotif
                     CardsToStudy.Add(flashCard);
                 }
             }
-            ChosenCardLabel.Text = $"You have chosen {SelectedFlashCard.FlashCard.FlashCardQuestion} and any subsecquent flashcards to redo. Click Begin Session to re-study these cards.";
+            ChosenCardLabel.Text = $"You have chosen {SelectedFlashCard.FlashCard.FlashCardQuestion} and any subsecquent flashcards to re-study. Click Begin Session to re-study these cards.";
         }
     }
 
