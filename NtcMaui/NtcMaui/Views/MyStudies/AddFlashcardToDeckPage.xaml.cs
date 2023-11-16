@@ -27,7 +27,8 @@ public partial class AddFlashcardToDeckPage : ContentPage, IQueryAttributable, I
     {
         base.OnAppearing();
         CurrentFlashCardLabel.Text = $"{SelectedFlashCard.FlashCardQuestion}";
-        DeckPicker.ItemsSource = await GetAllDecks();
+        CurrentFlashcardAnswer.Text = $"{SelectedFlashCard.FlashCardAnswer}";
+		DeckPicker.ItemsSource = await GetAllDecks();
     }
 
     public async Task<List<UserDeck>> GetAllDecks()
