@@ -35,7 +35,7 @@
             <Label Text="Decks" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="30" FontAttributes="Bold"/>
             <HorizontalStackLayout Padding="10" Spacing="10">
                 <Label FontSize="12" Text="Enable Editing?"/>
-                <CheckBox x:Name="EditingCheckBox" IsChecked="False"/>
+                <CheckBox ToolTipProperties.Text="Check and Select Deck to Edit" x:Name="EditingCheckBox" IsChecked="False"/>
             </HorizontalStackLayout>
         </StackLayout>
 
