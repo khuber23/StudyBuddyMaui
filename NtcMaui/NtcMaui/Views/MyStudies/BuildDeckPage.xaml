@@ -33,7 +33,7 @@
           RowSpacing="0">
 
         <StackLayout Grid.ColumnSpan="3"  Margin="0,50,0,0">
-            <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="BuildDeckNameLabel" FontSize="24"/>
+            <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="BuildDeckNameLabel" FontSize="24" FontAttributes="Bold"/>
             <Label VerticalOptions="Center" HorizontalOptions="Center" Text="Add/Create a Flashcard"/>
             <HorizontalStackLayout Padding="10" Spacing="10">
                 <Label FontSize="12" Text="Enable Editing?"/>

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
 using NtcMaui.Views.Edit;
+using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.MyStudies;
 
@@ -21,7 +22,7 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
         //need to wait until api is changed but essentially need an endpoint in DeckGroup
         //as of 5:30 10/16/2023 this will get all of the Deck based on DeckGroup Id which will only belong to 1 user as of this moment.
         DeckListView.ItemsSource = await GetAllDecksbyDeckGroup();
-        DeckGroupNameLabel.Text = $"Building {SelectedDeckGroup.DeckGroupName}";
+        DeckGroupNameLabel.Text = $"Building {SelectedDeckGroup.DeckGroupName} Deck Group";
     }
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
@@ -128,7 +129,54 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
         return deckGroupDecks;
     }
 
-    public User LoggedInUser { get; set; }
+	private void GoToHomePage(object sender, EventArgs e)
+	{
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+	}
+
+	private void GoToDashboardPage(object sender, EventArgs e)
+	{
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DashboardPage), navigationParameter);
+	}
+
+	private void GoToFlashcardPage(object sender, EventArgs e)
+	{
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(FlashcardPage), navigationParameter);
+	}
+	private void GoToDeckPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+	}
+
+	private void GoToDeckGroupPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
+	}
+
+
+	public User LoggedInUser { get; set; }
 
     public DeckGroup SelectedDeckGroup { get; set; }
 
