@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
@@ -83,6 +84,86 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
        
     }
 
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        //need a way to check if user is going to previous page or the next page.
+        if (BackButtonPressed == false && CompletedSession == false)
+        {
+            SaveStudySession();
+        }
+    }
+
+    //code that just is there to check if a user clicked the back button.
+    protected override bool OnBackButtonPressed()
+    {
+        // Do something here 
+        BackButtonPressed = true;
+        return base.OnBackButtonPressed();
+    }
+
+    private async void SaveStudySession()
+    {
+        EndSessionTime = DateTime.Now;
+
+        StudySession = new StudySession();
+        StudySession.StartTime = StartSessionTime;
+        StudySession.EndTime = EndSessionTime;
+        StudySession.UserId = LoggedInUser.UserId;
+        StudySession.DeckGroupId = null;
+        StudySession.DeckId = ChosenUserDeck.DeckId;
+        //might check this later but if they exit early the study Session would not be complete.
+        StudySession.IsCompleted = false;
+        await SaveStudySessionAsync(StudySession);
+
+        //re - get that StudySession to save the studySessionFlashCards
+        //eventually also change the foreach to a Linq query for faster use.
+        StudySessions = await GetAllStudySessions();
+
+        foreach (StudySession studySession in StudySessions)
+            {
+                if (studySession.EndTime == StudySession.EndTime
+                    && studySession.StartTime == StudySession.StartTime
+                    && studySession.UserId == StudySession.UserId
+                    && studySession.DeckGroupId == StudySession.DeckGroupId
+                    && studySession.DeckId == StudySession.DeckId)
+                {
+                    //so if they are equal it will re-get the current StudySession along with it's Id from the Database.
+                    StudySession = studySession;
+                    break;
+                }
+            }
+
+        foreach (FlashCard flashCard in CorrectFlashCards)
+        {
+            if (CorrectFlashCards.Count > 0)
+            {
+                StudySessionFlashCard = new StudySessionFlashCard();
+                StudySessionFlashCard.FlashCardId = flashCard.FlashCardId;
+                StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
+                StudySessionFlashCard.IsCorrect = true;
+                //test to see if it works
+                await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+            }
+        }
+
+        // Use LINQ to filter the list based on the filter items
+        //works
+        FlashCards.Where(flashcard => CorrectFlashCards.Contains(flashcard.FlashCard)).ToList().ForEach(flashcard => FlashCards.Remove(flashcard));
+
+
+        //put each flashcard as Not completed its not in correctFlashcards. Flashcards labelled as incorrect also lump into this as we don't need to worry.
+        foreach (DeckFlashCard flashcard in FlashCards)
+        {
+            StudySessionFlashCard = new StudySessionFlashCard();
+            StudySessionFlashCard.FlashCardId = flashcard.FlashCard.FlashCardId;
+            StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
+            StudySessionFlashCard.IsCorrect = false;
+            await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+        }
+    }
+
+
     private async void DontUnderstandClick(object sender, EventArgs e)
     {
         IncorrectFlashCards.Add(FlashCards[index].FlashCard);
@@ -114,7 +195,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
             }
 
             //post the StudySession.
-            await SaveStudySessionAsync(StudySession);
+            //await SaveStudySessionAsync(StudySession);
 
             //after posting you need to retrieve it to upload the study session flashcard.
             StudySessions = await GetAllStudySessions();
@@ -147,7 +228,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
                     StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
                     StudySessionFlashCard.IsCorrect = true;
                     //test to see if it works
-                    await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+                    //await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
                 }
             }
 
@@ -160,7 +241,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
                     StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
                     StudySessionFlashCard.IsCorrect = false;
                     //test to see if it works
-                    await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+                    //await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
                 }
             }
             //store both card sets for right and wrong and continue to session stats Page.
@@ -171,6 +252,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
                 {"Incorrect Cards", IncorrectFlashCards },
                 {"Study Session", StudySession }
                 };
+            CompletedSession = true;
             await Shell.Current.GoToAsync(nameof(SessionStatsPage), navigationParameter);
         }
         else
@@ -220,7 +302,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
             }
 
             //post the StudySession.
-            await SaveStudySessionAsync(StudySession);
+            //await SaveStudySessionAsync(StudySession);
 
             //after posting you need to retrieve it to upload the study session flashcard.
             StudySessions = await GetAllStudySessions();
@@ -253,7 +335,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
                     StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
                     StudySessionFlashCard.IsCorrect = true;
                     //Api error currently
-                    await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+                    //await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
                 }
             }
 
@@ -266,7 +348,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
                     StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
                     StudySessionFlashCard.IsCorrect = false;
                     //Api error currently
-                    await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+                    //await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
                 }
             }
 
@@ -279,6 +361,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
                 {"Incorrect Cards", IncorrectFlashCards },
                 {"Study Session", StudySession }
                 };
+            CompletedSession = true;
             await Shell.Current.GoToAsync(nameof(SessionStatsPage), navigationParameter);
         }
         else
@@ -402,4 +485,10 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
     public StudySessionFlashCard StudySessionFlashCard { get; set; }
 
     public FlashCard CurentFlashCard { get; set; }
+
+    //bool checking if the backbutton was pressed
+    public bool BackButtonPressed { get; set; }
+
+    //bool for checking if user is navigating to a new page (completed study session)
+    public bool CompletedSession { get; set; }
 }
