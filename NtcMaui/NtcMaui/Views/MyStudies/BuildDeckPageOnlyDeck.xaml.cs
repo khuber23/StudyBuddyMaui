@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using ApiStudyBuddy.Models;
 using NtcMaui.Views.Edit;
+using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.MyStudies;
 
@@ -26,7 +27,7 @@ public partial class BuildDeckPageOnlyDeck : ContentPage, IQueryAttributable, IN
         //this I want to eventually be all the Deck Flashcards. Work on that later.
         //FlashcardListView.ItemsSource = await GetAllFlashcards();
         FlashcardListView.ItemsSource = SelectedDeck.DeckFlashCards;
-        BuildDeckNameLabel.Text = $"Building: {SelectedDeck.DeckName}";
+        BuildDeckNameLabel.Text = $"Building {SelectedDeck.DeckName} Deck";
     }
 
     //button Click For CreateFlashcardPage
@@ -86,7 +87,56 @@ public partial class BuildDeckPageOnlyDeck : ContentPage, IQueryAttributable, IN
         }
     }
 
-    public User LoggedInUser { get; set; }
+	private void GoToHomePage(object sender, EventArgs e)
+	{
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+	}
+
+	private void GoToDashboardPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DashboardPage), navigationParameter);
+	}
+
+	private void GoToFlashcardPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(FlashcardPage), navigationParameter);
+	}
+	private void GoToDeckPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+	}
+
+	private void GoToDeckGroupPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
+	}
+
+
+	public User LoggedInUser { get; set; }
 
     public DeckFlashCard SelectedFlashCard { get; set; }
 

@@ -3,54 +3,92 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.MyStudies.BuildDeckPage"
              Title="BuildDeckPage">
-    <ScrollView>
-        <Grid>
-            <StackLayout>
+    <!--Same as BuildDeckPageOnlyDeck dealing with DeckGroups eventually-->
 
-                <StackLayout Margin="0, 20">
-                    <Label x:Name="BuildDeckNameLabel" FontSize="24"></Label>
-                </StackLayout>
+    <ContentPage.Resources>
+        <Style x:Key="CardView" TargetType="Frame">
+            <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
+            <Setter Property="HasShadow" Value="{OnPlatform iOS=false, MacCatalyst=false, Default=true}"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="50,0,50,0"/>
+            <Setter Property="Background" Value="{StaticResource LightBackground}"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="IsClippedToBounds" Value="True"/>
+        </Style>
+    </ContentPage.Resources>
 
-                <StackLayout>
-                    <Label Text="Add/Create a Flashcard"></Label>
-                </StackLayout>
+    <Shell.TitleView>
+        <HorizontalStackLayout>
+            <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
+            <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage" Text="Dashboard"/>
+            <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"/>
+            <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Text="Decks"></Button>
+            <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"/>
+        </HorizontalStackLayout>
+    </Shell.TitleView>
 
-                <StackLayout Orientation="Horizontal">
-                    <ImageButton x:Name="AddFlshcardBtn" Clicked="GoToCreateFlashcardPage" Margin="10, 10" Source="plussign.png" VerticalOptions="Start" WidthRequest="25" HeightRequest="25"></ImageButton>
-                    <StackLayout Orientation="Vertical" Margin="10, 5">
-                        <Label Text="Create A FlashCard" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
-                    </StackLayout>
-                </StackLayout>
-                
-                <HorizontalStackLayout Margin="0, 15">
-                    <Label Margin="0,10" Text="Enable Editing?"></Label>
-                    <CheckBox x:Name="EditingCheckBox" IsChecked="False"></CheckBox>
-                </HorizontalStackLayout>
-                
-                <StackLayout>
-                    <ListView x:Name="FlashcardListView" ItemSelected="FlashcardListView_ItemSelected">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout Orientation="Horizontal">
-                                        <StackLayout Orientation="Vertical" Margin="10, 5">
-                                            <Label Text="{Binding FlashCard.FlashCardQuestion}" FontSize="20" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
-                                            <Label Text="{Binding FlashCard.FlashCardAnswer}"></Label>
-                                        </StackLayout>
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+    <Grid ColumnDefinitions="*,*,*"
+          ColumnSpacing="5"
+          RowDefinitions="*,Auto"
+          RowSpacing="0">
 
-                    <Label HorizontalOptions="Center" x:Name="ErrorLabel" TextColor="Red" IsVisible="False"></Label>
-                </StackLayout>
-                <StackLayout>
-                    <!--figure out where to go from here after user chooses a flashcard for a deck-->
-                    <Button Text="Next"  x:Name="NextBtn" WidthRequest="100" HeightRequest="25"></Button>
-                </StackLayout>
-            </StackLayout>
-        </Grid>
-    </ScrollView>
-        
+        <StackLayout Grid.ColumnSpan="3"  Margin="0,50,0,0">
+            <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="BuildDeckNameLabel" FontSize="24" FontAttributes="Bold"/>
+            <Label VerticalOptions="Center" HorizontalOptions="Center" Text="Add/Create a Flashcard"/>
+            <HorizontalStackLayout Padding="10" Spacing="10">
+                <Label FontSize="12" Text="Enable Editing?"/>
+                <CheckBox ToolTipProperties.Text="Check and Select Flashcard to Edit" x:Name="EditingCheckBox" IsChecked="False"/>
+            </HorizontalStackLayout>
+        </StackLayout>
+
+        <ListView Margin="0,160,0,0"
+                        BackgroundColor="Transparent"
+                        Grid.ColumnSpan="3"
+                        x:Name="FlashcardListView"
+                        ItemSelected="FlashcardListView_ItemSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="10">
+                            <Frame HeightRequest="125"
+                                   Padding="0"
+                                   Style="{StaticResource CardView}">
+                                <Grid Padding="0"
+                                      ColumnDefinitions="125, *">
+                                    <Image Aspect="AspectFill"
+                                       x:Name="ProfileImage"
+                                       Source="stockprofileimage.png"
+                                       WidthRequest="125"
+                                       HeightRequest="125"/>
+                                    <VerticalStackLayout Grid.Column="1"
+                                                         Padding="10"
+                                                         VerticalOptions="Center">
+                                        <Label Text="{Binding FlashCard.FlashCardQuestion}" FontAttributes="Bold"/>
+                                        <Label Text="{Binding FlashCard.FlashCardAnswer}"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Label HorizontalOptions="Center" x:Name="ErrorLabel" TextColor="Red" IsVisible="False"/>
+
+        <Button x:Name="AddFlshcardBtn"
+                Clicked="GoToCreateFlashcardPage"
+                ImageSource="plussign.png"               
+                Text="Create Flashcard" 
+                HeightRequest="20"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="8"/>
+        <!--<Button x:Name="NextBtn" 
+                Text="Next" 
+                Clicked=""
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="8"/>-->
+    </Grid>
+
 </ContentPage>
