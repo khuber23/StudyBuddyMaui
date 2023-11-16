@@ -37,6 +37,16 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
         //then after thsi when users swipe left or right we go to the next flashcard
         string firstquestionText = FlashCards[0].FlashCard.FlashCardQuestion;
         FlashcardText.Text = firstquestionText;
+        if (FlashCards[0].FlashCard.FlashCardQuestionImage != null)
+        {
+            FlashCardImage.IsVisible = true;
+            FlashCardImage.Source = FlashCards[0].FlashCard.FlashCardQuestionImage;
+        }
+        else
+        {
+            FlashCardImage.IsVisible = false;
+            FlashCardImage.Source = null;
+        }
     }
 
     async void OnTapRecognized(object sender, TappedEventArgs args)
@@ -47,13 +57,33 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
                 await Flashcard.RotateXTo(180, 500);
                 Flashcard.RotationX = 0;
                 FlashcardText.Text = FlashCards[index].FlashCard.FlashCardAnswer;
+            if (FlashCards[index].FlashCard.FlashCardAnswerImage != null)
+            {
+                FlashCardImage.IsVisible = true;
+                FlashCardImage.Source = FlashCards[index].FlashCard.FlashCardAnswerImage;
             }
+            else
+            {
+                FlashCardImage.IsVisible = false;
+                FlashCardImage.Source = null;
+            }
+        }
             else if (FlashcardText.Text == FlashCards[index].FlashCard.FlashCardAnswer)
             {
                 await Flashcard.RotateXTo(180, 500);
                 Flashcard.RotationX = 0;
                 FlashcardText.Text = FlashCards[index].FlashCard.FlashCardQuestion;
+            if (FlashCards[index].FlashCard.FlashCardQuestionImage != null)
+            {
+                FlashCardImage.IsVisible = true;
+                FlashCardImage.Source = FlashCards[index].FlashCard.FlashCardQuestionImage;
             }
+            else
+            {
+                FlashCardImage.IsVisible = false;
+                FlashCardImage.Source = null;
+            }
+        }
     }
 
     //when user swipes left it should take the current index card and add it to a group of wrong cards for example
@@ -324,6 +354,16 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
         {
             index++;
             FlashcardText.Text = FlashCards[index].FlashCard.FlashCardQuestion;
+            if (FlashCards[index].FlashCard.FlashCardQuestionImage != null)
+            {
+                FlashCardImage.IsVisible = true;
+                FlashCardImage.Source = FlashCards[index].FlashCard.FlashCardQuestionImage;
+            }
+            else
+            {
+                FlashCardImage.Source = null;
+                FlashCardImage.IsVisible = false;
+            }
         }
 
 
@@ -423,6 +463,16 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
         {
             index++;
             FlashcardText.Text = FlashCards[index].FlashCard.FlashCardQuestion;
+            if (FlashCards[index].FlashCard.FlashCardQuestionImage != null)
+            {
+                FlashCardImage.IsVisible = true;
+                FlashCardImage.Source = FlashCards[index].FlashCard.FlashCardQuestionImage;
+            }
+            else
+            {
+                FlashCardImage.Source = null;
+                FlashCardImage.IsVisible = false;
+            }
         }
     }
 

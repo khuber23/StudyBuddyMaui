@@ -21,7 +21,7 @@
                         <StackLayout   Margin="50" HorizontalOptions="Center" VerticalOptions="Center">
                             <!---This stacklayout is where the inside of the card will appear along with flashcard text-->
                             <Label x:Name="FlashcardText"></Label>
-                            <Image x:Name="FlashCardImage" WidthRequest="150" HeightRequest="150"></Image>
+                            <Image x:Name="FlashCardImage" WidthRequest="300" HeightRequest="300"></Image>
                         </StackLayout>
                         <HorizontalStackLayout HorizontalOptions="End">
                             <ImageButton WidthRequest="25" HeightRequest="25" Source="sound.png" x:Name="SoundButton" Clicked="SoundButton_Clicked" HorizontalOptions="End" VerticalOptions="End"></ImageButton>

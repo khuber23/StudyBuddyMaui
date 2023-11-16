@@ -33,6 +33,16 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
         //then after thsi when users swipe left or right we go to the next flashcard
         string firstquestionText = CardsToStudy[0].FlashCard.FlashCardQuestion;
         FlashcardText.Text = firstquestionText;
+        if (CardsToStudy[0].FlashCard.FlashCardQuestionImage != null)
+        {
+            FlashCardImage.IsVisible = true;
+            FlashCardImage.Source = CardsToStudy[0].FlashCard.FlashCardQuestionImage;
+        }
+        else
+        {
+            FlashCardImage.IsVisible = false;
+            FlashCardImage.Source = null;
+        }
     }
 
     //might just end up getting rid of this for swiping since I can't really test it out with a phone emulator since it's ungodly slow...and we have buttons
@@ -44,12 +54,32 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
             await Flashcard.RotateXTo(180, 500);
             Flashcard.RotationX = 0;
             FlashcardText.Text = CardsToStudy[index].FlashCard.FlashCardAnswer;
+            if (CardsToStudy[index].FlashCard.FlashCardAnswerImage != null)
+            {
+                FlashCardImage.IsVisible = true;
+                FlashCardImage.Source = CardsToStudy[index].FlashCard.FlashCardAnswerImage;
+            }
+            else
+            {
+                FlashCardImage.IsVisible = false;
+                FlashCardImage.Source = null;
+            }
         }
         else if (FlashcardText.Text == CardsToStudy[index].FlashCard.FlashCardAnswer)
         {
             await Flashcard.RotateXTo(180, 500);
             Flashcard.RotationX = 0;
             FlashcardText.Text = CardsToStudy[index].FlashCard.FlashCardQuestion;
+            if (CardsToStudy[index].FlashCard.FlashCardQuestionImage != null)
+            {
+                FlashCardImage.IsVisible = true;
+                FlashCardImage.Source = CardsToStudy[index].FlashCard.FlashCardQuestionImage;
+            }
+            else
+            {
+                FlashCardImage.IsVisible = false;
+                FlashCardImage.Source = null;
+            }
         }
     }
 
@@ -134,6 +164,16 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
         {
             index++;
             FlashcardText.Text = CardsToStudy[index].FlashCard.FlashCardQuestion;
+            if (CardsToStudy[index].FlashCard.FlashCardQuestionImage != null)
+            {
+                FlashCardImage.IsVisible = true;
+                FlashCardImage.Source = CardsToStudy[index].FlashCard.FlashCardQuestionImage;
+            }
+            else
+            {
+                FlashCardImage.Source = null;
+                FlashCardImage.IsVisible = false;
+            }
         }
 
 
@@ -218,6 +258,14 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
         {
             index++;
             FlashcardText.Text = CardsToStudy[index].FlashCard.FlashCardQuestion;
+            if (CardsToStudy[index].FlashCard.FlashCardQuestionImage != null)
+            {
+                FlashCardImage.Source = CardsToStudy[index].FlashCard.FlashCardQuestionImage;
+            }
+            else
+            {
+                FlashCardImage.Source = null;
+            }
         }
 
     }
