@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.Edit.EditDeckGroupPage"
              Title="EditDeckGroupPage">
-    <ScrollView>
+    <!--<ScrollView>
         <Grid>
             <StackLayout Margin="5,20">
                 <StackLayout>
@@ -45,5 +45,75 @@
                 </StackLayout>
             </StackLayout>
         </Grid>
-    </ScrollView>
+    </ScrollView>-->
+
+
+    <Shell.TitleView>
+        <HorizontalStackLayout>
+            <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
+            <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage" Text="Dashboard"></Button>
+            <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"></Button>
+            <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Text="Decks"></Button>
+            <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"></Button>
+        </HorizontalStackLayout>
+    </Shell.TitleView>
+    <ContentPage.Content>
+        <Grid ColumnDefinitions="*,*"
+          ColumnSpacing="5"
+          RowDefinitions="*,Auto"
+          RowSpacing="0">
+
+            <ScrollView Grid.ColumnSpan="2">
+                <StackLayout Grid.ColumnSpan="2" HorizontalOptions="Center"  Margin="0,25,0,0" VerticalOptions="Center" Padding="50,0,50,20" Spacing="10">
+                    <Label Text="Edit Deck Group" Margin="0,0,0,60" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="30" FontAttributes="Bold"/>
+                    <StackLayout Spacing="20" Padding="20" VerticalOptions="Center">
+                        <Label Text="Deck Group Name" FontAttributes="Bold" FontSize="16"/>
+                        <Entry MinimumWidthRequest="400" x:Name="DeckGroupNameEntry" Placeholder="Enter a Name"/>
+                        <Label Text="Deck Group Description" FontAttributes="Bold" FontSize="16"/>
+                        <Entry x:Name="DeckGroupDescriptionEntry" Placeholder="Enter a Description"/>
+                    </StackLayout>
+                    <StackLayout Grid.Column="1" Padding="10" VerticalOptions="Center" Margin="10">
+                        <Label Text="Make Public"/>
+                        <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="IsPublicCheckBox_CheckedChanged" HorizontalOptions="Start"/>
+                    </StackLayout>
+                    <StackLayout VerticalOptions="Center" Margin="10" Grid.Column="1">
+                        <Label IsVisible="false" FontSize="20" TextColor="Red" FontAttributes="Bold"  x:Name="WarningLabel" HorizontalOptions="Center"/>
+                    </StackLayout>
+                </StackLayout>
+            </ScrollView>
+
+            <Button x:Name="FinishEditingBtn"
+                Clicked="FinishEditingBtn_Clicked"               
+                Text="Done Editing" 
+                HeightRequest="20"
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="8"/>
+            <Button x:Name="CancelBtn"
+                Clicked="CancelBtn_Clicked"               
+                Text="Cancel"
+                IsVisible="false"
+                HeightRequest="20"
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="8"/>
+            <Button x:Name="DeleteBtn" 
+                Text="Delete Deck Group" 
+                Clicked="DeleteBtn_Clicked"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="8"
+                BackgroundColor="Red" />
+            <Button x:Name="FinishDeleteBtn"
+                Clicked="FinishDeleteBtn_Clicked"               
+                Text="Finish Delete"
+                IsVisible="false"
+                HeightRequest="20"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="8"
+                BackgroundColor="Red" />
+        </Grid>
+    </ContentPage.Content>
+
 </ContentPage>

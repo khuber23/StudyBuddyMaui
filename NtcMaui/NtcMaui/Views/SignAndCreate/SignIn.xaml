@@ -34,7 +34,7 @@
                 <Label WidthRequest="400" Text="Password" FontSize="16"></Label>
                 <Grid Padding="5" WidthRequest="400">
                     <Frame BackgroundColor="White"/>
-                    <Entry x:Name="PasswordEntry" TextColor="Black" Placeholder="Password"></Entry>
+                    <Entry IsPassword="True" x:Name="PasswordEntry" TextColor="Black" Placeholder="Password"></Entry>
                 </Grid>
 
                 <Label Padding="0" x:Name="Error"></Label>

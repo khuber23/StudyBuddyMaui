@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text;
 using ApiStudyBuddy.Models;
 using NtcMaui.Views.MyStudies;
+using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.Edit;
 
@@ -64,7 +65,7 @@ public partial class EditDeckGroupPage : ContentPage, IQueryAttributable, INotif
         FinishEditingBtn.IsVisible = false;
         FinishDeleteBtn.IsVisible = true;
         CancelBtn.IsVisible = true;
-        WarningLabel.Text = $"Warning: You are about to delete {SelectedDeckGroup.DeckGroupName}. Hitting finish will delete yours and your shared users' deckGroup";
+        WarningLabel.Text = $"Warning: You are about to delete {SelectedDeckGroup.DeckGroupName}";
         WarningLabel.IsVisible = true;
     }
 
@@ -195,8 +196,56 @@ public partial class EditDeckGroupPage : ContentPage, IQueryAttributable, INotif
         return deckGroups;
     }
 
+	private void GoToHomePage(object sender, EventArgs e)
+	{
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+	}
 
-    public bool IsPublic { get; set; }
+	private void GoToDashboardPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DashboardPage), navigationParameter);
+	}
+
+	private void GoToFlashcardPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(FlashcardPage), navigationParameter);
+	}
+	private void GoToDeckPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+	}
+
+	private void GoToDeckGroupPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
+	}
+
+
+	public bool IsPublic { get; set; }
 
 
     public User LoggedInUser { get; set; }
