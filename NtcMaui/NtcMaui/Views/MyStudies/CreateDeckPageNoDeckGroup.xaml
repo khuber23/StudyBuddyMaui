@@ -4,45 +4,6 @@
              x:Class="NtcMaui.Views.MyStudies.CreateDeckPageNoDeckGroup"
              Title="CreateDeckPageNoDeckGroup">
 
-    <!--<ScrollView>
-        <Grid>
-            <StackLayout Margin="20">
-                <StackLayout Margin="0, 20">
-                    <Label Text="Create a Deck" FontSize="24"></Label>
-                </StackLayout>
-
-                <StackLayout>
-                    <Label Text="Deck Name"></Label>
-                    <Grid Margin="0,5">
-                        <Frame BackgroundColor="White"/>
-                        <Entry x:Name="DeckNameEntry" TextColor="Black" Placeholder="Name your deck"></Entry>
-                    </Grid>
-                    <Label Text="Description" FontSize="16"></Label>
-                    <Grid Margin="0,5">
-                        <Frame BackgroundColor="White"/>
-                        <Entry x:Name="DeckDescriptionEntry" TextColor="Black" Placeholder="Enter Text Description"></Entry>
-                    </Grid>
-
-                    --><!---Looks a bit weird like this but when the screen is smaller it looks good, just weird on computer--><!--
-                    <Grid Margin="0,5">
-                        <StackLayout Orientation="Horizontal">
-
-                            <StackLayout Margin="10, 10" HorizontalOptions="StartAndExpand">
-                                <Label Text="Make Public: Will allow user to import your deck."></Label>
-                                <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="IsPublicCheckBox_CheckedChanged" HorizontalOptions="Start"></CheckBox>
-                            </StackLayout>
-                        </StackLayout>
-                    </Grid>
-                  
-
-                </StackLayout>
-                <StackLayout>
-                    <Button Text="Next" Clicked="GoToBuildDeckPage" x:Name="NextBtn" WidthRequest="100" HeightRequest="25"></Button>
-                </StackLayout>
-            </StackLayout>
-        </Grid>
-    </ScrollView>-->
-
     <Shell.TitleView>
         <HorizontalStackLayout>
             <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
@@ -64,7 +25,7 @@
             StrokeThickness="4" 
             StrokeShape="RoundRectangle 10,10,10,10" >
                 <ScrollView Grid.ColumnSpan="3">
-                    <StackLayout  HorizontalOptions="Center"  Margin="0,25,0,0" VerticalOptions="Center" Padding="50,0,50,20" Spacing="10">
+                    <StackLayout  HorizontalOptions="Center"  Margin="0,25,0,0" VerticalOptions="Center" Padding="10,0,10,20" Spacing="10">
                         <Label Text="Create a Deck" Margin="0,0,0,60" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="30" FontAttributes="Bold"/>
                         <StackLayout Spacing="20" Padding="20" VerticalOptions="Center">
                             <Label Text="Deck Name" FontAttributes="Bold" FontSize="16"/>
