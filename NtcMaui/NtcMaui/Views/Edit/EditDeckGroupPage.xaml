@@ -62,26 +62,30 @@
           ColumnSpacing="5"
           RowDefinitions="*,Auto"
           RowSpacing="0">
-
-            <ScrollView Grid.ColumnSpan="2">
-                <StackLayout Grid.ColumnSpan="2" HorizontalOptions="Center"  Margin="0,25,0,0" VerticalOptions="Center" Padding="50,0,50,20" Spacing="10">
-                    <Label Text="Edit Deck Group" Margin="0,0,0,60" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="30" FontAttributes="Bold"/>
-                    <StackLayout Spacing="20" Padding="20" VerticalOptions="Center">
-                        <Label Text="Deck Group Name" FontAttributes="Bold" FontSize="16"/>
-                        <Entry MinimumWidthRequest="400" x:Name="DeckGroupNameEntry" Placeholder="Enter a Name"/>
-                        <Label Text="Deck Group Description" FontAttributes="Bold" FontSize="16"/>
-                        <Entry x:Name="DeckGroupDescriptionEntry" Placeholder="Enter a Description"/>
+            <Border Grid.ColumnSpan="2"
+                    Margin="90,20,90,20"
+            Stroke="{StaticResource Primary}"
+            StrokeThickness="4" 
+            StrokeShape="RoundRectangle 10,10,10,10" >
+                <ScrollView Grid.ColumnSpan="2">
+                    <StackLayout Grid.ColumnSpan="2" HorizontalOptions="Center"  Margin="0,25,0,0" VerticalOptions="Center" Padding="50,0,50,20" Spacing="10">
+                        <Label Text="Edit Deck Group" Margin="0,0,0,60" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="30" FontAttributes="Bold"/>
+                        <StackLayout Spacing="20" Padding="20" VerticalOptions="Center">
+                            <Label Text="Deck Group Name" FontAttributes="Bold" FontSize="16"/>
+                            <Entry MinimumWidthRequest="400" x:Name="DeckGroupNameEntry" Placeholder="Enter a Name"/>
+                            <Label Text="Deck Group Description" FontAttributes="Bold" FontSize="16"/>
+                            <Entry x:Name="DeckGroupDescriptionEntry" Placeholder="Enter a Description"/>
+                        </StackLayout>
+                        <StackLayout Grid.Column="1" Padding="10" VerticalOptions="Center" Margin="10">
+                            <Label Text="Make Public"/>
+                            <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="IsPublicCheckBox_CheckedChanged" HorizontalOptions="Start"/>
+                        </StackLayout>
+                        <StackLayout VerticalOptions="Center" Margin="10" Grid.Column="1">
+                            <Label IsVisible="false" FontSize="20" TextColor="Red" FontAttributes="Bold"  x:Name="WarningLabel" HorizontalOptions="Center"/>
+                        </StackLayout>
                     </StackLayout>
-                    <StackLayout Grid.Column="1" Padding="10" VerticalOptions="Center" Margin="10">
-                        <Label Text="Make Public"/>
-                        <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="IsPublicCheckBox_CheckedChanged" HorizontalOptions="Start"/>
-                    </StackLayout>
-                    <StackLayout VerticalOptions="Center" Margin="10" Grid.Column="1">
-                        <Label IsVisible="false" FontSize="20" TextColor="Red" FontAttributes="Bold"  x:Name="WarningLabel" HorizontalOptions="Center"/>
-                    </StackLayout>
-                </StackLayout>
-            </ScrollView>
-
+                </ScrollView>
+            </Border>
             <Button x:Name="FinishEditingBtn"
                 Clicked="FinishEditingBtn_Clicked"               
                 Text="Done Editing" 

@@ -4,7 +4,7 @@
              x:Class="NtcMaui.Views.MyStudies.CreateDeckPageNoDeckGroup"
              Title="CreateDeckPageNoDeckGroup">
 
-    <ScrollView>
+    <!--<ScrollView>
         <Grid>
             <StackLayout Margin="20">
                 <StackLayout Margin="0, 20">
@@ -23,7 +23,7 @@
                         <Entry x:Name="DeckDescriptionEntry" TextColor="Black" Placeholder="Enter Text Description"></Entry>
                     </Grid>
 
-                    <!---Looks a bit weird like this but when the screen is smaller it looks good, just weird on computer-->
+                    --><!---Looks a bit weird like this but when the screen is smaller it looks good, just weird on computer--><!--
                     <Grid Margin="0,5">
                         <StackLayout Orientation="Horizontal">
 
@@ -41,5 +41,55 @@
                 </StackLayout>
             </StackLayout>
         </Grid>
-    </ScrollView>
+    </ScrollView>-->
+
+    <Shell.TitleView>
+        <HorizontalStackLayout>
+            <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
+            <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage" Text="Dashboard"></Button>
+            <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"></Button>
+            <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Text="Decks"></Button>
+            <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"></Button>
+        </HorizontalStackLayout>
+    </Shell.TitleView>
+
+    <ContentPage.Content>
+        <Grid ColumnDefinitions="*,*,*"
+          ColumnSpacing="5"
+          RowDefinitions="*,Auto"
+          RowSpacing="0">
+            <Border Grid.ColumnSpan="3"
+                    Margin="90,20,90,20"
+            Stroke="{StaticResource Primary}"
+            StrokeThickness="4" 
+            StrokeShape="RoundRectangle 10,10,10,10" >
+                <ScrollView Grid.ColumnSpan="3">
+                    <StackLayout  HorizontalOptions="Center"  Margin="0,25,0,0" VerticalOptions="Center" Padding="50,0,50,20" Spacing="10">
+                        <Label Text="Create a Deck" Margin="0,0,0,60" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="30" FontAttributes="Bold"/>
+                        <StackLayout Spacing="20" Padding="20" VerticalOptions="Center">
+                            <Label Text="Deck Name" FontAttributes="Bold" FontSize="16"/>
+                            <Entry MinimumWidthRequest="400" x:Name="DeckNameEntry" Placeholder="Enter a Name"/>
+                            <Label Text="Deck Description" FontAttributes="Bold" FontSize="16"/>
+                            <Entry x:Name="DeckDescriptionEntry" Placeholder="Enter a Description"/>
+                        </StackLayout>
+                        <StackLayout Grid.Column="1" Padding="10" VerticalOptions="Center" Margin="10">
+                            <Label Text="Make Public: Will allow other users to import your deck."/>
+                            <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="IsPublicCheckBox_CheckedChanged" HorizontalOptions="Start"/>
+                        </StackLayout>
+                    </StackLayout>
+                </ScrollView>
+            </Border>
+            <Button 
+                Text="Next"
+                Clicked="GoToBuildDeckPage"
+                x:Name="NextBtn"
+                ImageSource="plussign.png"                
+                HeightRequest="20"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="8"/>
+           
+        </Grid>
+    </ContentPage.Content>
+
 </ContentPage>
