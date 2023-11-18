@@ -34,7 +34,7 @@
 
         <StackLayout Grid.ColumnSpan="3"  Margin="0,50,0,0">
             <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="BuildDeckNameLabel" FontSize="24" FontAttributes="Bold"/>
-            <Label VerticalOptions="Center" HorizontalOptions="Center" Text="Add/Create a Flashcard"/>
+            <Label VerticalOptions="Center" HorizontalOptions="Center" Text="Add Flashcard or Enable Editing Mode"/>
             <HorizontalStackLayout Padding="10" Spacing="10">
                 <Label FontSize="12" Text="Enable Editing?"/>
                 <CheckBox ToolTipProperties.Text="Check and Select Flashcard to Edit" x:Name="EditingCheckBox" IsChecked="False"/>
