@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text;
 using ApiStudyBuddy.Models;
 using Microsoft.Maui.Controls.PlatformConfiguration;
+using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.MyStudies;
 
@@ -57,6 +58,7 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         if (UsermadeFlashCards.Count > 0)
         {
             FinishBtn.IsVisible = true;
+            CancelBtn.IsVisible = false;
             FinishLabel.IsVisible = true;
         }
         else
@@ -229,7 +231,55 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         FlashcardAnswerImageEntry.Text = result.FullPath;
     }
 
-    public List<FlashCard> UsermadeFlashCards { get; set; } = new List<FlashCard>();
+	private void GoToHomePage(object sender, EventArgs e)
+	{
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+	}
+
+	private void GoToDashboardPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DashboardPage), navigationParameter);
+	}
+
+	private void GoToFlashcardPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(FlashcardPage), navigationParameter);
+	}
+	private void GoToDeckPageTab(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+	}
+
+	private void GoToDeckGroupPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
+	}
+
+	public List<FlashCard> UsermadeFlashCards { get; set; } = new List<FlashCard>();
 
     public User LoggedInUser { get; set; }
 

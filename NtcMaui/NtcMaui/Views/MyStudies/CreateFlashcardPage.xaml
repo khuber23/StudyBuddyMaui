@@ -3,65 +3,82 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.MyStudies.CreateFlashcardPage"
              Title="CreateFlashcardPage">
-    <ScrollView>
-        <Grid>
-            <StackLayout Margin="20">
-                <StackLayout Margin="0, 20">
-                    <Label Text="Create a Flashcard" FontSize="24"></Label>
-                </StackLayout>
 
-                <StackLayout>
-                    <Label Text="Flashcard Question"></Label>
-                    <Grid Margin="0,5">
-                        <Frame BackgroundColor="White"/>
-                        <Entry x:Name="FlashcardQuestionEntry" TextColor="Black" Placeholder="Enter Question Text here."></Entry>
-                    </Grid>
-                    <Label Text="Flashcard Answer" FontSize="16"></Label>
-                    <Grid Margin="0,5">
-                        <Frame BackgroundColor="White"/>
-                        <Entry x:Name="FlashcardAnswerEntry" TextColor="Black" Placeholder="Enter Answer Text here."></Entry>
-                    </Grid>
-                    <Label Text="Flashcard Question Image" FontSize="16"></Label>
-                    <Grid Margin="0,5">
-                        <Frame BackgroundColor="White"/>
-                        <Entry x:Name="FlashcardQuestionImageEntry" TextColor="Black" Placeholder="Paste a link to an image here (Optional)"></Entry>
+    <Shell.TitleView>
+        <HorizontalStackLayout>
+            <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
+            <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage" Text="Dashboard"></Button>
+            <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"></Button>
+            <Button x:Name="DeckBtn" Clicked="GoToDeckPageTab" Text="Decks"></Button>
+            <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"></Button>
+        </HorizontalStackLayout>
+    </Shell.TitleView>
 
-                    </Grid>
+    <ContentPage.Content>
+        <Grid ColumnDefinitions="*,*"
+          ColumnSpacing="5"
+          RowDefinitions="*,Auto"
+          RowSpacing="0">
+            <Border Grid.ColumnSpan="2"
+                    Margin="90,20,90,20"
+            Stroke="{StaticResource Primary}"
+            StrokeThickness="4" 
+            StrokeShape="RoundRectangle 10,10,10,10" >
+                <ScrollView Grid.ColumnSpan="2">
+                    <StackLayout  HorizontalOptions="Center"  Margin="0,15,0,0" VerticalOptions="Center" Padding="10,0,10,20" Spacing="10">
+                        <Label Text="Create a Flashcard" Margin="0,0,0,40" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="30" FontAttributes="Bold"/>
+                        <StackLayout Spacing="20" Padding="20" VerticalOptions="Center">
 
-                    <Label Margin="0,10" Text="Upload Question Picture" FontSize="16"></Label>
-                    <HorizontalStackLayout>
-                        <ImageButton x:Name="UploadQuestionImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png" Clicked="UploadQuestionImageBtn_Clicked"></ImageButton>
-                    </HorizontalStackLayout>
+                            <Label Text="Flashcard Question" FontAttributes="Bold" FontSize="16"/>
+                            <Entry MinimumWidthRequest="400" x:Name="FlashcardQuestionEntry" Placeholder="Enter a Question"/>
+                            <VerticalStackLayout>
+                                <Label Text="Question Image Link" FontAttributes="Bold" FontSize="16"/>
+                                <Entry x:Name="FlashcardQuestionImageEntry" Placeholder="Paste a link to an image here (Optional)"/>
+                                <Label Text="Or" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Upload Question Image" FontAttributes="Bold" FontSize="16"/>
+                                <ImageButton x:Name="UploadQuestionImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png" Clicked="UploadQuestionImageBtn_Clicked"/>
+                            </VerticalStackLayout>
 
-                    <Label Text="Flashcard Answer Image" FontSize="16"></Label>
-                    <Grid Margin="0,5">
-                        <Frame BackgroundColor="White"/>
-                        <Entry x:Name="FlashcardAnswerImageEntry" TextColor="Black" Placeholder="Paste a link to an image here (Optional)"></Entry>
-                    </Grid>
-
-                    <Label Margin="0,10" Text="Upload Answer Picture" FontSize="16"></Label>
-                    <HorizontalStackLayout>
-                        <ImageButton x:Name="UploadAnswerImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png" Clicked="UploadAnswerImageBtn_Clicked"></ImageButton>
-                    </HorizontalStackLayout>
-
-                    <Grid Margin="0,5">
-                        <StackLayout Orientation="Horizontal">
-
-                            <StackLayout Margin="10, 10" HorizontalOptions="EndAndExpand">
-                                <Label Text="Make Public"></Label>
-                                <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="CheckBox_CheckedChanged" HorizontalOptions="End"></CheckBox>
-                            </StackLayout>
+                            <Label Text="Flashcard Answer" Margin="0,15,0,0" FontAttributes="Bold" FontSize="16"/>
+                            <Entry x:Name="FlashcardAnswerEntry" Placeholder="Enter an answer"/>
+                            <VerticalStackLayout>
+                                <Label Text="Answer Image Link" FontAttributes="Bold" FontSize="16"/>
+                                <Entry x:Name="FlashcardAnswerImageEntry" Placeholder="Paste a link to an image here (Optional)"/>
+                                <Label Text="Or" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Upload Answer Image" FontAttributes="Bold" FontSize="16"/>
+                                <ImageButton x:Name="UploadAnswerImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png" Clicked="UploadAnswerImageBtn_Clicked"/>
+                            </VerticalStackLayout>
                         </StackLayout>
-                    </Grid>
-
-                    <Label IsVisible="False" x:Name="FinishLabel" Text="Hit finish when you are done saving flashcards to add."></Label>
-                </StackLayout>
-                <HorizontalStackLayout Margin="10">
-                    <!--after making a flashcard it won't save until at least 1 exists in the thing and hides a button that will say finish and go back to Decks.-->
-                    <Button Clicked="SaveFlashCard" Text="Save" x:Name="SaveBtn" WidthRequest="100" HeightRequest="25"></Button>
-                    <Button Clicked="FinishCreation" IsVisible="False" Text="Finish" x:Name="FinishBtn" WidthRequest="100" HeightRequest="25"></Button>
-                </HorizontalStackLayout>
-            </StackLayout>
+                        <StackLayout Grid.Column="1" Padding="10" VerticalOptions="Center" Margin="10">
+                            <Label Text="Make Public"/>
+                            <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="CheckBox_CheckedChanged" HorizontalOptions="Start"/>
+                        </StackLayout>
+                        <StackLayout VerticalOptions="Center" Margin="10" Grid.Column="1">
+                            <Label IsVisible="false" FontSize="20" TextColor="Red" FontAttributes="Bold"  x:Name="FinishLabel" Text="Hit Finish when done saving to add Flashcard." HorizontalOptions="Center"/>
+                        </StackLayout>
+                    </StackLayout>
+                </ScrollView>
+            </Border>
+        
+            <Button Text="Save"
+                x:Name="SaveBtn"
+                Clicked="SaveFlashCard"
+                Grid.Row="1"              
+                Margin="8"/>
+            <Button Text="Finish"
+                x:Name="FinishBtn"
+                Clicked="FinishCreation"
+                Grid.Row="1"
+                IsVisible="False"
+                Grid.Column="3"
+                Margin="8"/>
+            <Button Grid.Row="1"
+                Grid.Column="3" 
+                Text="Cancel"
+                x:Name="CancelBtn"
+                Clicked="GoToDeckPage"
+                Margin="8"/>
         </Grid>
-    </ScrollView>
+    </ContentPage.Content>
+
 </ContentPage>
