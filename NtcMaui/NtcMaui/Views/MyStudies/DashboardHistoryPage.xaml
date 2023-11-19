@@ -32,7 +32,7 @@
           RowSpacing="0">
 
         <StackLayout Grid.ColumnSpan="2" Margin="0,50,0,0">
-            <Label Text="Card History" VerticalOptions="Center" HorizontalOptions="Center" FontSize="20" FontAttributes="Bold"/>
+            <Label Text="Card History" VerticalOptions="Center" HorizontalOptions="Center" FontSize="40" FontAttributes="Bold"/>
         </StackLayout>
 
         <CollectionView Margin="0,120,0,0"

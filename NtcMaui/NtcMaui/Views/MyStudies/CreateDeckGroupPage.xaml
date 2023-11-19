@@ -26,7 +26,7 @@
             StrokeShape="RoundRectangle 10,10,10,10" >
                 <ScrollView Grid.ColumnSpan="3">
                     <StackLayout  HorizontalOptions="Center"  Margin="0,25,0,0" VerticalOptions="Center" Padding="10,0,10,20" Spacing="10">
-                        <Label Text="Create a Deck Group" Margin="0,0,0,60" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="30" FontAttributes="Bold"/>
+                        <Label Text="Create a Deck Group" Margin="0,0,0,50" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
                         <StackLayout Spacing="20" Padding="20" VerticalOptions="Center">
                             <Label Text="Deck Group Name" FontAttributes="Bold" FontSize="16"/>
                             <Entry MinimumWidthRequest="400" x:Name="DeckGroupNameEntry" Placeholder="Name of Deck Group"/>
@@ -34,7 +34,7 @@
                             <Entry x:Name="DeckGroupDescriptionEntry" Placeholder="Enter Text Description"/>
                         </StackLayout>
                         <StackLayout Grid.Column="1" Padding="10" VerticalOptions="Center" Margin="10">
-                            <Label Text="Make Public: Will allow other users to import your deck group."/>
+                            <Label Text="Make Public: Other users can import your Deck Group."/>
                             <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="IsPublicCheckBox_CheckedChanged" HorizontalOptions="Start"/>
                         </StackLayout>
                     </StackLayout>

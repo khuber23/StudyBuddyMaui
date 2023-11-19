@@ -32,7 +32,7 @@
           RowSpacing="0">
 
         <StackLayout Grid.ColumnSpan="2"  Margin="0,50,0,0">
-            <Label Text="Deck Groups" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="30" FontAttributes="Bold"/>
+            <Label Text="Deck Groups" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
             <Label Text="Select Deck Group to Add Decks or Enable Editing Mode" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="12" />
             <HorizontalStackLayout Padding="10" Spacing="10">
                 <Label FontSize="12" Text="Enable Editing?"/>
@@ -40,7 +40,7 @@
             </HorizontalStackLayout>
         </StackLayout>
 
-        <ListView Margin="0,160,0,0"
+        <ListView Margin="0,180,0,0"
                         BackgroundColor="Transparent"
                         Grid.ColumnSpan="3"
                         x:Name="DeckGroupListView" 

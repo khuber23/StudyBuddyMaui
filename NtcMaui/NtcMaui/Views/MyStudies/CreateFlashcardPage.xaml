@@ -26,7 +26,7 @@
             StrokeShape="RoundRectangle 10,10,10,10" >
                 <ScrollView Grid.ColumnSpan="2">
                     <StackLayout  HorizontalOptions="Center"  Margin="0,15,0,0" VerticalOptions="Center" Padding="10,0,10,20" Spacing="10">
-                        <Label Text="Create a Flashcard" Margin="0,0,0,40" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="30" FontAttributes="Bold"/>
+                        <Label Text="Create a Flashcard" Margin="0,0,0,30" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
                         <StackLayout Spacing="20" Padding="20" VerticalOptions="Center">
 
                             <Label Text="Flashcard Question" FontAttributes="Bold" FontSize="16"/>
@@ -50,7 +50,7 @@
                             </VerticalStackLayout>
                         </StackLayout>
                         <StackLayout Grid.Column="1" Padding="10" VerticalOptions="Center" Margin="10">
-                            <Label Text="Make Public"/>
+                            <Label FontSize="12" Text="Make Public"/>
                             <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="CheckBox_CheckedChanged" HorizontalOptions="Start"/>
                         </StackLayout>
                         <StackLayout VerticalOptions="Center" Margin="10" Grid.Column="1">

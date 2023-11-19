@@ -33,7 +33,7 @@
           RowSpacing="0">
 
         <StackLayout Grid.ColumnSpan="3"  Margin="0,50,0,0">
-            <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="BuildDeckNameLabel" FontSize="24" FontAttributes="Bold"/>
+            <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="BuildDeckNameLabel" FontSize="30" FontAttributes="Bold"/>
             <Label VerticalOptions="Center" HorizontalOptions="Center" Text="Add Flashcard or Enable Editing Mode"/>
             <HorizontalStackLayout Padding="10" Spacing="10">
                 <Label FontSize="12" Text="Enable Editing?"/>
@@ -41,7 +41,7 @@
             </HorizontalStackLayout>
         </StackLayout>
 
-        <ListView Margin="0,160,0,0"
+        <ListView Margin="0,200,0,0"
                         BackgroundColor="Transparent"
                         Grid.ColumnSpan="3"
                         x:Name="FlashcardListView"

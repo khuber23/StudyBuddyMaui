@@ -26,7 +26,7 @@
             StrokeShape="RoundRectangle 10,10,10,10" >
                 <ScrollView Grid.ColumnSpan="2">
                     <StackLayout  HorizontalOptions="Center"  Margin="0,25,0,0" VerticalOptions="Center" Padding="10,0,10,20" Spacing="10">
-                        <Label Text="Edit Deck" Margin="0,0,0,60" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="30" FontAttributes="Bold"/>
+                        <Label Text="Edit Deck" Margin="0,0,0,60" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
                         <StackLayout Spacing="20" Padding="20" VerticalOptions="Center">
                             <Label Text="Deck Name" FontAttributes="Bold" FontSize="16"/>
                             <Entry MinimumWidthRequest="400" x:Name="DeckNameEntry" Placeholder="Enter a Name"/>
