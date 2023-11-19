@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
 using NtcMaui.Views.MyStudies;
+using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.Edit;
 
@@ -184,8 +185,56 @@ public partial class EditFlashCardOnlyDeck : ContentPage, IQueryAttributable, IN
         return deckFlashCards;
     }
 
+	private void GoToHomePage(object sender, EventArgs e)
+	{
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+	}
 
-    public User LoggedInUser { get; set; }
+	private void GoToDashboardPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DashboardPage), navigationParameter);
+	}
+
+	private void GoToFlashcardPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(FlashcardPage), navigationParameter);
+	}
+	private void GoToDeckPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+	}
+
+	private void GoToDeckGroupPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
+	}
+
+
+	public User LoggedInUser { get; set; }
 
     public FlashCard SelectedFlashCard { get; set; }
 
