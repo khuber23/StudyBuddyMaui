@@ -18,7 +18,8 @@
         StrokeThickness="4" 
         StrokeShape="RoundRectangle 10,10,10,10" >
         <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
-            <Label Text="DeckGroup Details" HorizontalOptions="Center" FontAttributes="Bold" FontSize="24" Margin="0,10,0,80"/>
+            <Label Text="DeckGroup Details" HorizontalOptions="Center" FontAttributes="Bold" FontSize="24" />
+            <Label Text="Select a Deck to add to this Deck Group" Margin="0,10,0,80"/>
             <Label x:Name="CurrentDeckGroupLabel" HorizontalOptions="Center" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" Margin="0,0,0,80"/>
             <Picker x:Name="DeckPicker"
             SelectedItem="{Binding SelectedUserDeck}"
