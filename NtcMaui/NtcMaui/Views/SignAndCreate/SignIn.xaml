@@ -37,7 +37,7 @@
                     <Entry IsPassword="True" x:Name="PasswordEntry" TextColor="Black" Placeholder="Password"></Entry>
                 </Grid>
 
-                <Label Padding="0" x:Name="Error"></Label>
+                <Label HorizontalOptions="Center" Padding="0" x:Name="Error"></Label>
                 <Button x:Name="ForgotPassword" Text="Forgot Password?" VerticalOptions="Center" WidthRequest="200" BorderColor="White" TextColor="Blue" BackgroundColor="White" Clicked="ForgotPassword_Clicked"></Button>
 
                 <Button x:Name="SignInBtn" Margin="0,10" Text="Sign in" WidthRequest="200" VerticalOptions="Center" Clicked="CompleteSignIn"></Button>

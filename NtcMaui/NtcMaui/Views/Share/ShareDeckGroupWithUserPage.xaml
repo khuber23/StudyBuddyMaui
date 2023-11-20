@@ -2,59 +2,106 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.Share.ShareDeckGroupWithUserPage"
-             Title="ShareDeckGroupWithUserPage">
-    <ScrollView>
-        <Grid>
-            <StackLayout Margin="0, 5">
-                <StackLayout Margin="20, 10">
-                    <Label x:Name="TopLabel" FontSize="22" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"></Label>
-                </StackLayout>
+             Title="">
+   
+    <ContentPage.Resources>
+        <Style x:Key="CardView" TargetType="Frame">
+            <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
+            <Setter Property="HasShadow" Value="{OnPlatform iOS=false, MacCatalyst=false, Default=true}"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="80,0,80,0"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="IsClippedToBounds" Value="True"/>
+        </Style>
+    </ContentPage.Resources>
 
-                <StackLayout HorizontalOptions="Center">
-                    <Picker HorizontalOptions="Center" x:Name="UserPicker"
-        SelectedIndexChanged="UserPicker_SelectedIndexChanged"
-ItemDisplayBinding="{Binding Username}" Title="Select a user you wish to share to.">
+    <ContentPage.Content>
+        <Grid ColumnDefinitions="*,*"
+          ColumnSpacing="5"
+          RowDefinitions="*,Auto"
+          RowSpacing="0">
+            <Border Grid.ColumnSpan="2"
+                    Margin="70,30,70,30"
+            Stroke="{StaticResource Primary}"
+            StrokeThickness="4" 
+            StrokeShape="RoundRectangle 10,10,10,10" >
+                <ScrollView Grid.ColumnSpan="2">
+                    <StackLayout  HorizontalOptions="Center"  Margin="0,15,0,0" VerticalOptions="Center" Padding="0,0,10,0" Spacing="10">
+                        <Label Text="Share Deck Group" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
 
-                    </Picker>
+                        <Label x:Name="TopLabel" Margin="0,30,0,10" FontSize="22" FontAttributes="Bold" HorizontalOptions="CenterAndExpand"/>
+                        <StackLayout Spacing="10" VerticalOptions="Center">
+                            <Picker Margin="0,0,0,10" HorizontalOptions="Center" x:Name="UserPicker"
+                                    SelectedIndexChanged="UserPicker_SelectedIndexChanged"
+                                    ItemDisplayBinding="{Binding Username}" Title="Select a user you wish to share to:">
+                            </Picker>
+                            <HorizontalStackLayout HorizontalOptions="Center">
+                                <Button Margin="10,10" x:Name="AddUserBtn" Text="Add" Clicked="AddUserBtn_Clicked"/>
+                                <Button Margin="10,10" IsVisible="false" x:Name="DeleteUserBtn" Text="Delete" Clicked="DeleteUserBtn_Clicked"/>
+                            </HorizontalStackLayout>
+                        </StackLayout>
+                        <StackLayout Margin="0,5,0,10" HorizontalOptions="Center">
+                            <Label HorizontalOptions="Center" x:Name="ErrorLabel" IsVisible="false" TextColor="Red"/>
+                        </StackLayout>
 
-                    <HorizontalStackLayout HorizontalOptions="Center"  Margin="10, 10">
-                        <Button Margin="10,10" x:Name="AddUserBtn" Text="Add" Clicked="AddUserBtn_Clicked"></Button>
-                        <Button Margin="10,10" IsVisible="false" x:Name="DeleteUserBtn" Text="Delete" Clicked="DeleteUserBtn_Clicked"></Button>
-                    </HorizontalStackLayout>
+                        <StackLayout Grid.ColumnSpan="2">
+                            <Label Margin="10,10" Text="Recipients:" FontSize="18" HorizontalOptions="Center" FontAttributes="Bold"/>
 
-                    <StackLayout Margin="10,10">
-                        <Label Margin="10,10" Text="Recipients:" FontSize="18" HorizontalOptions="Start" FontAttributes="Bold"></Label>
+                            <StackLayout HorizontalOptions="Center" VerticalOptions="Center">
+                                <ScrollView>
+                                    <ListView HorizontalOptions="Center" x:Name="RecipientsListView" ItemSelected="RecipientsListView_ItemSelected">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <ViewCell>
 
-                        <StackLayout Margin="10, 10">
-                            <ScrollView>
-                                <ListView x:Name="RecipientsListView" ItemSelected="RecipientsListView_ItemSelected">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <ViewCell>
-                                                <Label Margin="0,5" Text="{Binding Username}"></Label>
-                                            </ViewCell>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
-                            </ScrollView>
+                                                    <Grid Padding="10">
+                                                        <Frame HeightRequest="120"
+                                                            Padding="0"
+                                                            Style="{StaticResource CardView}">
+                                                            <Grid Padding="0"
+                                                            ColumnDefinitions="125,*">
+                                                                <Image Aspect="AspectFill"
+                                                            Source="stockprofileimage.png"
+                                                            WidthRequest="115"
+                                                            HeightRequest="115"/>
+                                                                <VerticalStackLayout Grid.Column="1"
+                                                                                Padding="10"
+                                                                                 Margin="50,50"
+                                                                                VerticalOptions="Center">
+                                                                    <Label Text="{Binding Username}" FontAttributes="Bold"/>
+                                                                </VerticalStackLayout>
+                                                            </Grid>
+                                                        </Frame>
+                                                    </Grid>
+
+                                                </ViewCell>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </ScrollView>
+                            </StackLayout>
+
                         </StackLayout>
 
                     </StackLayout>
+                </ScrollView>
 
-                    <StackLayout HorizontalOptions="Center" Margin="10,10">
-                        <Label x:Name="ErrorLabel" IsVisible="false" TextColor="Red"></Label>
-                    </StackLayout>
+            </Border>
 
-                    <HorizontalStackLayout Margin="10,10" HorizontalOptions="Center">
-                        <Button Margin="20, 20" x:Name="FinishBtn" Text="Finish" Clicked="FinishBtn_Clicked"></Button>
-                        <Button Margin="20, 20" x:Name="CancelBtn" Text="Cancel" Clicked="CancelBtn_Clicked"></Button>
-                    </HorizontalStackLayout>
-
-                </StackLayout>
-
-               
-
-            </StackLayout>
+            <Button x:Name="FinishBtn"
+                Clicked="FinishBtn_Clicked"               
+                Text="Finish"
+                HeightRequest="20"
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="8"/>
+            <Button  x:Name="CancelBtn"
+                Text="Cancel" 
+                Clicked="CancelBtn_Clicked"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="8" />
         </Grid>
-    </ScrollView>
+    </ContentPage.Content>
+
 </ContentPage>
