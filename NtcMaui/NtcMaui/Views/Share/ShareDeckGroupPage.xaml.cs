@@ -2,6 +2,8 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
+using NtcMaui.Views.MyStudies;
+using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.Share;
 
@@ -44,7 +46,7 @@ public partial class ShareDeckGroupPage : ContentPage, IQueryAttributable, INoti
         DeckGroup selectedDeckGroup = await GetDeckGroupByDeckGroupName(DeckGroupName);
         if (selectedDeckGroup == null || selectedDeckGroup.DeckGroupId == 0)
         {
-            ErrorLabel.Text = "Please Select a deck group from the drop-down";
+            ErrorLabel.Text = "Please Select a Deck Group from the drop-down";
             ErrorLabel.IsVisible = true;
         }
         else
@@ -72,7 +74,7 @@ public partial class ShareDeckGroupPage : ContentPage, IQueryAttributable, INoti
         DeckGroup selectedDeckGroup = await GetDeckGroupByDeckGroupName(DeckGroupName);
         if (selectedDeckGroup == null || selectedDeckGroup.DeckGroupId == 0)
         {
-            ErrorLabel.Text = "Please Select a deck group from the drop-down";
+            ErrorLabel.Text = "Please Select a Deck Group from the drop-down";
             ErrorLabel.IsVisible = true;
         }
         else
@@ -140,9 +142,59 @@ public partial class ShareDeckGroupPage : ContentPage, IQueryAttributable, INoti
             }
 
             return deckGroup;
-        } 
+        }
 
-    public DeckGroup SelectedDeckGroup { get; set; }
+
+	private void GoToHomePage(object sender, EventArgs e)
+	{
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+	}
+
+	private void GoToDashboardPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DashboardPage), navigationParameter);
+	}
+
+	private void GoToFlashcardPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(FlashcardPage), navigationParameter);
+	}
+	private void GoToDeckPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+	}
+
+	private void GoToDeckGroupPage(object sender, EventArgs e)
+	{
+		//eventually make this the dashboard page and also send the user through to this page.
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
+	}
+
+
+	public DeckGroup SelectedDeckGroup { get; set; }
 
     public string DeckGroupName { get; set; }
 

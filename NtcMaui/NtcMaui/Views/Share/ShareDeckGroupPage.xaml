@@ -4,35 +4,69 @@
              x:Class="NtcMaui.Views.Share.ShareDeckGroupPage"
              Title="ShareDeckGroupPage">
     <!--this page will let a user pick a deckgroup and the option they want to do for sharing before moving on to pick a user-->
-    <ScrollView>
-        <Grid>
-            <StackLayout>
-                <StackLayout VerticalOptions="Start" HorizontalOptions="CenterAndExpand">
-                    <Label Margin="10,10" FontAttributes="Bold" FontSize="22" Text="Pick a DeckGroup you wish to share and how you want to share it"></Label>
-                </StackLayout>
 
-                <StackLayout HorizontalOptions="Center">
-                    <Picker x:Name="DeckGroupPicker"
-        SelectedIndexChanged="DeckGroupPicker_SelectedIndexChanged"
-ItemDisplayBinding="{Binding DeckGroup.DeckGroupName}" Title="Select a DeckGroup you wish to share.">
+    <Shell.TitleView>
+        <HorizontalStackLayout>
+            <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
+            <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage" Text="Dashboard"/>
+            <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"/>
+            <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Text="Decks"/>
+            <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"/>
+        </HorizontalStackLayout>
+    </Shell.TitleView>
 
-                    </Picker>
-                    <Label x:Name="ErrorLabel" IsVisible="false" TextColor="Red"></Label>
-                </StackLayout>
+    <ContentPage.Content>
+        <Grid ColumnDefinitions="*,*"
+          ColumnSpacing="5"
+          RowDefinitions="*,Auto"
+          RowSpacing="0">
+            <Border Grid.ColumnSpan="2"
+                    Margin="80,30,80,30"
+            Stroke="{StaticResource Primary}"
+            StrokeThickness="4" 
+            StrokeShape="RoundRectangle 10,10,10,10" >
+                <ScrollView Grid.ColumnSpan="2">
+                    <StackLayout  HorizontalOptions="Center"  Margin="0,15,0,0" VerticalOptions="Center" Padding="0,0,10,20" Spacing="10">
+                        <Label Text="Share Deck Group" Margin="0,0,0,10" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
+                        <Label Text="Pick a Deck to Share and how you want to share it." Margin="0,0,0,30" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="12" />
+                        <StackLayout Spacing="20" Padding="10" VerticalOptions="Center">
+                            <Picker HorizontalOptions="Center" x:Name="DeckGroupPicker"
+                                SelectedIndexChanged="DeckGroupPicker_SelectedIndexChanged"
+                                ItemDisplayBinding="{Binding DeckGroup.DeckGroupName}" Title="Select a DeckGroup you wish to share.">
+                            </Picker>
+                        </StackLayout>
+                        <StackLayout Margin="0,5,0,10" HorizontalOptions="Center">
+                            <Label HorizontalOptions="Center" x:Name="ErrorLabel" IsVisible="false" TextColor="Red"/>
+                        </StackLayout>
 
-                <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 5">
-                    <StackLayout Margin="20, 20">
-                        <Label Text="This will give a direct copy and access to your deck."></Label>
-                        <Button x:Name="CopyBtn" Clicked="CopyBtn_Clicked" Margin="20, 20" Text="Direct Copy"></Button>
+                        <StackLayout Margin="0,40,0,0" Grid.ColumnSpan="2">
+                            <Label TextDecorations="Underline" Grid.Column="0" Grid.Row="1"  FontSize="16" HorizontalOptions="Center" VerticalOptions="Center" Text="Copy Deck Group and enable editing access"/>
+
+                            <Label Margin="20,20" Grid.Row="1" Text="Or" VerticalOptions="Center" HorizontalOptions="Center"/>
+
+                            <Label TextDecorations="Underline" VerticalOptions="Center" HorizontalOptions="Center" Grid.Row="1" Grid.Column="1" FontSize="16" Text="Clone Deck and enable view only access"/>
+                        </StackLayout>
+
                     </StackLayout>
+                </ScrollView>
 
-                    <StackLayout Margin="20, 20">
-                        <Label Text="This will clone the deck and make it so they can't edit their copy."></Label>
-                        <Button x:Name="CloneBtn" Clicked="CloneBtn_Clicked" Margin="20, 20" Text="Clone"></Button>
-                    </StackLayout>
+            </Border>
 
-                </HorizontalStackLayout>
-            </StackLayout>
+            <Button x:Name="CopyBtn"
+                Clicked="CopyBtn_Clicked"               
+                Text="Direct Copy"
+                HeightRequest="20"
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="8"/>
+            <Button x:Name="CloneBtn"
+                Text="Clone" 
+                Clicked="CloneBtn_Clicked"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="8" />
         </Grid>
-    </ScrollView>
+    </ContentPage.Content>
+
+
 </ContentPage>
