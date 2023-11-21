@@ -26,7 +26,7 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        UserDeckGroups = await GetAllUserDeckGroups();
+        UserDeckGroups = await Constants.GetAllUserDeckGroups();
         foreach (UserDeckGroup group in UserDeckGroups)
         {
             if (group.DeckGroupId == SelectedDeckGroup.DeckGroupId)
@@ -59,7 +59,7 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
                 await SaveDeckAsync(Deck);
 
                 //get all the Decks and re-find the one so we have an ID...since when posting it the Id would be 0.
-                List<Deck> decks = await GetAllDecks();
+                List<Deck> decks = await Constants.GetAllDecks();
                 Deck = decks.FirstOrDefault(d => d.DeckName == Deck.DeckName && d.DeckDescription == Deck.DeckDescription);
                 deckCreated = true;
 
@@ -119,7 +119,7 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
             await SaveDeckAsync(Deck);
 
             //get all the Decks and re-find the one so we have an ID...since when posting it the Id would be 0.
-            List<Deck> decks = await GetAllDecks();
+            List<Deck> decks = await Constants.GetAllDecks();
             List<Deck> sameDecks = decks.Where(d => d.DeckName == Deck.DeckName && d.DeckDescription == Deck.DeckDescription).ToList();
             //gets the newest item/most recently created Deck that will be used for the cloning
             Deck = sameDecks.Last();
@@ -205,28 +205,6 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
         }
     }
 
-    public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
-    {
-        List<UserDeckGroup> deckGroups = new List<UserDeckGroup>();
-
-        //originally
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                deckGroups = JsonSerializer.Deserialize<List<UserDeckGroup>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return deckGroups;
-    }
-
     //is going to get all of the Deck Groups
     public async Task<List<DeckGroup>> GetAllDeckGroups()
     {
@@ -274,30 +252,6 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
         {
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
-    }
-
-    //is going to get all of the Deck
-    public async Task<List<Deck>> GetAllDecks()
-    {
-        List<Deck> decks = new List<Deck>();
-
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                decks = JsonSerializer.Deserialize<List<Deck>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return decks;
     }
 
     //is going to get all of the Deck

@@ -32,7 +32,7 @@ public partial class CreateDeckPageNoDeckGroup : ContentPage, IQueryAttributable
         await SaveDeckAsync(Deck);
 
         //get all the Decks and re-find the one so we have an ID...since when posting it the Id would be 0.
-        List<Deck> decks = await GetAllDecks();
+        List<Deck> decks = await Constants.GetAllDecks();
         foreach (Deck deck in decks)
         {
             if (deck.DeckName == Deck.DeckName && deck.DeckDescription == Deck.DeckDescription)
@@ -80,30 +80,6 @@ public partial class CreateDeckPageNoDeckGroup : ContentPage, IQueryAttributable
         {
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
-    }
-
-    //is going to get all of the Decks
-    public async Task<List<Deck>> GetAllDecks()
-    {
-        List<Deck> decks = new List<Deck>();
-
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                decks = JsonSerializer.Deserialize<List<Deck>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return decks;
     }
 
     //remember the 1 to 1 relationship later on.

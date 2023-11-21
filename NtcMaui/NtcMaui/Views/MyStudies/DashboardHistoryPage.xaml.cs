@@ -22,7 +22,7 @@ public partial class DashboardHistoryPage : ContentPage, IQueryAttributable, INo
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        StudySessionFlashCards = await GetAllStudySessionFlashCards();
+        StudySessionFlashCards = await Constants.GetAllStudySessionFlashCards(LoggedInUser.UserId);
         AllStudyFlashcardsListView.ItemsSource = StudySessionFlashCards; 
     }
 
@@ -88,28 +88,6 @@ public partial class DashboardHistoryPage : ContentPage, IQueryAttributable, INo
         Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
     }
 
-    //will get the list of all StudySessionFlashcards
-    public async Task<List<StudySessionFlashCard>> GetAllStudySessionFlashCards()
-    {
-        List<StudySessionFlashCard> flashcards = new List<StudySessionFlashCard>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySessionFlashCard/maui/full/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                flashcards = JsonSerializer.Deserialize<List<StudySessionFlashCard>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return flashcards;
-    }
 
     public User LoggedInUser { get; set; }
 

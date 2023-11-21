@@ -28,28 +28,7 @@ public partial class AddFlashcardToDeckPage : ContentPage, IQueryAttributable, I
         base.OnAppearing();
         CurrentFlashCardLabel.Text = $"{SelectedFlashCard.FlashCardQuestion}";
         CurrentFlashcardAnswer.Text = $"{SelectedFlashCard.FlashCardAnswer}";
-		DeckPicker.ItemsSource = await GetAllDecks();
-    }
-
-    public async Task<List<UserDeck>> GetAllDecks()
-    {
-        List<UserDeck> decks = new List<UserDeck>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/maui/user/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                decks = JsonSerializer.Deserialize<List<UserDeck>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return decks;
+        DeckPicker.ItemsSource = await Constants.GetAllUserDecksById(LoggedInUser.UserId);
     }
 
     private async void AddFlashcardToDeckBtn_Clicked(object sender, EventArgs e)

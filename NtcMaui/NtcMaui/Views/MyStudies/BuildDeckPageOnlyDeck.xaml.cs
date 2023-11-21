@@ -25,7 +25,6 @@ public partial class BuildDeckPageOnlyDeck : ContentPage, IQueryAttributable, IN
         base.OnAppearing();
 
         //this I want to eventually be all the Deck Flashcards. Work on that later.
-        //FlashcardListView.ItemsSource = await GetAllFlashcards();
         FlashcardListView.ItemsSource = SelectedDeck.DeckFlashCards;
         BuildDeckNameLabel.Text = $"Building {SelectedDeck.DeckName} Deck";
     }

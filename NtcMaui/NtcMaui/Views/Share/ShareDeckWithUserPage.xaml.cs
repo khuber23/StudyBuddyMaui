@@ -36,7 +36,7 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
         }
         RecipientsListView.ItemsSource = Recipients;
         
-        Users = await GetAllUsers();
+        Users = await Constants.GetAllUsers();
         //this code will get rid of the logged in user so that they don't appear in the list when sharing.
         var userToRemove = Users.Where(user => user.Username == LoggedInUser.Username).FirstOrDefault();
         if (userToRemove != null)
@@ -138,7 +138,7 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
         foreach (User selectedUser in Recipients)
         {
                 ErrorUser = selectedUser;
-                List<UserDeck> userDecks = await GetAllUserDecks(selectedUser.UserId);
+                List<UserDeck> userDecks = await Constants.GetAllUserDecksById(selectedUser.UserId);
             var UserDeckMatchingSelected = userDecks.Where(ud => ud.Deck.DeckName == SelectedDeck.DeckName).FirstOrDefault();
             if (UserDeckMatchingSelected != null)
             {
@@ -170,7 +170,7 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
                     await SaveDeckAsync(clonedDeck);
                     //then we need to find the new deck...probably through indexes of finding decks by name? since there will now be multiple.
                     //then the last index is the newest one/the one that was cloned.
-                    Decks = await GetAllDecks();
+                    Decks = await Constants.GetAllDecks();
 
                     //multiple decks with same name test
                     List<Deck> multipleSameNameDecks = Decks.Where(d => d.DeckName.Contains(clonedDeck.DeckName)).ToList();
@@ -231,27 +231,6 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
         }
     }
 
-    public async Task<List<UserDeck>> GetAllUserDecks(int userId)
-    {
-        List<UserDeck> decks = new List<UserDeck>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/maui/user/{userId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                decks = JsonSerializer.Deserialize<List<UserDeck>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return decks;
-    }
-
     //pass in the UserName from the DeckPicker here to get specific user by username.
     public async Task<User> GetUserByUsername(string name)
     {
@@ -294,52 +273,6 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
         {
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
-    }
-
-    //is going to get all of the Deck
-    public async Task<List<Deck>> GetAllDecks()
-    {
-        List<Deck> decks = new List<Deck>();
-
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                decks = JsonSerializer.Deserialize<List<Deck>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return decks;
-    }
-
-    public async Task<List<User>> GetAllUsers()
-    {
-        List<User> users = new List<User>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                users = JsonSerializer.Deserialize<List<User>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return users;
     }
 
     //Posts a Deckflashcard

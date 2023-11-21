@@ -45,7 +45,7 @@ public partial class ForgotPassword : ContentPage
             }
 
             // Using Sign In page Get all User API call method.
-            List<User> users = await this.signInPage.GetAllUsers();
+            List<User> users = await Constants.GetAllUsers();
             User userFound = users.FirstOrDefault(user => user.Username == inputUserName);
             if (userFound != null)
             {

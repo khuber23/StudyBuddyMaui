@@ -26,7 +26,7 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        Decks = await GetAllDecks();
+        Decks = await Constants.GetAllDecks();
         DecksToUpdate = Decks.Where(d => d.DeckName == SelectedDeck.DeckName && d.DeckDescription == SelectedDeck.DeckDescription).ToList();
     }
 
@@ -77,7 +77,7 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
             await SaveFlashcardAsync(userMadeFlashCard);
         }
         //after that we neeed to make retrieve the right flashcards with the Id in the database and then make them into DeckFlashcards.
-        List<FlashCard> flashcards = await GetAllFlashCards();
+        List<FlashCard> flashcards = await Constants.GetAllFlashCards();
         UsermadeFlashCards = flashcards.Where(item => FlashCardQuestions.Contains(item.FlashCardQuestion)).ToList();
         foreach (Deck deck in DecksToUpdate)
         {
@@ -174,28 +174,6 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         }
 
         return flashCards;
-    }
-
-    public async Task<List<Deck>> GetAllDecks()
-    {
-        List<Deck> decks = new List<Deck>();
-
-        //originally
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                decks = JsonSerializer.Deserialize<List<Deck>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return decks;
     }
 
     private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)

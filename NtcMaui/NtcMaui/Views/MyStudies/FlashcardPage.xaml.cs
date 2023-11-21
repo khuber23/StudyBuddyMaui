@@ -24,28 +24,7 @@ public partial class FlashcardPage : ContentPage, IQueryAttributable, INotifyPro
     {
         base.OnAppearing();
 
-        FlashcardListView.ItemsSource = await GetAllFlashcards();
-    }
-
-    public async Task<List<FlashCard>> GetAllFlashcards()
-    {
-        List<FlashCard> flashCards = new List<FlashCard>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Flashcard", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                flashCards = JsonSerializer.Deserialize<List<FlashCard>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return flashCards;
+        FlashcardListView.ItemsSource = await Constants.GetAllFlashCards();
     }
 
 	private void GoToHomePage(object sender, EventArgs e)
@@ -100,7 +79,7 @@ public partial class FlashcardPage : ContentPage, IQueryAttributable, INotifyPro
 
     private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
     {
-       List<FlashCard> flashCards = await GetAllFlashcards();
+       List<FlashCard> flashCards = await Constants.GetAllFlashCards();
 
         if (flashCards != null)
         {

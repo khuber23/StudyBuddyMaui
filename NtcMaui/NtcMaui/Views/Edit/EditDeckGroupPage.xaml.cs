@@ -26,7 +26,7 @@ public partial class EditDeckGroupPage : ContentPage, IQueryAttributable, INotif
     {
         base.OnAppearing();
         List<DeckGroup> deckGroups = await GetAllDeckGroups();
-        UserDeckGroups = await GetAllUserDeckGroups();
+        UserDeckGroups = await Constants.GetAllUserDeckGroups();
         UserDeckGroups = UserDeckGroups.Where(ud => ud.DeckGroupId == SelectedDeckGroup.DeckGroupId || ud.DeckGroup.DeckGroupName == SelectedDeckGroup.DeckGroupName).ToList();
         DeckGroupsToEdit = deckGroups.Where(d => d.DeckGroupName == SelectedDeckGroup.DeckGroupName).ToList();
         DeckGroupNameEntry.Text = SelectedDeckGroup.DeckGroupName;
@@ -162,30 +162,6 @@ public partial class EditDeckGroupPage : ContentPage, IQueryAttributable, INotif
             {
                 string content = await response.Content.ReadAsStringAsync();
                 deckGroups = JsonSerializer.Deserialize<List<DeckGroup>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return deckGroups;
-    }
-
-    //is going to get all of the Deck Groups
-    public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
-    {
-        List<UserDeckGroup> deckGroups = new List<UserDeckGroup>();
-
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                deckGroups = JsonSerializer.Deserialize<List<UserDeckGroup>>(content, Constants._serializerOptions);
             }
         }
         catch (Exception ex)

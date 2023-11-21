@@ -25,7 +25,7 @@ public partial class ImportDeckPage : ContentPage, IQueryAttributable, INotifyPr
     {
         base.OnAppearing();
         CurrentDeckGroupLabel.Text = $"{SelectedDeckGroup.DeckGroupName}";
-        DeckPicker.ItemsSource = await GetAllUserDecks();
+        DeckPicker.ItemsSource = await Constants.GetAllUserDecksById(LoggedInUser.UserId);
         DeckGroupDecks = await GetAllDeckGroupDecks();
         SelectedDeckGroup.DeckGroupDecks = DeckGroupDecks.Where(deckGroup => deckGroup.DeckGroupId == SelectedDeckGroup.DeckGroupId).ToList();
         //should get all the DeckGroupDecks related to the Selected DeckGroup  (used for sharing and updating shared Decks)
@@ -173,27 +173,6 @@ public partial class ImportDeckPage : ContentPage, IQueryAttributable, INotifyPr
         {
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
-    }
-
-    public async Task<List<UserDeck>> GetAllUserDecks()
-    {
-        List<UserDeck> decks = new List<UserDeck>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/maui/user/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                decks = JsonSerializer.Deserialize<List<UserDeck>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return decks;
     }
 
     /// <summary>

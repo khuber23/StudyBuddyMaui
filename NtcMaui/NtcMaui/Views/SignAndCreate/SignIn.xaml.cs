@@ -26,33 +26,13 @@ public partial class SignIn : ContentPage
         await Shell.Current.GoToAsync(nameof(CreateAccount));
     }
 
-    public async Task<List<User>> GetAllUsers()
-    {
-        List<User> users = new List<User>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                users = JsonSerializer.Deserialize<List<User>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return users;
-    }
+    
 
     public async void ValidateUser()
     {
         //This endpoint I need to at least include the stuff from user to pass into other areas maybe?
         //should honestly just make this with a new endpoint to return a user based on username and password hash and if not null return.
-        List<User> users = await GetAllUsers();
+        List<User> users = await Constants.GetAllUsers();
         foreach (User user in users)
         {
             if (user.Username == UserNameEntry.Text)

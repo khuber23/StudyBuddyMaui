@@ -25,9 +25,9 @@ public partial class EditDeckPage : ContentPage, IQueryAttributable, INotifyProp
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        List<Deck> decks = await GetAllDecks();
+        List<Deck> decks = await Constants.GetAllDecks();
         DecksToEdit = decks.Where(d => d.DeckName == SelectedDeck.DeckName).ToList();
-        UserDecks = await GetAllUserDecks();
+        UserDecks = await Constants.GetAllUserDecks();
         UserDecks = UserDecks.Where(d => d.DeckId == SelectedDeck.DeckId || d.Deck.DeckName == SelectedDeck.DeckName).ToList();
         DeckGroupDecks = await GetAllDeckGroupDecks();
         DeckGroupDecks = DeckGroupDecks.Where(deckgroupdeck => deckgroupdeck.DeckId == SelectedDeck.DeckId).ToList();
@@ -175,54 +175,6 @@ public partial class EditDeckPage : ContentPage, IQueryAttributable, INotifyProp
         {
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
-    }
-
-    //is going to get all of the Deck
-    public async Task<List<Deck>> GetAllDecks()
-    {
-        List<Deck> decks = new List<Deck>();
-
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                decks = JsonSerializer.Deserialize<List<Deck>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return decks;
-    }
-
-    //is going to get all of the Deck
-    public async Task<List<UserDeck>> GetAllUserDecks()
-    {
-        List<UserDeck> userDecks = new List<UserDeck>();
-
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                userDecks = JsonSerializer.Deserialize<List<UserDeck>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return userDecks;
     }
 
     //is going to get all of the Deck

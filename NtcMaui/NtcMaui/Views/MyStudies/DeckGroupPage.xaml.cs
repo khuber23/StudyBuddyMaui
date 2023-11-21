@@ -19,7 +19,7 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        UserDeckGroups = await GetAllUserDeckGroups();
+        UserDeckGroups = await Constants.GetAllUserDeckGroupByUserId(LoggedInUser.UserId);
         DeckGroupListView.ItemsSource = UserDeckGroups;
     }
 
@@ -139,29 +139,6 @@ public partial class DeckGroupPage : ContentPage, IQueryAttributable, INotifyPro
             }
         }
     }
-
-    public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
-    {
-        List<UserDeckGroup> deckGroups = new List<UserDeckGroup>();
-
-        //originally
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/maui/deckgroup/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                deckGroups = JsonSerializer.Deserialize<List<UserDeckGroup>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return deckGroups;
-    }
-
 
     public User LoggedInUser { get; set; }
 

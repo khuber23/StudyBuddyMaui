@@ -23,7 +23,7 @@ public partial class ShareDeckGroupPage : ContentPage, IQueryAttributable, INoti
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        DeckGroupPicker.ItemsSource = await GetAllUserDeckGroups();
+        DeckGroupPicker.ItemsSource = await Constants.GetAllUserDeckGroupByUserId(LoggedInUser.UserId);
     }
 
     //picks the deckgroups based on the user DeckGroups
@@ -94,28 +94,6 @@ public partial class ShareDeckGroupPage : ContentPage, IQueryAttributable, INoti
             await Shell.Current.GoToAsync(nameof(ShareDeckGroupWithUserPage), navigationParameter);
         }
     }
-
-        public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
-        {
-            List<UserDeckGroup> deckGroups = new List<UserDeckGroup>();
-
-            //originally
-            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/maui/deckgroup/{LoggedInUser.UserId}", string.Empty));
-            try
-            {
-                HttpResponseMessage response = await Constants._client.GetAsync(uri);
-                if (response.IsSuccessStatusCode)
-                {
-                    string content = await response.Content.ReadAsStringAsync();
-                    deckGroups = JsonSerializer.Deserialize<List<UserDeckGroup>>(content, Constants._serializerOptions);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(@"\tERROR {0}", ex.Message);
-            }
-            return deckGroups;
-        }
 
         //might be an issue later but...i think it's fine
         /// <summary>

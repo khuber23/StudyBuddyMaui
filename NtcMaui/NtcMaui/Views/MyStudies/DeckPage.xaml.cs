@@ -25,7 +25,7 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
     {
         base.OnAppearing();
 
-        DeckListView.ItemsSource = await GetAllDecks();
+        DeckListView.ItemsSource = await Constants.GetAllDeckByUserId(LoggedInUser.UserId);
     }
 
     //this will be slightly different than the other go to Create Deck page.
@@ -139,27 +139,6 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
             }
 
         }
-    }
-
-    public async Task<List<UserDeck>> GetAllDecks()
-    {
-        List<UserDeck> decks = new List<UserDeck>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/maui/user/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                decks = JsonSerializer.Deserialize<List<UserDeck>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return decks;
     }
 
     public User LoggedInUser { get; set; }

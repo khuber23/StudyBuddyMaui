@@ -24,8 +24,8 @@ public partial class ShareDeckPage : ContentPage, IQueryAttributable, INotifyPro
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        UserDeckGroups = await GetAllUserDeckGroups();
-        UserDecks = await GetAllDecks();
+        UserDeckGroups = await Constants.GetAllUserDeckGroupByUserId(LoggedInUser.UserId);
+        UserDecks = await Constants.GetAllUserDecksById(LoggedInUser.UserId);
         List<UserDeck> DecksNotInDeckGroup = new List<UserDeck>();
         List<int> deckIds = new List<int>();
         foreach (UserDeckGroup userdeckgroup in UserDeckGroups)
@@ -145,48 +145,6 @@ public partial class ShareDeckPage : ContentPage, IQueryAttributable, INotifyPro
         }
 
         return deck;
-    }
-
-    public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
-    {
-        List<UserDeckGroup> userDeckGroups = new List<UserDeckGroup>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/maui/user/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                userDeckGroups = JsonSerializer.Deserialize<List<UserDeckGroup>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return userDeckGroups;
-    }
-
-    public async Task<List<UserDeck>> GetAllDecks()
-    {
-        List<UserDeck> decks = new List<UserDeck>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/maui/user/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                decks = JsonSerializer.Deserialize<List<UserDeck>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return decks;
     }
 
 	private void GoToHomePage(object sender, EventArgs e)
