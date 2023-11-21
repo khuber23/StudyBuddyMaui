@@ -10,24 +10,37 @@
         </ScrollView.GestureRecognizers>-->
         <Grid>
             <!---This stacklayout represents the actual flashcard-->
-            <!--Eventually need to add in flashcard images and deal with those -->
-            <StackLayout x:Name="Flashcard" Margin="10" VerticalOptions="Center" WidthRequest="500">
-                <StackLayout.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="OnTapRecognized" NumberOfTapsRequired="1"></TapGestureRecognizer>
-                </StackLayout.GestureRecognizers>
-                <Border Stroke="Black" StrokeThickness="2" BackgroundColor="White" Padding="10" VerticalOptions="Center">
-                    <StackLayout>
-                        <StackLayout   Margin="50" HorizontalOptions="Center" VerticalOptions="Center">
-                            <!---This stacklayout is where the inside of the card will appear along with flashcard text-->
-                            <Label x:Name="FlashcardText"></Label>
-                            <Image x:Name="FlashCardImage" WidthRequest="300" HeightRequest="300"></Image>
-                        </StackLayout>
-                        <HorizontalStackLayout HorizontalOptions="End">
-                            <ImageButton WidthRequest="25" HeightRequest="25" Source="sound.png" x:Name="SoundButton" Clicked="SoundButton_Clicked" HorizontalOptions="End" VerticalOptions="End"></ImageButton>
+            <StackLayout VerticalOptions="Center">
+                <StackLayout x:Name="Flashcard" Margin="10" VerticalOptions="Center" WidthRequest="500">
+                    <StackLayout.GestureRecognizers>
+                        <TapGestureRecognizer Tapped="OnTapRecognized" NumberOfTapsRequired="1"></TapGestureRecognizer>
+                    </StackLayout.GestureRecognizers>
+                    <Border Stroke="Black" StrokeThickness="2" BackgroundColor="White" Padding="10" VerticalOptions="Center">
+                        <StackLayout>
+                            <StackLayout   Margin="50" HorizontalOptions="Center" VerticalOptions="Center">
+                                <!---This stacklayout is where the inside of the card will appear along with flashcard text-->
+                                <Label x:Name="FlashcardText"></Label>
+                                <Image x:Name="FlashCardImage" WidthRequest="300" HeightRequest="300"></Image>
+                            </StackLayout>
+                            <HorizontalStackLayout HorizontalOptions="End">
 
-                        </HorizontalStackLayout>
-                    </StackLayout>
-                </Border>
+                                <ImageButton WidthRequest="25" HeightRequest="25" Source="sound.png" x:Name="SoundButton" Clicked="SoundButton_Clicked" HorizontalOptions="End" VerticalOptions="End"></ImageButton>
+
+                            </HorizontalStackLayout>
+
+                        </StackLayout>
+
+                    </Border>
+                </StackLayout>
+
+                <StackLayout HorizontalOptions="Center">
+                    <Picker x:Name="LangPicker"
+SelectedIndexChanged="LangPicker_SelectedIndexChanged" 
+ItemDisplayBinding="{Binding Name}"
+Title="Choose a Voice:" 
+WidthRequest="275"
+    HorizontalOptions="Center"/>
+                </StackLayout>
             </StackLayout>
             <StackLayout Orientation="Horizontal" VerticalOptions="End" HorizontalOptions="Center">
                 <Button Margin="20" Text="Don't Understand" Clicked="DontUnderstandClick"></Button>

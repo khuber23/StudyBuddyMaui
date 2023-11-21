@@ -23,6 +23,36 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
         OnPropertyChanged("Current User");
     }
 
+    protected async override void OnAppearing()
+    {
+        base.OnAppearing();
+        StartSessionTime = DateTime.Now;
+
+        IEnumerable<Locale> locales = await TextToSpeech.Default.GetLocalesAsync();
+        Locales = locales.ToList();
+        LangPicker.ItemsSource = Locales;
+        LanguageSelected = false;
+
+        //need to make a list of the cards.
+        FlashCards = ChosenUserDeck.Deck.DeckFlashCards;
+        //need to get the flashcard at first instance. 
+        //then after thsi when users swipe left or right we go to the next flashcard
+        string firstquestionText = FlashCards[0].FlashCard.FlashCardQuestion;
+        FlashcardText.Text = firstquestionText;
+        if (FlashCards[0].FlashCard.FlashCardQuestionImage != null)
+        {
+            FlashCardImage.IsVisible = true;
+            FlashCardImage.Source = FlashCards[0].FlashCard.FlashCardQuestionImage;
+        }
+        else
+        {
+            FlashCardImage.IsVisible = false;
+            FlashCardImage.Source = null;
+        }
+
+    }
+
+
     async void OnTapRecognized(object sender, TappedEventArgs args)
     {
         //old code for testing.
@@ -60,30 +90,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
         }
     }
 
-    protected async override void OnAppearing()
-    {
-        base.OnAppearing();
-        StartSessionTime = DateTime.Now;
-
-        //need to make a list of the cards.
-        FlashCards = ChosenUserDeck.Deck.DeckFlashCards;
-        //need to get the flashcard at first instance. 
-        //then after thsi when users swipe left or right we go to the next flashcard
-        string firstquestionText = FlashCards[0].FlashCard.FlashCardQuestion;
-        FlashcardText.Text = firstquestionText;
-        if (FlashCards[0].FlashCard.FlashCardQuestionImage != null)
-        {
-            FlashCardImage.IsVisible= true;
-            FlashCardImage.Source = FlashCards[0].FlashCard.FlashCardQuestionImage;
-        }
-        else
-        {
-            FlashCardImage.IsVisible = false;
-            FlashCardImage.Source = null;
-        }
-       
-    }
-
+   
     protected override void OnDisappearing()
     {
         //need a way to check if user is going to previous page or the next page.
@@ -451,18 +458,122 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
         return studySessions;
     }
 
+    private void LangPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        var picker = (Picker)sender;
+        int selectedIndex = picker.SelectedIndex;
+        if (selectedIndex != -1)
+        {
+            LanguageSelected = true;
+            ChosenVoice = picker.Items[selectedIndex];
+        }
+    }
+
     private async void SoundButton_Clicked(object sender, EventArgs e)
     {
         //eventually use these to deal with different languages. For now I just want it to read
-        //IEnumerable<Locale> locales = await TextToSpeech.Default.GetLocalesAsync();
 
-        //SpeechOptions options = new SpeechOptions()
-        //{
-        //    Locale = locales.FirstOrDefault()
-        //};
+        if (LanguageSelected == false)
+        {
+            SpeechOptions options = new SpeechOptions()
+            {
+                //this should be a default when first loading.
+                Locale = Locales.FirstOrDefault()
+            };
+            //eventually add a comma and options to deal with different languages and tests
+            await TextToSpeech.Default.SpeakAsync(FlashcardText.Text, options);
+        }
+        else
+        {
+            SpeechOptions options = new SpeechOptions()
+            {
+                //this should be a default when first loading.
+                Locale = Locales.FirstOrDefault(x => x.Name == ChosenVoice)
+            };
+            //eventually add a comma and options to deal with different languages and tests
+            if (options.Locale.Language.StartsWith("es"))
+            {
+                //translate from english to spanish
+                string TranslatedText = TranslateText(FlashcardText.Text, options.Locale.Language);
+                await TextToSpeech.Default.SpeakAsync(TranslatedText, options);
+            }
+            else if (options.Locale.Language.StartsWith("zh"))
+            {
+                string TranslatedText = TranslateText(FlashcardText.Text, options.Locale.Language);
+                await TextToSpeech.Default.SpeakAsync(TranslatedText, options);
+            }
+            else if (options.Locale.Language.StartsWith("fr"))
+            {
+                string TranslatedText = TranslateText(FlashcardText.Text, options.Locale.Language);
+                await TextToSpeech.Default.SpeakAsync(TranslatedText, options);
+            }
+            else if (options.Locale.Language.StartsWith("ja"))
+            {
+                string TranslatedText = TranslateText(FlashcardText.Text, options.Locale.Language);
+                await TextToSpeech.Default.SpeakAsync(TranslatedText, options);
+            }
+            else if (options.Locale.Language.StartsWith("en"))
+            {
+                await TextToSpeech.Default.SpeakAsync(FlashcardText.Text, options);
+            }
+            else
+            {
+                await TextToSpeech.Default.SpeakAsync(FlashcardText.Text, options);
+            }
 
-        //eventually add a comma and options to deal with different languages and tests
-        await TextToSpeech.Default.SpeakAsync(FlashcardText.Text);
+        }
+    }
+
+    public string TranslateText(string input, string language)
+    {
+        // Set the language from/to in the url (or pass it into this function)
+        //spanish
+        if (language.StartsWith("es"))
+        {
+            URL = String.Format
+        ("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}&dt=t&q={2}",
+         "en", "es", Uri.EscapeUriString(input));
+        }
+        //chinese
+        else if (language.StartsWith("zh"))
+        {
+            URL = String.Format
+        ("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}&dt=t&q={2}",
+         "en", "zh", Uri.EscapeUriString(input));
+        }
+        //french
+        else if (language.StartsWith("fr"))
+        {
+            URL = String.Format
+      ("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}&dt=t&q={2}",
+       "en", "fr", Uri.EscapeUriString(input));
+        }
+        //japenese
+        else if (language.StartsWith("ja"))
+        {
+            URL = String.Format
+      ("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}&dt=t&q={2}",
+       "en", "ja", Uri.EscapeUriString(input));
+        }
+
+        HttpClient httpClient = new HttpClient();
+        string result = httpClient.GetStringAsync(URL).Result;
+
+        // Get all json data
+        var jsonData = JsonSerializer.Deserialize<List<dynamic>>(result);
+
+        // Extract just the first array element (This is the only data we are interested in)
+        var translationItems = jsonData[0];
+
+        var test = translationItems[0];
+
+        var test2 = test[0];
+
+        // Translation Data
+        string translation = test2.ToString();
+
+        // Return translation
+        return translation;
     }
 
 
@@ -493,4 +604,12 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
 
     //bool for checking if user is navigating to a new page (completed study session)
     public bool CompletedSession { get; set; }
+
+    public List<Locale> Locales { get; set; }
+
+    public bool LanguageSelected { get; set; }
+
+    public string ChosenVoice { get; set; }
+
+    public string URL { get; set; }
 }

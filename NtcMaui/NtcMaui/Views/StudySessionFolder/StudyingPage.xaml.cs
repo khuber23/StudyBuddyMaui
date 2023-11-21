@@ -5,7 +5,11 @@ using System.Globalization;
 using System.Text.Json;
 using System.Text;
 using ApiStudyBuddy.Models;
-using static System.Net.WebRequestMethods;
+using Google.Api.Gax.ResourceNames;
+using Google.Apis.Translate.v2.Data;
+using Google.Cloud.Translation.V2;
+using System.Collections;
+using System.Text.Json.Nodes;
 
 namespace NtcMaui.Views.StudySessionFolder;
 
@@ -30,6 +34,11 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
     {
         base.OnAppearing();
         StartSessionTime = DateTime.Now;
+
+       IEnumerable<Locale> locales = await TextToSpeech.Default.GetLocalesAsync();
+        Locales = locales.ToList();
+        LangPicker.ItemsSource = Locales;
+        LanguageSelected = false;
 
         //need to make a list of the cards.
         FlashCards = ChosenDeckGroupDeck.Deck.DeckFlashCards;
@@ -625,18 +634,122 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
         return studySessions;
     }
 
+    private void LangPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        var picker = (Picker)sender;
+        int selectedIndex = picker.SelectedIndex;
+        if (selectedIndex != -1)
+        {
+            LanguageSelected = true;
+            ChosenVoice = picker.Items[selectedIndex];
+        }
+    }
+
     private async void SoundButton_Clicked(object sender, EventArgs e)
     {
         //eventually use these to deal with different languages. For now I just want it to read
-        IEnumerable<Locale> locales = await TextToSpeech.Default.GetLocalesAsync();
 
-        SpeechOptions options = new SpeechOptions()
+        if (LanguageSelected == false)
         {
-            Locale = locales.FirstOrDefault()
-        };
+            SpeechOptions options = new SpeechOptions()
+            {
+                //this should be a default when first loading.
+                Locale = Locales.FirstOrDefault()
+            };
+            //eventually add a comma and options to deal with different languages and tests
+            await TextToSpeech.Default.SpeakAsync(FlashcardText.Text, options);
+        }
+        else
+        {
+            SpeechOptions options = new SpeechOptions()
+            {
+                //this should be a default when first loading.
+                Locale = Locales.FirstOrDefault(x => x.Name == ChosenVoice)
+            };
+            //eventually add a comma and options to deal with different languages and tests
+            if (options.Locale.Language.StartsWith("es"))
+            {
+                //translate from english to spanish
+                string TranslatedText = TranslateText(FlashcardText.Text, options.Locale.Language);
+                await TextToSpeech.Default.SpeakAsync(TranslatedText, options);
+            }
+            else if (options.Locale.Language.StartsWith("zh"))
+            {
+                string TranslatedText = TranslateText(FlashcardText.Text, options.Locale.Language);
+                await TextToSpeech.Default.SpeakAsync(TranslatedText, options);
+            }
+            else if (options.Locale.Language.StartsWith("fr"))
+            {
+                string TranslatedText = TranslateText(FlashcardText.Text, options.Locale.Language);
+                await TextToSpeech.Default.SpeakAsync(TranslatedText, options);
+            }
+            else if (options.Locale.Language.StartsWith("ja"))
+            {
+                string TranslatedText = TranslateText(FlashcardText.Text, options.Locale.Language);
+                await TextToSpeech.Default.SpeakAsync(TranslatedText, options);
+            }
+            else if (options.Locale.Language.StartsWith("en"))
+            {
+                await TextToSpeech.Default.SpeakAsync(FlashcardText.Text, options);
+            }
+            else
+            {
+                await TextToSpeech.Default.SpeakAsync(FlashcardText.Text, options);
+            }
 
-        //eventually add a comma and options to deal with different languages and tests
-        await TextToSpeech.Default.SpeakAsync(FlashcardText.Text, options);
+        }
+    }
+
+    public string TranslateText(string input, string language)
+    {
+        // Set the language from/to in the url (or pass it into this function)
+        //spanish
+        if (language.StartsWith("es"))
+        {
+            URL = String.Format
+        ("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}&dt=t&q={2}",
+         "en", "es", Uri.EscapeUriString(input));
+        }
+        //chinese
+        else if (language.StartsWith("zh"))
+        {
+            URL = String.Format
+        ("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}&dt=t&q={2}",
+         "en", "zh", Uri.EscapeUriString(input));
+        }
+        //french
+        else if (language.StartsWith("fr"))
+        {
+            URL = String.Format
+      ("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}&dt=t&q={2}",
+       "en", "fr", Uri.EscapeUriString(input));
+        }
+        //japenese
+        else if (language.StartsWith("ja"))
+        {
+            URL = String.Format
+      ("https://translate.googleapis.com/translate_a/single?client=gtx&sl={0}&tl={1}&dt=t&q={2}",
+       "en", "ja", Uri.EscapeUriString(input));
+        }
+
+        HttpClient httpClient = new HttpClient();
+        string result = httpClient.GetStringAsync(URL).Result;
+
+        // Get all json data
+        var jsonData = JsonSerializer.Deserialize<List<dynamic>>(result);
+
+        // Extract just the first array element (This is the only data we are interested in)
+        var translationItems = jsonData[0];
+
+        var test = translationItems[0];
+
+        var test2 = test[0];
+
+        // Translation Data
+        string translation = test2.ToString();
+
+        // Return translation
+        return translation;
     }
 
     public User LoggedInUser { get; set; }
@@ -664,5 +777,13 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
 
     //bool for checking if user is navigating to a new page (completed study session)
     public bool CompletedSession { get; set; }
+
+    public List<Locale> Locales { get; set; }
+
+    public bool LanguageSelected { get; set; }
+
+    public string ChosenVoice { get; set; }
+
+    public string URL { get; set; }
 
 }
