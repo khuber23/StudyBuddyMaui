@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NtcMaui.Views.MyStudies.ExportDeckPage"
+             Title="ExportDeckPage">
+    <Shell.TitleView>
+        <HorizontalStackLayout>
+            <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
+            <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage" Text="Dashboard"/>
+            <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"/>
+            <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Text="Decks"/>
+            <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"/>
+        </HorizontalStackLayout>
+    </Shell.TitleView>
+
+    <Border WidthRequest="700" HeightRequest="650"
+        Stroke="{StaticResource Primary}"
+        StrokeThickness="4" 
+        StrokeShape="RoundRectangle 10,10,10,10" >
+        <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
+            <Label Text="Deck Details" HorizontalOptions="Center" FontAttributes="Bold" FontSize="24" />
+            <Label Text="Select a DeckGroup to add the deck to" Margin="0,10,0,80"/>
+            <Label x:Name="CurrentDeckLabel" HorizontalOptions="Center" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" Margin="0,0,0,40"/>
+            <Label x:Name="DeckGroupNameLabel" HorizontalOptions="Center"  FontSize="16" VerticalOptions="Center" Margin="0, 10"/>
+            <Picker x:Name="DeckGroupPicker"
+            SelectedIndexChanged="DeckGroupPicker_SelectedIndexChanged"              
+            ItemDisplayBinding="{Binding DeckGroup.DeckGroupName}"
+            Title="Choose a DeckGroup:" 
+            WidthRequest="275"
+                HorizontalOptions="Center"/>
+
+            <Button Margin="0,50,0,0" WidthRequest="150" x:Name="AddDeckToDeckGroupBtn" Text="Add to DeckGroup" Clicked="AddDeckToDeckGroupBtn_Clicked"/>
+
+            <Label x:Name="ErrorLabel" IsVisible="false" TextColor="Red" Text="Please Select a deckgroup from the drop-down"/>
+        </VerticalStackLayout>
+    </Border>
+</ContentPage>

@@ -27,12 +27,12 @@
         </HorizontalStackLayout>
     </Shell.TitleView>
 
-    <Grid ColumnDefinitions="*,*,*"
+    <Grid ColumnDefinitions="*,*"
           ColumnSpacing="5"
           RowDefinitions="*,Auto"
           RowSpacing="0">
 
-        <StackLayout Grid.ColumnSpan="3"  Margin="0,50,0,0">
+        <StackLayout Grid.ColumnSpan="2"  Margin="0,50,0,0">
             <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="BuildDeckNameLabel" FontSize="30" FontAttributes="Bold"/>
             <Label VerticalOptions="Center" HorizontalOptions="Center" Text="Add Flashcard or Enable Editing Mode"/>
             <HorizontalStackLayout Padding="10" Spacing="10">
@@ -81,14 +81,14 @@
                 Text="Create Flashcard" 
                 HeightRequest="20"
                 Grid.Row="1"
-                Grid.Column="1"
+                Grid.Column="0"
                 Margin="8"/>
-        <!--<Button x:Name="NextBtn" 
-                Text="Next" 
-                Clicked=""
+        <Button x:Name="ExportDeckBtn" 
+                Text="Export Deck" 
+                Clicked="ExportDeckBtn_Clicked"
                 Grid.Row="1"
                 Grid.Column="1"
-                Margin="8"/>-->
+                Margin="8"/>
     </Grid>
 
 

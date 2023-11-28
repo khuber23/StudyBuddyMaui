@@ -7,9 +7,9 @@ using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.MyStudies;
 
-public partial class ImportDeckPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
+public partial class ExportDeckPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
-	public ImportDeckPage()
+	public ExportDeckPage()
 	{
 		InitializeComponent();
 	}
@@ -17,22 +17,22 @@ public partial class ImportDeckPage : ContentPage, IQueryAttributable, INotifyPr
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         LoggedInUser = query["Current User"] as User;
-        SelectedDeckGroup = query["Current DeckGroup"] as DeckGroup;
+        SelectedDeck = query["Current Deck"] as Deck;
         OnPropertyChanged("Current User");
     }
 
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        CurrentDeckGroupLabel.Text = $" Selected DeckGroup: {SelectedDeckGroup.DeckGroupName}";
-        DeckPicker.ItemsSource = await Constants.GetAllUserDecksById(LoggedInUser.UserId);
+        CurrentDeckLabel.Text = $" Selected Deck: {SelectedDeck.DeckName}";
+        DeckGroupPicker.ItemsSource = await Constants.GetAllUserDeckGroupByUserId(LoggedInUser.UserId);
         DeckGroupDecks = await Constants.GetAllDeckGroupDecks();
-        SelectedDeckGroup.DeckGroupDecks = DeckGroupDecks.Where(deckGroup => deckGroup.DeckGroupId == SelectedDeckGroup.DeckGroupId).ToList();
+        SelectedDeck.DeckGroupDecks = DeckGroupDecks.Where(deckGroup => deckGroup.DeckId == SelectedDeck.DeckId).ToList();
         //should get all the DeckGroupDecks related to the Selected DeckGroup  (used for sharing and updating shared Decks)
-        DeckGroupDecks = DeckGroupDecks.Where(deck => deck.DeckGroup.DeckGroupId == SelectedDeckGroup.DeckGroupId || deck.DeckGroup.DeckGroupName == SelectedDeckGroup.DeckGroupName).ToList();
+        DeckGroupDecks = DeckGroupDecks.Where(deck => deck.Deck.DeckId == SelectedDeck.DeckId || deck.Deck.DeckName == SelectedDeck.DeckName).ToList();
     }
 
-    private async void DeckPicker_SelectedIndexChanged(object sender, EventArgs e)
+    private async void DeckGroupPicker_SelectedIndexChanged(object sender, EventArgs e)
     {
         var picker = (Picker)sender;
         int selectedIndex = picker.SelectedIndex;
@@ -40,10 +40,9 @@ public partial class ImportDeckPage : ContentPage, IQueryAttributable, INotifyPr
         {
             //use this deckname to eventually find a deck in the next btn.
             ErrorLabel.IsVisible = false;
-            DeckName = picker.Items[selectedIndex];
-            SelectedDeck = await Constants.GetDeckByDeckName(DeckName);
-            DeckNameLabel.Text = $"The deck you chose {SelectedDeck.DeckName}";
-            FlashcardDetails.ItemsSource = SelectedDeck.DeckFlashCards;
+            DeckGroupName = picker.Items[selectedIndex];
+            SelectedDeckGroup = await Constants.GetDeckGroupByDeckGroupName(DeckGroupName);
+            DeckGroupNameLabel.Text = $"The deck group you chose: {SelectedDeckGroup.DeckGroupName}";
         }
     }
 
@@ -51,16 +50,16 @@ public partial class ImportDeckPage : ContentPage, IQueryAttributable, INotifyPr
     {
         bool failed = false;
         ErrorLabel.IsVisible = false;
-        if (SelectedDeck == null || SelectedDeck.DeckId == 0)
+        if (SelectedDeckGroup == null || SelectedDeckGroup.DeckGroupId == 0)
         {
-            ErrorLabel.Text = "Please Select a deck from the drop-down";
+            ErrorLabel.Text = "Please Select a deck group from the drop-down";
             ErrorLabel.IsVisible = true;
         }
         else
         {
-            foreach (DeckGroupDeck deckGroupdeck in SelectedDeckGroup.DeckGroupDecks)
+            foreach (DeckGroupDeck deckGroupdeck in SelectedDeck.DeckGroupDecks)
             {
-                if (deckGroupdeck.DeckId == SelectedDeck.DeckId)
+                if (deckGroupdeck.DeckGroupId == SelectedDeckGroup.DeckGroupId)
                 {
                     failed = true;
                     break;
@@ -68,7 +67,7 @@ public partial class ImportDeckPage : ContentPage, IQueryAttributable, INotifyPr
             }
             if (failed)
             {
-                ErrorLabel.Text = "The deck you are trying to add already exists in the deck group. Please choose another deck or pick a different deck group.";
+                ErrorLabel.Text = "The deck you are trying to add already exists in the deck group. Please choose another deck to export or pick a different deck group.";
                 ErrorLabel.IsVisible = true;
             }
             else
@@ -100,7 +99,7 @@ public partial class ImportDeckPage : ContentPage, IQueryAttributable, INotifyPr
                 {
                     { "Current User", LoggedInUser }
                 };
-                await Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
+                await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
             }
         }
     }
@@ -179,13 +178,11 @@ public partial class ImportDeckPage : ContentPage, IQueryAttributable, INotifyPr
 
     public User LoggedInUser { get; set; }
 
-    public string DeckName { get; set; }
+    public string DeckGroupName { get; set; }
 
     public Deck SelectedDeck { get; set; }
 
     public DeckGroup SelectedDeckGroup { get; set; }
 
     public List<DeckGroupDeck> DeckGroupDecks { get; set; }
-
- 
 }

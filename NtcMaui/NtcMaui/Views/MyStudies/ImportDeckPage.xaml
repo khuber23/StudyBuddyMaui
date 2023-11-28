@@ -13,14 +13,24 @@
         </HorizontalStackLayout>
     </Shell.TitleView>
 
-    <Border WidthRequest="500" HeightRequest="450"
+    <Border WidthRequest="700" HeightRequest="650"
         Stroke="{StaticResource Primary}"
         StrokeThickness="4" 
         StrokeShape="RoundRectangle 10,10,10,10" >
         <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
             <Label Text="DeckGroup Details" HorizontalOptions="Center" FontAttributes="Bold" FontSize="24" />
             <Label Text="Select a Deck to add to this Deck Group" Margin="0,10,0,80"/>
-            <Label x:Name="CurrentDeckGroupLabel" HorizontalOptions="Center" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" Margin="0,0,0,80"/>
+            <Label x:Name="CurrentDeckGroupLabel" HorizontalOptions="Center" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" Margin="0,0,0,40"/>
+            <Label x:Name="DeckNameLabel" HorizontalOptions="Center"  FontSize="16" VerticalOptions="Center" Margin="0, 10"/>
+            <CollectionView x:Name="FlashcardDetails">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Label Text="{Binding FlashCard.FlashCardQuestion}"></Label>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
             <Picker x:Name="DeckPicker"
             SelectedItem="{Binding SelectedUserDeck}"
             SelectedIndexChanged="DeckPicker_SelectedIndexChanged"              

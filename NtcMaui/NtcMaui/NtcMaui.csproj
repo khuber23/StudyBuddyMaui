@@ -127,6 +127,9 @@
 	  <MauiXaml Update="Views\MyStudies\DeckPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\MyStudies\ExportDeckPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\MyStudies\FlashcardPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

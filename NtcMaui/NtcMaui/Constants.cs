@@ -79,6 +79,82 @@ namespace NtcMaui
             return decks;
         }
 
+        /// <summary>
+        /// gets the deck based on deck name
+        /// </summary>
+        /// <returns>a deck</returns>
+        public static async Task<Deck> GetDeckByDeckName(string DeckName)
+        {
+            Deck deck = new Deck();
+
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck/deckname/{DeckName}", string.Empty));
+            try
+            {
+                HttpResponseMessage response = await Constants._client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    deck = JsonSerializer.Deserialize<Deck>(content, Constants._serializerOptions);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+
+            return deck;
+        }
+
+        /// <summary>
+        /// gets the deck group based on deckgroup name
+        /// </summary>
+        /// <returns>a deck</returns>
+        public static async Task<DeckGroup> GetDeckGroupByDeckGroupName(string DeckGroupName)
+        {
+            DeckGroup deckGroup = new DeckGroup();
+
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup/deckgroup/{DeckGroupName}", string.Empty));
+            try
+            {
+                HttpResponseMessage response = await Constants._client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    deckGroup = JsonSerializer.Deserialize<DeckGroup>(content, Constants._serializerOptions);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+
+            return deckGroup;
+        }
+
+        //is going to get all of the Deck
+        public static async Task<List<DeckGroupDeck>> GetAllDeckGroupDecks()
+        {
+            List<DeckGroupDeck> deckGroupDecks = new List<DeckGroupDeck>();
+
+
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck", string.Empty));
+            try
+            {
+                HttpResponseMessage response = await Constants._client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    deckGroupDecks = JsonSerializer.Deserialize<List<DeckGroupDeck>>(content, Constants._serializerOptions);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+
+            return deckGroupDecks;
+        }
+
         public static async Task<List<FlashCard>> GetAllFlashCards()
         {
             List<FlashCard> flashCards = new List<FlashCard>();

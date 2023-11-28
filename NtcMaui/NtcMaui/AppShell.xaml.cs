@@ -30,6 +30,7 @@
             Routing.RegisterRoute(nameof(Views.MyStudies.BuildDeckPageOnlyDeck), typeof(Views.MyStudies.BuildDeckPageOnlyDeck));
             Routing.RegisterRoute(nameof(Views.MyStudies.AddFlashcardToDeckPage), typeof(Views.MyStudies.AddFlashcardToDeckPage));
             Routing.RegisterRoute(nameof(Views.MyStudies.ImportDeckPage), typeof(Views.MyStudies.ImportDeckPage));
+            Routing.RegisterRoute(nameof(Views.MyStudies.ExportDeckPage), typeof(Views.MyStudies.ExportDeckPage));
 
             //Study Session Routes
             Routing.RegisterRoute(nameof(Views.StudySessionFolder.MyStudiesSessionPage), typeof(Views.StudySessionFolder.MyStudiesSessionPage));

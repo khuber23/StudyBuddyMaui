@@ -141,5 +141,13 @@ public partial class BuildDeckPageOnlyDeck : ContentPage, IQueryAttributable, IN
 
     public Deck SelectedDeck { get; set; }
 
-
+    private void ExportDeckBtn_Clicked(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+            {"Current Deck", SelectedDeck }
+                };
+        Shell.Current.GoToAsync(nameof(ExportDeckPage), navigationParameter);
+    }
 }
