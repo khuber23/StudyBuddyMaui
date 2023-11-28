@@ -20,7 +20,16 @@
         <VerticalStackLayout VerticalOptions="Center" HorizontalOptions="Center">
             <Label Text="Deck Details" HorizontalOptions="Center" FontAttributes="Bold" FontSize="24" />
             <Label Text="Select a DeckGroup to add the deck to" Margin="0,10,0,80"/>
-            <Label x:Name="CurrentDeckLabel" HorizontalOptions="Center" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" Margin="0,0,0,40"/>
+            <Label x:Name="CurrentDeckLabel" HorizontalOptions="Center" FontAttributes="Bold" FontSize="16" VerticalOptions="Center" Margin="0,0,0,10"/>
+            <CollectionView x:Name="FlashcardDetails">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <StackLayout>
+                            <Label Text="{Binding FlashCard.FlashCardQuestion}"></Label>
+                        </StackLayout>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
             <Label x:Name="DeckGroupNameLabel" HorizontalOptions="Center"  FontSize="16" VerticalOptions="Center" Margin="0, 10"/>
             <Picker x:Name="DeckGroupPicker"
             SelectedIndexChanged="DeckGroupPicker_SelectedIndexChanged"              

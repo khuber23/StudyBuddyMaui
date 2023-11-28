@@ -25,6 +25,7 @@ public partial class ExportDeckPage : ContentPage, IQueryAttributable, INotifyPr
     {
         base.OnAppearing();
         CurrentDeckLabel.Text = $" Selected Deck: {SelectedDeck.DeckName}";
+        FlashcardDetails.ItemsSource = SelectedDeck.DeckFlashCards;
         DeckGroupPicker.ItemsSource = await Constants.GetAllUserDeckGroupByUserId(LoggedInUser.UserId);
         DeckGroupDecks = await Constants.GetAllDeckGroupDecks();
         SelectedDeck.DeckGroupDecks = DeckGroupDecks.Where(deckGroup => deckGroup.DeckId == SelectedDeck.DeckId).ToList();
