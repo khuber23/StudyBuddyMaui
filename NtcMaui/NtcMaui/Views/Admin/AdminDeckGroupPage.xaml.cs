@@ -17,6 +17,31 @@ public partial class AdminDeckGroupPage : ContentPage, IQueryAttributable, INoti
         OnPropertyChanged("Current User");
     }
 
+    protected async override void OnAppearing()
+    {
+        base.OnAppearing();
+        UserDeckGroups = await Constants.GetAllUserDeckGroups();
+        DeckGroupListView.ItemsSource = UserDeckGroups;
+    }
+
+    //When user clicks on an item in the listView it will take the item and send it through to the neck Page
+    private void DeckGroupListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+
+        if (e.SelectedItem != null)
+        {
+            ErrorLabel.IsVisible = false;
+            UserDeckGroup = e.SelectedItem as UserDeckGroup;
+                    var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
+                    {"Current DeckGroup", UserDeckGroup.DeckGroup}
+                };
+                    Shell.Current.GoToAsync(nameof(AdminEditDeckGroupPage), navigationParameter);
+                }
+    }
+
     //tabs
     private void GoToHomePage(object sender, EventArgs e)
     {
@@ -65,4 +90,8 @@ public partial class AdminDeckGroupPage : ContentPage, IQueryAttributable, INoti
     }
 
     public User LoggedInUser { get; set; }
+
+    public UserDeckGroup UserDeckGroup { get; set; }
+
+    public List<UserDeckGroup> UserDeckGroups { get; set; }
 }

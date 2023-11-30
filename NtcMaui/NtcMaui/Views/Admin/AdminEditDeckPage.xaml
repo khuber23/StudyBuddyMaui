@@ -32,10 +32,10 @@
                             <Label Text="Deck Description" FontAttributes="Bold" FontSize="16"/>
                             <Entry x:Name="DeckDescriptionEntry" Placeholder="Enter a Description"/>
                         </StackLayout>
-                        <StackLayout Grid.Column="1" Padding="10" VerticalOptions="Center" Margin="10">
+                        <!--<StackLayout Grid.Column="1" Padding="10" VerticalOptions="Center" Margin="10">
                             <Label Text="Make Public"/>
                             <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="IsPublicCheckBox_CheckedChanged" HorizontalOptions="Start"/>
-                        </StackLayout>
+                        </StackLayout>-->
                         <StackLayout VerticalOptions="Center" Margin="10" Grid.Column="1">
                             <Label IsVisible="false" FontSize="20" TextColor="Red" FontAttributes="Bold"  x:Name="WarningLabel" HorizontalOptions="Center"/>
                         </StackLayout>

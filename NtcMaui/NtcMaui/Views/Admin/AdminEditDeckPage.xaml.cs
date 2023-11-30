@@ -84,16 +84,7 @@ public partial class AdminEditDeckPage : ContentPage, IQueryAttributable, INotif
             SelectedDeck = deck;
             SelectedDeck.DeckName = DeckNameEntry.Text;
             SelectedDeck.DeckDescription = DeckDescriptionEntry.Text;
-            SelectedDeck.IsPublic = IsPublic;
-            //the first item should be the one similiar to the one needing to be edited...so anything after are the shared dekcs.
-            if (DecksToEdit.First().DeckId == SelectedDeck.DeckId)
-            {
-                SelectedDeck.IsPublic = IsPublic;
-            }
-            else
-            {
-                SelectedDeck.IsPublic = false;
-            }
+//not worrying about public as that should be left up to users themselves. (Could also mess up code later on)
             await PutDeckAsync(SelectedDeck);
         }
 

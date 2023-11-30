@@ -24,10 +24,51 @@
             <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"></Button>
         </HorizontalStackLayout>
     </Shell.TitleView>
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+
+    <Grid ColumnDefinitions="*,*"
+      ColumnSpacing="5"
+      RowDefinitions="*,Auto"
+      RowSpacing="0">
+
+        <StackLayout Grid.ColumnSpan="2"  Margin="0,50,0,0">
+            <Label Text="Deck Groups" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
+            <Label Text="Select Deck Group to Begin Editing" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="12" />
+            <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="ErrorLabel" TextColor="Red" IsVisible="False"/>
+
+        </StackLayout>
+
+        <ListView Margin="0,180,0,0"
+                    BackgroundColor="Transparent"
+                    Grid.ColumnSpan="3"
+                    x:Name="DeckGroupListView" 
+                    ItemSelected="DeckGroupListView_ItemSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="10">
+                            <Frame HeightRequest="125"
+                               Padding="0"
+                               Style="{StaticResource CardView}">
+                                <Grid Padding="0"
+                                  ColumnDefinitions="125, *">
+                                    <Image Aspect="AspectFill"
+                                   x:Name="ProfileImage"
+                                    Source="{Binding User.ProfilePicture, TargetNullValue='stockprofileimage.png'}"
+                                   WidthRequest="125"
+                                   HeightRequest="125"/>
+                                    <VerticalStackLayout Grid.Column="1"
+                                                     Padding="10"
+                                                     VerticalOptions="Center">
+                                        <Label Text="{Binding DeckGroup.DeckGroupName}" FontAttributes="Bold"/>
+                                        <Label Text="{Binding User.Username}"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+
 </ContentPage>
