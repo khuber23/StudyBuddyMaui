@@ -34,6 +34,7 @@
         <StackLayout Grid.ColumnSpan="2"  Margin="0,50,0,0">
             <Label x:Name="DeckGroupNameLabel" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="30" FontAttributes="Bold"/>
             <Label Text="Select Deck to Build or Enable Editing Mode" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="12" />
+            <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="ErrorLabel" TextColor="Red" IsVisible="False"/>
             <HorizontalStackLayout Margin="10" Padding="10" Spacing="10">
                 <Label FontSize="12" Text="Enable Editing?"/>
                 <CheckBox ToolTipProperties.Text="Check and Select Deck to Edit" x:Name="EditingCheckBox" IsChecked="False"/>
@@ -72,7 +73,7 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Label HorizontalOptions="Center" x:Name="ErrorLabel" TextColor="Red" IsVisible="False"/>
+        
 
         <Button x:Name="AddDeckBtn"
                 Clicked="GoToCreateDeckPage"

@@ -155,6 +155,30 @@ namespace NtcMaui
             return deckGroupDecks;
         }
 
+        //is going to get all of the Deck
+        public static async Task<List<DeckGroupDeck>> GetDeckGroupDecksByDeckGroupId(int deckGroupId)
+        {
+            List<DeckGroupDeck> deckGroupDecks = new List<DeckGroupDeck>();
+
+
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck/maui/{deckGroupId}", string.Empty));
+            try
+            {
+                HttpResponseMessage response = await Constants._client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    deckGroupDecks = JsonSerializer.Deserialize<List<DeckGroupDeck>>(content, Constants._serializerOptions);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+
+            return deckGroupDecks;
+        }
+
         public static async Task<List<FlashCard>> GetAllFlashCards()
         {
             List<FlashCard> flashCards = new List<FlashCard>();

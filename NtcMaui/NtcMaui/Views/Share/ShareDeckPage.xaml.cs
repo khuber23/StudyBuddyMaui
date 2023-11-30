@@ -31,10 +31,12 @@ public partial class ShareDeckPage : ContentPage, IQueryAttributable, INotifyPro
         foreach (UserDeckGroup userdeckgroup in UserDeckGroups)
         {
             //test
-            foreach (DeckGroupDeck deckGroupDeck in userdeckgroup.DeckGroup.DeckGroupDecks)
-            {
-                deckIds.Add(deckGroupDeck.DeckId);
-            }
+            userdeckgroup.DeckGroup.DeckGroupDecks = await Constants.GetDeckGroupDecksByDeckGroupId(userdeckgroup.DeckGroupId);
+                foreach (DeckGroupDeck deckGroupDeck in userdeckgroup.DeckGroup.DeckGroupDecks)
+                {
+                    deckIds.Add(deckGroupDeck.DeckId);
+                }
+        
         }
 
         UserDecks.Where(userdeck => deckIds.Contains(userdeck.DeckId)).ToList().ForEach(userdeck => UserDecks.Remove(userdeck));

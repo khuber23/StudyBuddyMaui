@@ -35,6 +35,7 @@
         <StackLayout Grid.ColumnSpan="3"  Margin="0,50,0,0">
             <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="BuildDeckNameLabel" FontSize="30" FontAttributes="Bold"/>
             <Label Text="Create a Flashcard or Enable Editing Mode" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="12" />
+            <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="ErrorLabel" TextColor="Red" IsVisible="False"/>
             <HorizontalStackLayout Margin="10" Padding="10" Spacing="10">
                 <Label FontSize="12" Text="Enable Editing?"/>
                 <CheckBox ToolTipProperties.Text="Check and Select Flashcard to Edit" x:Name="EditingCheckBox" IsChecked="False"/>
@@ -73,7 +74,6 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Label HorizontalOptions="Center" x:Name="ErrorLabel" TextColor="Red" IsVisible="False"/>
 
         <Button x:Name="AddFlshcardBtn"
                 Clicked="GoToCreateFlashcardPage"
