@@ -31,6 +31,15 @@ public partial class HomePage : ContentPage, IQueryAttributable, INotifyProperty
         {
             UserImage.Source = LoggedInUser.ProfilePicture;
         }
+
+        if (LoggedInUser.IsAdmin == true)
+        {
+            AdminButton.IsVisible = true;
+        }
+        else
+        {
+            AdminButton.IsVisible = false;
+        }
     }
 
     public async void GoToMyStudies(object sender, EventArgs e)

@@ -4,9 +4,9 @@ using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.Admin;
 
-public partial class AdminHomePage : ContentPage, IQueryAttributable, INotifyPropertyChanged
+public partial class AdminDeckGroupPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
-	public AdminHomePage()
+	public AdminDeckGroupPage()
 	{
 		InitializeComponent();
 	}
