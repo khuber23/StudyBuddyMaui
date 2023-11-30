@@ -55,15 +55,20 @@ public partial class CreateAccount : ContentPage
         user.LastName = LastNameEntry.Text;
         //eventually add profile picture stuff here
         user.IsAdmin = false;
-        if (ImagePath == string.Empty || ImagePath == null)
+        user.ProfilePicture = UserImageEntry.Text;
+        if (UserImageEntry.Text == string.Empty || UserImageEntry.Text == null)
         {
-            ImagePath = "stockprofileimage.png";
-            UserImageEntry.Text = ImagePath;
+            if (ImagePath == string.Empty || ImagePath == null)
+            {
+                ImagePath = "stockprofileimage.png";
+                UserImageEntry.Text = ImagePath;
+            }
+            else
+            {
+                user.ProfilePicture = UserImageEntry.Text;
+            }
         }
-        else
-        {
-            user.ProfilePicture = UserImageEntry.Text;
-        }
+        
         
         return user;
     }

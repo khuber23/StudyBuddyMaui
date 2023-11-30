@@ -30,6 +30,7 @@
                 </StackLayout>
                 <HorizontalStackLayout HorizontalOptions="Center" Padding="10" Spacing="30">
                     <Button WidthRequest="200" FontSize="Medium" x:Name="MyStudiesBtn" Clicked="GoToMyStudies" Text="My Studies"></Button>
+                    <Button WidthRequest="200" FontSize="Medium" x:Name="AdminButton" Clicked="GoToAdminHomePage" Text="Admin"></Button>
                     <Button WidthRequest="200" FontSize="Medium" x:Name="StudySessionBtn" Clicked="GoToStudySession" Text="Study Session"></Button>
                 </HorizontalStackLayout>
 

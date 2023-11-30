@@ -52,6 +52,9 @@
             Routing.RegisterRoute(nameof(Views.Share.ShareDeckGroupPage), typeof(Views.Share.ShareDeckGroupPage));
             Routing.RegisterRoute(nameof(Views.Share.ShareDeckWithUserPage), typeof(Views.Share.ShareDeckWithUserPage));
             Routing.RegisterRoute(nameof(Views.Share.ShareDeckGroupWithUserPage), typeof(Views.Share.ShareDeckGroupWithUserPage));
+
+            //Admin Routes
+            Routing.RegisterRoute(nameof(Views.Admin.AdminHomePage), typeof(Views.Admin.AdminHomePage));
         }
     }
 }
