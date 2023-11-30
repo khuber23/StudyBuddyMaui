@@ -7,6 +7,11 @@ using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.MyStudies;
 
+public partial class NewDeckFlashCard : DeckFlashCard
+{
+    public string Image { get; set; }
+}
+
 //eventually need to make a view flashcard page to see the details and eventually edit like images and stuff.
 public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
@@ -28,7 +33,18 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
         base.OnAppearing();
 
         //this I want to eventually be all the Deck Flashcards. Work on that later.
-        FlashcardListView.ItemsSource = SelectedDeckGroupDeck.Deck.DeckFlashCards;
+        DeckFlashCards = SelectedDeckGroupDeck.Deck.DeckFlashCards;
+        
+        List<DeckFlashCard> NewDeckFlashCards = new List<DeckFlashCard>();
+        foreach (DeckFlashCard card in DeckFlashCards)
+        {
+            NewDeckFlashCard newCard = new NewDeckFlashCard();
+            newCard.FlashCard = card.FlashCard;
+            newCard.Deck = card.Deck;
+            newCard.Image = LoggedInUser.ProfilePicture;
+            NewDeckFlashCards.Add(newCard);
+        }
+        FlashcardListView.ItemsSource = NewDeckFlashCards;
         BuildDeckNameLabel.Text = $"Building {SelectedDeckGroupDeck.Deck.DeckName} Deck";
     }
 
@@ -163,6 +179,8 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
     public DeckGroupDeck SelectedDeckGroupDeck { get; set; }
 
     public DeckFlashCard SelectedDeckFlashCard { get; set; }
+
+    public List<DeckFlashCard> DeckFlashCards { get; set; }
 
 
 }

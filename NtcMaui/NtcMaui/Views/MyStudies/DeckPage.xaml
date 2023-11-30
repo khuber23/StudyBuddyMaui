@@ -47,7 +47,7 @@
                         ItemSelected="DeckListView_ItemSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <ViewCell>
+                    <ViewCell x:Name="ViewCellTest">
                         <Grid Padding="10">
                             <Frame HeightRequest="125"
                                    Padding="0"
@@ -56,7 +56,7 @@
                                       ColumnDefinitions="125, *">
                                     <Image Aspect="AspectFill"
                                        x:Name="ProfileImage"
-                                       Source="stockprofileimage.png"
+                                       Source="{Binding User.ProfilePicture, TargetNullValue='stockprofileimage.png'}"
                                        WidthRequest="125"
                                        HeightRequest="125"/>
                                     <VerticalStackLayout Grid.Column="1"

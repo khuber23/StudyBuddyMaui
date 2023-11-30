@@ -1,11 +1,17 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Reflection;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
 using NtcMaui.Views.Edit;
 using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.MyStudies;
+
+public partial class NewDeckGroupDeck : DeckGroupDeck
+{
+    public string Image { get; set; }
+}
 
 public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
@@ -21,7 +27,17 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
         //change this to get all the decks in whatever deckGroup they selected.
         //need to wait until api is changed but essentially need an endpoint in DeckGroup
         //as of 5:30 10/16/2023 this will get all of the Deck based on DeckGroup Id which will only belong to 1 user as of this moment.
-        DeckListView.ItemsSource = await GetAllDecksbyDeckGroup();
+        DeckGroupDecks = await GetAllDecksbyDeckGroup();
+        TestDecks = new List<DeckGroupDeck>();
+        foreach(DeckGroupDeck deckGroupDeck in DeckGroupDecks)
+        {
+            NewDeckGroupDeck test = new NewDeckGroupDeck();
+            test.DeckGroup = deckGroupDeck.DeckGroup;
+            test.Deck = deckGroupDeck.Deck;
+            test.Image = LoggedInUser.ProfilePicture;
+            TestDecks.Add(test);
+        }
+        DeckListView.ItemsSource = TestDecks;
         DeckGroupNameLabel.Text = $"Building {SelectedDeckGroup.DeckGroupName} Deck Group";
     }
 
@@ -181,4 +197,8 @@ public partial class BuildDeckGroupPage : ContentPage, IQueryAttributable, INoti
     public DeckGroup SelectedDeckGroup { get; set; }
 
     public DeckGroupDeck SelectedDeckGroupDeck { get; set; }
+
+    public List<DeckGroupDeck> DeckGroupDecks { get; set; }
+
+    public List<DeckGroupDeck> TestDecks { get; set; }
 }

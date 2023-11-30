@@ -25,7 +25,7 @@
             <VerticalStackLayout Padding="10" Spacing="10">
 
                 <StackLayout Margin="0, 30">
-                    <Image x:Name="UserImage" WidthRequest="150" HeightRequest="150" Source="stockprofileimage.png"></Image>
+                    <Image x:Name="UserImage" WidthRequest="150" HeightRequest="150"></Image>
                     <Label HorizontalOptions="Center" x:Name="UserNameText"></Label>
                 </StackLayout>
                 <HorizontalStackLayout HorizontalOptions="Center" Padding="10" Spacing="30">

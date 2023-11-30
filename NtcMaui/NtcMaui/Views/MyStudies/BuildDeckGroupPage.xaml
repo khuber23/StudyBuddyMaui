@@ -56,7 +56,7 @@
                                       ColumnDefinitions="125, *">
                                     <Image Aspect="AspectFill"
                                        x:Name="ProfileImage"
-                                       Source="stockprofileimage.png"
+                                       Source="{Binding Image, TargetNullValue='stockprofileimage.png'}"
                                        WidthRequest="125"
                                        HeightRequest="125"/>
                                     <VerticalStackLayout Grid.Column="1"

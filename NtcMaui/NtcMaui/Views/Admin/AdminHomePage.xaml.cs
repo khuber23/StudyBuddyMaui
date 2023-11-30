@@ -17,6 +17,21 @@ public partial class AdminHomePage : ContentPage, IQueryAttributable, INotifyPro
         OnPropertyChanged("Current User");
     }
 
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        if (LoggedInUser.ProfilePicture == null || LoggedInUser.ProfilePicture == string.Empty)
+        {
+            UserImage.Source = "stockprofileimage.png";
+        }
+        else
+        {
+            UserImage.Source = LoggedInUser.ProfilePicture;
+        }
+
+        UserNameText.Text = $"Welcome administrator {LoggedInUser.Username}!";
+    }
+
     //tabs
     private void GoToHomePage(object sender, EventArgs e)
     {

@@ -20,9 +20,42 @@
         <HorizontalStackLayout>
             <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
             <Button x:Name="AdminHomeBtn" Clicked="GoToAdminHomePage" Text="Admin Home"></Button>
-            <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"></Button>
-            <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Text="Decks"></Button>
-            <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"></Button>
         </HorizontalStackLayout>
     </Shell.TitleView>
+
+    <ScrollView>
+        <VerticalStackLayout>
+            <Grid ColumnDefinitions="160,auto,*"
+              RowDefinitions="160,auto">
+
+                <BoxView Color="{x:StaticResource Primary}"
+                     Grid.ColumnSpan="3"                         
+                     HorizontalOptions="Fill"/>
+
+                <Frame Grid.RowSpan="2"
+                   Grid.Column="0"
+                   CornerRadius="55"
+                   HorizontalOptions="Center"
+                   Padding="0"
+                   Margin="0,100,0,0">
+                    <Image WidthRequest="100" HeightRequest="100" Source="ntclogo.png"></Image>
+                </Frame>
+            </Grid>
+            <VerticalStackLayout Padding="10" Spacing="10">
+
+                <StackLayout Margin="0, 30">
+                    <Image x:Name="UserImage" WidthRequest="150" HeightRequest="150"></Image>
+                    <Label HorizontalOptions="Center" x:Name="UserNameText"></Label>
+                    <Label HorizontalOptions="Center" Margin="0,15" Padding="10" FontSize="Medium" Text="As an Admin, you can delete and edit from the areas below. Do not abuse your power."></Label>
+                </StackLayout>
+                <HorizontalStackLayout HorizontalOptions="Center" Padding="10" Spacing="30">
+                    <Button WidthRequest="200" FontSize="Medium" x:Name="AdminDeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"></Button>
+                    <Button WidthRequest="200" FontSize="Medium" x:Name="AdminDeckButton" Clicked="GoToDeckPage" Text="Decks"></Button>
+                    <Button WidthRequest="200" FontSize="Medium" x:Name="AdminFlashCardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"></Button>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
 </ContentPage>

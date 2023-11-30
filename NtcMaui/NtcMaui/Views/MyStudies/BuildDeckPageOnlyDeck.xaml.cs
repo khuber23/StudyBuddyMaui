@@ -5,6 +5,8 @@ using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.MyStudies;
 
+
+
 public partial class BuildDeckPageOnlyDeck : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
 	public BuildDeckPageOnlyDeck()
@@ -23,9 +25,18 @@ public partial class BuildDeckPageOnlyDeck : ContentPage, IQueryAttributable, IN
     protected override void OnAppearing()
     {
         base.OnAppearing();
-
         //this I want to eventually be all the Deck Flashcards. Work on that later.
-        FlashcardListView.ItemsSource = SelectedDeck.DeckFlashCards;
+        DeckFlashCards = SelectedDeck.DeckFlashCards;
+        List<DeckFlashCard> NewDeckFlashCards = new List<DeckFlashCard>();
+        foreach (DeckFlashCard card in DeckFlashCards)
+        {
+            NewDeckFlashCard newCard = new NewDeckFlashCard();
+            newCard.FlashCard = card.FlashCard;
+            newCard.Deck = card.Deck;
+            newCard.Image = LoggedInUser.ProfilePicture;
+            NewDeckFlashCards.Add(newCard);
+        }
+        FlashcardListView.ItemsSource = NewDeckFlashCards;
         BuildDeckNameLabel.Text = $"Building {SelectedDeck.DeckName} Deck";
     }
 
@@ -138,6 +149,8 @@ public partial class BuildDeckPageOnlyDeck : ContentPage, IQueryAttributable, IN
 	public User LoggedInUser { get; set; }
 
     public DeckFlashCard SelectedFlashCard { get; set; }
+
+    public List<DeckFlashCard> DeckFlashCards { get; set; }
 
     public Deck SelectedDeck { get; set; }
 
