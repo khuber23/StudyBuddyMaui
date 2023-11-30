@@ -25,7 +25,7 @@
         </HorizontalStackLayout>
     </Shell.TitleView>
 
-    <!--<Grid ColumnDefinitions="*,*"
+    <Grid ColumnDefinitions="*,*"
       ColumnSpacing="5"
       RowDefinitions="*,Auto"
       RowSpacing="0">
@@ -51,7 +51,7 @@
                                   ColumnDefinitions="125, *">
                                     <Image Aspect="AspectFill"
                                    x:Name="ProfileImage"
-                                   Source="stockprofileimage.png"
+                                  Source="{Binding User.ProfilePicture, TargetNullValue='stockprofileimage.png'}"
                                    WidthRequest="125"
                                    HeightRequest="125"/>
                                     <VerticalStackLayout Grid.Column="1"
@@ -68,7 +68,7 @@
             </ListView.ItemTemplate>
         </ListView>
         <Label HorizontalOptions="Center" x:Name="ErrorLabel" TextColor="Red" IsVisible="False"/>
-    </Grid>-->
+    </Grid>
 
 
 </ContentPage>

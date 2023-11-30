@@ -17,6 +17,13 @@ public partial class AdminDeckPage : ContentPage, IQueryAttributable, INotifyPro
         OnPropertyChanged("Current User");
     }
 
+    protected async override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        DeckListView.ItemsSource = await Constants.GetAllUserDecks();
+    }
+
     //tabs
     private void GoToHomePage(object sender, EventArgs e)
     {
@@ -63,6 +70,26 @@ public partial class AdminDeckPage : ContentPage, IQueryAttributable, INotifyPro
                 };
         Shell.Current.GoToAsync(nameof(AdminDeckGroupPage), navigationParameter);
     }
+
+    //different from deckpage. Only will deal with going directly to edit page.
+    private void DeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem != null)
+        {
+            SelectedDeck = e.SelectedItem as UserDeck;
+                
+                    var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser},
+                    //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
+                    {"Current Deck", SelectedDeck.Deck}
+                };
+                    Shell.Current.GoToAsync(nameof(AdminEditDeckPage), navigationParameter);
+                }
+
+            }
+
+    public UserDeck SelectedDeck { get; set; }
 
     public User LoggedInUser { get; set; }
 }

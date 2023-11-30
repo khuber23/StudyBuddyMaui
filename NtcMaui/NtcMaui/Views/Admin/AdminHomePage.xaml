@@ -19,7 +19,7 @@
     <Shell.TitleView>
         <HorizontalStackLayout>
             <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
-            <Button x:Name="AdminHomeBtn" Clicked="GoToAdminHomePage" Text="Admin Home"></Button>
+            <!--<Button x:Name="AdminHomeBtn" Clicked="GoToAdminHomePage" Text="Admin Home"></Button>-->
         </HorizontalStackLayout>
     </Shell.TitleView>
 

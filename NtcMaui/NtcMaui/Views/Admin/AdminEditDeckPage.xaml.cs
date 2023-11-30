@@ -3,14 +3,13 @@ using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
-using NtcMaui.Views.MyStudies;
 using NtcMaui.Views.SignAndCreate;
 
-namespace NtcMaui.Views.Edit;
+namespace NtcMaui.Views.Admin;
 
-public partial class EditDeckPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
+public partial class AdminEditDeckPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
-	public EditDeckPage()
+	public AdminEditDeckPage()
 	{
 		InitializeComponent();
 	}
@@ -73,21 +72,21 @@ public partial class EditDeckPage : ContentPage, IQueryAttributable, INotifyProp
                 {
                     { "Current User", LoggedInUser }
                 };
-        await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+        await Shell.Current.GoToAsync(nameof(AdminDeckPage), navigationParameter);
 
     }
 
 
     private async void FinishEditingBtn_Clicked(object sender, EventArgs e)
     {
-        foreach(Deck deck in DecksToEdit)
+        foreach (Deck deck in DecksToEdit)
         {
             SelectedDeck = deck;
             SelectedDeck.DeckName = DeckNameEntry.Text;
             SelectedDeck.DeckDescription = DeckDescriptionEntry.Text;
             SelectedDeck.IsPublic = IsPublic;
             //the first item should be the one similiar to the one needing to be edited...so anything after are the shared dekcs.
-            if(DecksToEdit.First().DeckId == SelectedDeck.DeckId)
+            if (DecksToEdit.First().DeckId == SelectedDeck.DeckId)
             {
                 SelectedDeck.IsPublic = IsPublic;
             }
@@ -97,13 +96,13 @@ public partial class EditDeckPage : ContentPage, IQueryAttributable, INotifyProp
             }
             await PutDeckAsync(SelectedDeck);
         }
-        
+
         //then navigate back to DeckGroupPage
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }
                 };
-        await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+        await Shell.Current.GoToAsync(nameof(AdminDeckPage), navigationParameter);
     }
 
     private void IsPublicCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -177,56 +176,54 @@ public partial class EditDeckPage : ContentPage, IQueryAttributable, INotifyProp
         }
     }
 
-	private void GoToHomePage(object sender, EventArgs e)
-	{
-		var navigationParameter = new Dictionary<string, object>
-				{
-					{ "Current User", LoggedInUser }
-				};
-		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
-	}
+    //tabs
+    private void GoToHomePage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+    }
 
-	private void GoToDashboardPage(object sender, EventArgs e)
-	{
-		//eventually make this the dashboard page and also send the user through to this page.
-		var navigationParameter = new Dictionary<string, object>
-				{
-					{ "Current User", LoggedInUser }
-				};
-		Shell.Current.GoToAsync(nameof(DashboardPage), navigationParameter);
-	}
+    private void GoToAdminHomePage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(AdminHomePage), navigationParameter);
+    }
 
-	private void GoToFlashcardPage(object sender, EventArgs e)
-	{
-		//eventually make this the dashboard page and also send the user through to this page.
-		var navigationParameter = new Dictionary<string, object>
-				{
-					{ "Current User", LoggedInUser }
-				};
-		Shell.Current.GoToAsync(nameof(FlashcardPage), navigationParameter);
-	}
-	private void GoToDeckPage(object sender, EventArgs e)
-	{
-		//eventually make this the dashboard page and also send the user through to this page.
-		var navigationParameter = new Dictionary<string, object>
-				{
-					{ "Current User", LoggedInUser }
-				};
-		Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
-	}
+    private void GoToFlashcardPage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(AdminFlashCardPage), navigationParameter);
+    }
+    private void GoToDeckPage(object sender, EventArgs e)
+    {
+        //eventually make this the dashboard page and also send the user through to this page.
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(AdminDeckPage), navigationParameter);
 
-	private void GoToDeckGroupPage(object sender, EventArgs e)
-	{
-		//eventually make this the dashboard page and also send the user through to this page.
-		var navigationParameter = new Dictionary<string, object>
-				{
-					{ "Current User", LoggedInUser }
-				};
-		Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
-	}
+    }
 
+    private void GoToDeckGroupPage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(AdminDeckGroupPage), navigationParameter);
+    }
 
-	public bool IsPublic { get; set; }
+    public bool IsPublic { get; set; }
 
     public User LoggedInUser { get; set; }
 
@@ -238,6 +235,4 @@ public partial class EditDeckPage : ContentPage, IQueryAttributable, INotifyProp
     public List<DeckGroupDeck> DeckGroupDecks { get; set; }
 
     public List<UserDeck> UserDecks { get; set; }
-
-
 }

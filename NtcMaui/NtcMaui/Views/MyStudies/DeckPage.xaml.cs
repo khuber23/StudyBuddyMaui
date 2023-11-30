@@ -145,6 +145,4 @@ public partial class DeckPage : ContentPage, IQueryAttributable, INotifyProperty
 
     public UserDeck SelectedDeck { get; set; }
 
-    public string ImageSource { get; set; }
-
 }

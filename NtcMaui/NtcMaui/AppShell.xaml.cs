@@ -58,6 +58,7 @@
             Routing.RegisterRoute(nameof(Views.Admin.AdminFlashCardPage), typeof(Views.Admin.AdminFlashCardPage));
             Routing.RegisterRoute(nameof(Views.Admin.AdminDeckPage), typeof(Views.Admin.AdminDeckPage));
             Routing.RegisterRoute(nameof(Views.Admin.AdminDeckGroupPage), typeof(Views.Admin.AdminDeckGroupPage));
+            Routing.RegisterRoute(nameof(Views.Admin.AdminEditDeckPage), typeof(Views.Admin.AdminEditDeckPage));
         }
     }
 }
