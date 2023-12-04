@@ -33,9 +33,10 @@
         <StackLayout Grid.ColumnSpan="2"  Margin="0,50,0,0">
             <Label Text="Decks" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
             <Label Text="Select a Deck to begin edting." VerticalOptions="Center" HorizontalOptions="Center"  FontSize="12" />
+            <SearchBar Margin="0,30,0,0" WidthRequest="400" HorizontalOptions="Center" Placeholder="Search Decks" TextChanged="SearchBar_TextChanged"/>
         </StackLayout>
 
-        <ListView Margin="0,180,0,0"
+        <ListView Margin="0,200,0,0"
                     BackgroundColor="Transparent"
                     Grid.ColumnSpan="3"
                     x:Name="DeckListView"

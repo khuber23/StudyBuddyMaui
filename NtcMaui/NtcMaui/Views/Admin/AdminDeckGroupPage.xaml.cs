@@ -24,6 +24,25 @@ public partial class AdminDeckGroupPage : ContentPage, IQueryAttributable, INoti
         DeckGroupListView.ItemsSource = UserDeckGroups;
     }
 
+    private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        List<UserDeckGroup> userDeckGroups = await Constants.GetAllUserDeckGroups();
+
+        if (userDeckGroups != null)
+        {
+            if (e != null)
+            {
+                DeckGroupListView.ItemsSource = null;
+                DeckGroupListView.ItemsSource = userDeckGroups.Where(udg => udg.DeckGroup.DeckGroupName.Contains(e.NewTextValue));
+            }
+            else
+            {
+                OnAppearing();
+            }
+        }
+
+    }
+
     //When user clicks on an item in the listView it will take the item and send it through to the neck Page
     private void DeckGroupListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {

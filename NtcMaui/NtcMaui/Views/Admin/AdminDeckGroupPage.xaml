@@ -34,10 +34,10 @@
             <Label Text="Deck Groups" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
             <Label Text="Select Deck Group to Begin Editing" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="12" />
             <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="ErrorLabel" TextColor="Red" IsVisible="False"/>
-
+            <SearchBar Margin="0,30,0,0" WidthRequest="400" HorizontalOptions="Center" Placeholder="Search DeckGroups" TextChanged="SearchBar_TextChanged"/>
         </StackLayout>
 
-        <ListView Margin="0,180,0,0"
+        <ListView Margin="0,200,0,0"
                     BackgroundColor="Transparent"
                     Grid.ColumnSpan="3"
                     x:Name="DeckGroupListView" 

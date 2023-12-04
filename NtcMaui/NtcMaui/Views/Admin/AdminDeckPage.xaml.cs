@@ -24,6 +24,25 @@ public partial class AdminDeckPage : ContentPage, IQueryAttributable, INotifyPro
         DeckListView.ItemsSource = await Constants.GetAllUserDecks();
     }
 
+    private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        List<UserDeck> userDecks = await Constants.GetAllUserDecks();
+
+        if (userDecks != null)
+        {
+            if (e != null)
+            {
+                DeckListView.ItemsSource = null;
+                DeckListView.ItemsSource = userDecks.Where(ud => ud.Deck.DeckName.Contains(e.NewTextValue));
+            }
+            else
+            {
+                OnAppearing();
+            }
+        }
+
+    }
+
     //tabs
     private void GoToHomePage(object sender, EventArgs e)
     {
