@@ -5,7 +5,6 @@ using ApiStudyBuddy.Models;
 using Microsoft.Maui.ApplicationModel;
 using System.Windows;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Maui.Controls.Compatibility.Platform.UWP;
 
 namespace NtcMaui.Views.SignAndCreate;
 
