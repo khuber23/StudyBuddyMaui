@@ -46,6 +46,7 @@
             Routing.RegisterRoute(nameof(Views.Edit.EditDeckPage), typeof(Views.Edit.EditDeckPage));
             Routing.RegisterRoute(nameof(Views.Edit.EditFlashCardPageWithDeckGroup), typeof(Views.Edit.EditFlashCardPageWithDeckGroup));
             Routing.RegisterRoute(nameof(Views.Edit.EditFlashCardOnlyDeck), typeof(Views.Edit.EditFlashCardOnlyDeck));
+            Routing.RegisterRoute(nameof(Views.Edit.EditUserPage), typeof(Views.Edit.EditUserPage));
 
             //Sharing Routes
             Routing.RegisterRoute(nameof(Views.Share.ShareDeckPage), typeof(Views.Share.ShareDeckPage));

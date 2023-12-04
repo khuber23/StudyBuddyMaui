@@ -1,29 +1,40 @@
 using System.ComponentModel;
 using ApiStudyBuddy.Models;
+using NtcMaui.Views.MyStudies;
 using NtcMaui.Views.SignAndCreate;
 
-namespace NtcMaui.Views.Admin;
+namespace NtcMaui.Views.Edit;
 
-public partial class AdminEditUserPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
+public partial class EditUserPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
-	public AdminEditUserPage()
+	public EditUserPage()
 	{
 		InitializeComponent();
 	}
 
-
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         LoggedInUser = query["Current User"] as User;
-        SelectedUser = query["Selected User"] as User;
         OnPropertyChanged("Current User");
     }
 
     protected async override void OnAppearing()
     {
         base.OnAppearing();
+        SelectedUser = LoggedInUser;
         UserNameEntry.Text = SelectedUser.Username;
         UserImageEntry.Text = SelectedUser.ProfilePicture;
+        FirstNameEntry.Text = SelectedUser.FirstName;
+        LastNameEntry.Text = SelectedUser.LastName;
+        EmailEntry.Text = SelectedUser.Email;
+        if (SelectedUser.ProfilePicture == null)
+        {
+            ProfileImage.Source = "stockprofileimage.png";
+        }
+        else
+        {
+            ProfileImage.Source = SelectedUser.ProfilePicture;
+        }
     }
 
     private void CancelBtn_Clicked(object sender, EventArgs e)
@@ -47,13 +58,14 @@ public partial class AdminEditUserPage : ContentPage, IQueryAttributable, INotif
     //for shared stuff I am not going to worry as this can be fixed by deleting the user decks and deckgroups for other users if necessary as an admin.
     private async void FinishDeleteBtn_Clicked(object sender, EventArgs e)
     {
-            await Constants.DeleteUser(SelectedUser.UserId);
-        var navigationParameter = new Dictionary<string, object>
-                {
-                    { "Current User", LoggedInUser }
-                };
-        //don't know where to take them so take them to the deck page lol
-        await Shell.Current.GoToAsync(nameof(AdminUsersPage), navigationParameter);
+        await Constants.DeleteUser(SelectedUser.UserId);
+        LoggedInUser = null;
+        //var navigationParameter = new Dictionary<string, object>
+        //        {
+        //            { "Current User", LoggedInUser }
+        //        };
+        //don't know where to take them to the sign in page upon deletion. Need to also add it so it will disable the back button. as they shouldn't be able to go back.
+        await Shell.Current.GoToAsync(nameof(SignIn));
 
     }
 
@@ -62,14 +74,9 @@ public partial class AdminEditUserPage : ContentPage, IQueryAttributable, INotif
         //change to deal with user
         SelectedUser.Username = UserNameEntry.Text;
         SelectedUser.ProfilePicture = UserImageEntry.Text;
-        if (AdminStatusCheckBox.IsChecked == true)
-        {
-            SelectedUser.IsAdmin = true;
-        }
-        else
-        {
-            SelectedUser.IsAdmin = false;
-        }
+        SelectedUser.FirstName = FirstNameEntry.Text;
+        SelectedUser.LastName = LastNameEntry.Text;
+        SelectedUser.Email = EmailEntry.Text;
         //check to make sure any lists are null. if they are not set them to null otherwise the update won't work.
         SelectedUser.UserDecks = null;
         SelectedUser.UserDeckGroups = null;
@@ -79,10 +86,9 @@ public partial class AdminEditUserPage : ContentPage, IQueryAttributable, INotif
                 {
                     { "Current User", LoggedInUser }
                 };
-        await Shell.Current.GoToAsync(nameof(AdminUsersPage), navigationParameter);
+        await Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
     }
 
-    //tabs
     private void GoToHomePage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
@@ -92,22 +98,24 @@ public partial class AdminEditUserPage : ContentPage, IQueryAttributable, INotif
         Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
     }
 
-    private void GoToAdminHomePage(object sender, EventArgs e)
+    private void GoToDashboardPage(object sender, EventArgs e)
     {
+        //eventually make this the dashboard page and also send the user through to this page.
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }
                 };
-        Shell.Current.GoToAsync(nameof(AdminHomePage), navigationParameter);
+        Shell.Current.GoToAsync(nameof(DashboardPage), navigationParameter);
     }
 
     private void GoToFlashcardPage(object sender, EventArgs e)
     {
+        //eventually make this the dashboard page and also send the user through to this page.
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }
                 };
-        Shell.Current.GoToAsync(nameof(AdminFlashCardPage), navigationParameter);
+        Shell.Current.GoToAsync(nameof(FlashcardPage), navigationParameter);
     }
     private void GoToDeckPage(object sender, EventArgs e)
     {
@@ -116,34 +124,34 @@ public partial class AdminEditUserPage : ContentPage, IQueryAttributable, INotif
                 {
                     { "Current User", LoggedInUser }
                 };
-        Shell.Current.GoToAsync(nameof(AdminDeckPage), navigationParameter);
-
+        Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
     }
 
     private void GoToDeckGroupPage(object sender, EventArgs e)
-    {
-        var navigationParameter = new Dictionary<string, object>
-                {
-                    { "Current User", LoggedInUser }
-                };
-        Shell.Current.GoToAsync(nameof(AdminDeckGroupPage), navigationParameter);
-    }
-
-    private void GoToUsersPage(object sender, EventArgs e)
     {
         //eventually make this the dashboard page and also send the user through to this page.
         var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }
                 };
-        Shell.Current.GoToAsync(nameof(AdminUsersPage), navigationParameter);
+        Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
     }
+
+    private async void UploadImageBtn_Clicked(object sender, EventArgs e)
+    {
+        FileResult result = await FilePicker.PickAsync(new PickOptions
+        {
+            FileTypes = FilePickerFileType.Images
+        });
+
+        ImagePath = result.FullPath;
+        ProfileImage.Source = ImagePath;
+        UserImageEntry.Text = ImagePath;
+    }
+
+    public string ImagePath { get; set; }
 
     public User LoggedInUser { get; set; }
 
     public User SelectedUser { get; set; }
-
-    public List<UserDeckGroup> UserDeckGroups { get; set; }
-
-    public List<UserDeck> UserDecks { get; set; }
 }

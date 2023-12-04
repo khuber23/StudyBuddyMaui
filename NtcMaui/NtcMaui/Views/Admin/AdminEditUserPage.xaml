@@ -44,7 +44,7 @@
                             <Label Text="Username" FontAttributes="Bold" FontSize="16"/>
                             <Entry MinimumWidthRequest="400" x:Name="UserNameEntry" Placeholder="Enter UserName"/>
 
-                            <Label Text="If User Image is innapropriate change it to something appropriate please." Margin="0,15,0,0" FontAttributes="Bold" FontSize="16"/>
+                            <Label Text="If User Image is innapropriate change it to something appropriate please." FontSize="16"/>
                             <Entry MinimumWidthRequest="400" x:Name="UserImageEntry"  Placeholder="Provide a Link to picture here (Optional)"/>
 
                             <Label Text="Make User admin" Margin="0,15,0,0" FontAttributes="Bold" FontSize="16"/>

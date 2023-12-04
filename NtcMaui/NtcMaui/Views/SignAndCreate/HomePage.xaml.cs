@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using ApiStudyBuddy.Models;
 using NtcMaui.Views.Admin;
+using NtcMaui.Views.Edit;
 using NtcMaui.Views.MyStudies;
 using NtcMaui.Views.StudySessionFolder;
 
@@ -42,6 +43,16 @@ public partial class HomePage : ContentPage, IQueryAttributable, INotifyProperty
         }
     }
 
+    private async void UserImage_Clicked(object sender, EventArgs e)
+    {
+        //eventually make this the dashboard page and also send the user through to this page.
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        await Shell.Current.GoToAsync(nameof(EditUserPage), navigationParameter);
+    }
+
     public async void GoToMyStudies(object sender, EventArgs e)
     {
         //eventually make this the dashboard page and also send the user through to this page.
@@ -69,4 +80,6 @@ public partial class HomePage : ContentPage, IQueryAttributable, INotifyProperty
         await Shell.Current.GoToAsync(nameof(AdminHomePage), navigationParameter);
     }
     public User LoggedInUser { get; set; }
+
+
 }

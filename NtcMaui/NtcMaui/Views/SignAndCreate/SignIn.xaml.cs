@@ -5,6 +5,7 @@ using ApiStudyBuddy.Models;
 using Microsoft.Maui.ApplicationModel;
 using System.Windows;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Maui.Controls.Compatibility.Platform.UWP;
 
 namespace NtcMaui.Views.SignAndCreate;
 
@@ -14,6 +15,17 @@ public partial class SignIn : ContentPage
     public SignIn()
     {
         InitializeComponent();
+    }
+
+    protected async override void OnAppearing()
+    {
+        base.OnAppearing();
+        GoBack = false;
+    }
+    //code that just is there to check if a user clicked the back button.
+    protected override bool OnBackButtonPressed()
+    {
+            return false;
     }
     public void CompleteSignIn(object sender, EventArgs e)
     {
@@ -69,4 +81,7 @@ public partial class SignIn : ContentPage
     {
         await Shell.Current.GoToAsync(nameof(ForgotPassword));
     }
+
+    //bool set up on load to essentially stop user from going bck if they would delete their profile.
+    public bool GoBack { get; set; }
 }
