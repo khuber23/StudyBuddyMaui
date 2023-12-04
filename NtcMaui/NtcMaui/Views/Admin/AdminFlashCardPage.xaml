@@ -25,10 +25,48 @@
             <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"></Button>
         </HorizontalStackLayout>
     </Shell.TitleView>
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+    <Grid ColumnDefinitions="*,*"
+      ColumnSpacing="5"
+      RowDefinitions="*,Auto"
+      RowSpacing="0">
+
+        <StackLayout Grid.ColumnSpan="2"  Margin="0,50,0,0">
+            <Label Text="Flashcards" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
+            <Label Text="Select a Flashcard to edit" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="12" />
+            <SearchBar Margin="0,30,0,0" WidthRequest="400" HorizontalOptions="Center" Placeholder="Search Flashcards" TextChanged="SearchBar_TextChanged"/>
+        </StackLayout>
+
+        <ListView Margin="0,200,0,0"
+                    BackgroundColor="Transparent"
+                    Grid.ColumnSpan="3"
+                    x:Name="FlashcardListView"
+                    ItemSelected="FlashcardListView_ItemSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="10">
+                            <Frame HeightRequest="125"
+                               Padding="0"
+                               Style="{StaticResource CardView}">
+                                <Grid Padding="0"
+                                  ColumnDefinitions="125, *">
+                                    <Image Aspect="AspectFill"
+                                   Source="stockprofileimage.png"
+                                   WidthRequest="125"
+                                   HeightRequest="125"/>
+                                    <VerticalStackLayout Grid.Column="1"
+                                                     Padding="10"
+                                                     VerticalOptions="Center">
+                                        <Label Text="{Binding FlashCardQuestion}" FontAttributes="Bold"/>
+                                        <Label Text="{Binding FlashCardAnswer}"/>
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+
 </ContentPage>

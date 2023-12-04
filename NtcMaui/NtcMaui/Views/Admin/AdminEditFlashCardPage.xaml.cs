@@ -1,16 +1,15 @@
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Text.Json;
 using System.Text;
+using System.Text.Json;
 using ApiStudyBuddy.Models;
-using NtcMaui.Views.MyStudies;
+using NtcMaui.Views.SignAndCreate;
 
-namespace NtcMaui.Views.Edit;
+namespace NtcMaui.Views.Admin;
 
-public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttributable, INotifyPropertyChanged
+public partial class AdminEditFlashCardPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
-    //leave a note tonight about also adding an Iseditable or something to flashcards incase a user adds in a flashcard from public
-	public EditFlashCardPageWithDeckGroup()
+	public AdminEditFlashCardPage()
 	{
 		InitializeComponent();
 	}
@@ -19,7 +18,6 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
     {
         LoggedInUser = query["Current User"] as User;
         SelectedFlashCard = query["Current FlashCard"] as FlashCard;
-        SelectedDeckGroupDeck = query["Current Deck"] as DeckGroupDeck;
         OnPropertyChanged("Current User");
     }
 
@@ -28,21 +26,10 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
         base.OnAppearing();
         FlashCardQuestionEntry.Text = SelectedFlashCard.FlashCardQuestion;
         FlashCardAnswerEntry.Text = SelectedFlashCard.FlashCardAnswer;
-        IsPublicCheckBox.IsChecked = SelectedFlashCard.IsPublic;
+        FlashcardQuestionImageEntry.Text = SelectedFlashCard.FlashCardQuestionImage;
+        FlashcardQuestionImageEntry.Text = SelectedFlashCard.FlashCardAnswerImage;
         DeckFlashcards = await Constants.GetAllDeckFlashCards();
-        DeckFlashcards = DeckFlashcards.Where(deckflashcard => deckflashcard.DeckId == SelectedDeckGroupDeck.Deck.DeckId || deckflashcard.Deck.DeckName == SelectedDeckGroupDeck.Deck.DeckName).ToList();
-    }
-
-    private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
-    {
-        if (e.Value == true)
-        {
-            IsPublic = true;
-        }
-        else
-        {
-            IsPublic = false;
-        }
+        DeckFlashcards = DeckFlashcards.Where(deckflashcard => deckflashcard.FlashCardId == SelectedFlashCard.FlashCardId || deckflashcard.FlashCard.FlashCardQuestion == SelectedFlashCard.FlashCardQuestion).ToList();
     }
 
     private void CancelBtn_Clicked(object sender, EventArgs e)
@@ -58,9 +45,10 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
         FinishEditingBtn.IsVisible = false;
         FinishDeleteBtn.IsVisible = true;
         CancelBtn.IsVisible = true;
-        WarningLabel.Text = $"Warning: You are about to delete {SelectedFlashCard.FlashCardQuestion}. Hitting finish will delete yours and your shared users' flashcard from the deck.";
+        WarningLabel.Text = $"Warning: You are about to delete {SelectedFlashCard.FlashCardQuestion}. Hitting finish will delete yours and your shared users' flashcards from the deck.";
         WarningLabel.IsVisible = true;
     }
+
 
     private async void FinishDeleteBtn_Clicked(object sender, EventArgs e)
     {
@@ -73,28 +61,8 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
                     { "Current User", LoggedInUser }
                 };
         //don't know where to take them so take them to the deck page lol
-        await Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+        await Shell.Current.GoToAsync(nameof(AdminFlashCardPage), navigationParameter);
 
-    }
-
-    private async void UploadQuestionImageBtn_Clicked(object sender, EventArgs e)
-    {
-        FileResult result = await FilePicker.PickAsync(new PickOptions
-        {
-            FileTypes = FilePickerFileType.Images
-        });
-
-        FlashcardQuestionImageEntry.Text = result.FullPath;
-    }
-
-    private async void UploadAnswerImageBtn_Clicked(object sender, EventArgs e)
-    {
-        FileResult result = await FilePicker.PickAsync(new PickOptions
-        {
-            FileTypes = FilePickerFileType.Images
-        });
-
-        FlashcardAnswerImageEntry.Text = result.FullPath;
     }
 
     private async void FinishEditingBtn_Clicked(object sender, EventArgs e)
@@ -110,11 +78,10 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
         //then navigate back to DeckGroupPage
         var navigationParameter = new Dictionary<string, object>
                 {
-                    { "Current User", LoggedInUser },
-                    {"Current Deck", SelectedDeckGroupDeck }
+                    { "Current User", LoggedInUser }
                 };
         //goes right back to BuildDeckPage incase users wanted to edit more flashcards, which is why we needed to pass in Current deck.
-        await Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
+        await Shell.Current.GoToAsync(nameof(AdminFlashCardPage), navigationParameter);
     }
 
     /// <summary>
@@ -160,7 +127,53 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
         }
     }
 
-    public DeckGroupDeck SelectedDeckGroupDeck { get; set; }
+    //tabs
+    private void GoToHomePage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+    }
+
+    private void GoToAdminHomePage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(AdminHomePage), navigationParameter);
+    }
+
+    private void GoToFlashcardPage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(AdminFlashCardPage), navigationParameter);
+    }
+    private void GoToDeckPage(object sender, EventArgs e)
+    {
+        //eventually make this the dashboard page and also send the user through to this page.
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(AdminDeckPage), navigationParameter);
+
+    }
+
+    private void GoToDeckGroupPage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(AdminDeckGroupPage), navigationParameter);
+    }
+
     public User LoggedInUser { get; set; }
 
     public FlashCard SelectedFlashCard { get; set; }

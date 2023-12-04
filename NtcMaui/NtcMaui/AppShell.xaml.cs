@@ -60,6 +60,7 @@
             Routing.RegisterRoute(nameof(Views.Admin.AdminDeckGroupPage), typeof(Views.Admin.AdminDeckGroupPage));
             Routing.RegisterRoute(nameof(Views.Admin.AdminEditDeckPage), typeof(Views.Admin.AdminEditDeckPage));
             Routing.RegisterRoute(nameof(Views.Admin.AdminEditDeckGroupPage), typeof(Views.Admin.AdminEditDeckGroupPage));
+            Routing.RegisterRoute(nameof(Views.Admin.AdminEditFlashCardPage), typeof(Views.Admin.AdminEditFlashCardPage));
         }
     }
 }

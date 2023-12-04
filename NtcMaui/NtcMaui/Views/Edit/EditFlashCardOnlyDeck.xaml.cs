@@ -31,7 +31,7 @@ public partial class EditFlashCardOnlyDeck : ContentPage, IQueryAttributable, IN
         IsPublicCheckBox.IsChecked = SelectedFlashCard.IsPublic;
         FlashcardQuestionImageEntry.Text = SelectedFlashCard.FlashCardQuestionImage;
         FlashcardQuestionImageEntry.Text = SelectedFlashCard.FlashCardAnswerImage;
-        DeckFlashcards = await GetAllDeckFlashCards();
+        DeckFlashcards = await Constants.GetAllDeckFlashCards();
         DeckFlashcards = DeckFlashcards.Where(deckflashcard => deckflashcard.DeckId == SelectedDeck.DeckId || deckflashcard.Deck.DeckName == SelectedDeck.DeckName).ToList();
     }
 
@@ -160,29 +160,6 @@ public partial class EditFlashCardOnlyDeck : ContentPage, IQueryAttributable, IN
         {
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
-    }
-
-    //is going to get all of the Deck Groups
-    public async Task<List<DeckFlashCard>> GetAllDeckFlashCards()
-    {
-        List<DeckFlashCard> deckFlashCards = new List<DeckFlashCard>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckFlashCard", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                deckFlashCards = JsonSerializer.Deserialize<List<DeckFlashCard>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return deckFlashCards;
     }
 
 	private void GoToHomePage(object sender, EventArgs e)

@@ -17,8 +17,48 @@ public partial class AdminFlashCardPage : ContentPage, IQueryAttributable, INoti
         OnPropertyChanged("Current User");
     }
 
-    //tabs
-    private void GoToHomePage(object sender, EventArgs e)
+    protected async override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        FlashcardListView.ItemsSource = await Constants.GetAllFlashCards();
+    }
+
+    private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+    {
+        List<FlashCard> flashCards = await Constants.GetAllFlashCards();
+
+        if (flashCards != null)
+        {
+            if (e != null)
+            {
+                FlashcardListView.ItemsSource = null;
+                FlashcardListView.ItemsSource = flashCards.Where(f => f.FlashCardQuestion.Contains(e.NewTextValue));
+            }
+            else
+            {
+                OnAppearing();
+            }
+        }
+
+    }
+
+    private void FlashcardListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem != null)
+        {
+            SelectedFlashcard = e.SelectedItem as FlashCard;
+            var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    {"Current FlashCard", SelectedFlashcard }
+                };
+            Shell.Current.GoToAsync(nameof(AdminEditFlashCardPage), navigationParameter);
+        }
+    }
+
+//tabs
+private void GoToHomePage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
                 {
@@ -65,4 +105,6 @@ public partial class AdminFlashCardPage : ContentPage, IQueryAttributable, INoti
     }
 
     public User LoggedInUser { get; set; }
+
+    public FlashCard SelectedFlashcard { get; set; }
 }

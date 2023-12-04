@@ -86,7 +86,7 @@ public partial class FlashcardPage : ContentPage, IQueryAttributable, INotifyPro
             if (e != null)
             {
                 FlashcardListView.ItemsSource = null;
-                FlashcardListView.ItemsSource = flashCards.Where(f => f.FlashCardQuestion.StartsWith(e.NewTextValue));
+                FlashcardListView.ItemsSource = flashCards.Where(f => f.FlashCardQuestion.Contains(e.NewTextValue));
             }
             else
             {
