@@ -23,8 +23,18 @@ public partial class FlashcardPage : ContentPage, IQueryAttributable, INotifyPro
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-
-        FlashcardListView.ItemsSource = await Constants.GetAllFlashCards();
+        FlashCards = await Constants.GetAllFlashCards();
+        List<UserDeck> userDecks = await Constants.GetAllUserDecksById(LoggedInUser.UserId);
+        foreach (UserDeck userDeck in userDecks)
+        {
+            foreach (DeckFlashCard deckFlashCard in userDeck.Deck.DeckFlashCards)
+            {
+                DeckFlashCardIds.Add(deckFlashCard.FlashCardId);
+            }
+        }
+        FlashCards = FlashCards.Where(flashcard => flashcard.IsPublic == true).ToList();
+        FlashCards.Where(flashcard => DeckFlashCardIds.Contains(flashcard.FlashCardId)).ToList().ForEach(flashcard => FlashCards.Remove(flashcard));
+        FlashcardListView.ItemsSource = FlashCards;
     }
 
 	private void GoToHomePage(object sender, EventArgs e)
@@ -113,4 +123,8 @@ public partial class FlashcardPage : ContentPage, IQueryAttributable, INotifyPro
     public User LoggedInUser { get; set; }
 
     public FlashCard SelectedFlashcard { get; set; }
+
+    public List<FlashCard> FlashCards { get; set; }
+
+    public List<int> DeckFlashCardIds { get; set; } = new List<int>();
 }
