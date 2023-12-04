@@ -4,9 +4,9 @@ using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.Admin;
 
-public partial class AdminDeckGroupPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
+public partial class AdminUsersPage : ContentPage, IQueryAttributable, INotifyPropertyChanged
 {
-	public AdminDeckGroupPage()
+	public AdminUsersPage()
 	{
 		InitializeComponent();
 	}
@@ -20,20 +20,36 @@ public partial class AdminDeckGroupPage : ContentPage, IQueryAttributable, INoti
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        UserDeckGroups = await Constants.GetAllUserDeckGroups();
-        DeckGroupListView.ItemsSource = UserDeckGroups;
+        Users = await Constants.GetAllUsers();
+        Users = Users.Where(u => u.Username != LoggedInUser.Username).ToList();
+        UsersListView.ItemsSource = Users;
+    }
+
+    private void UsersListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+    {
+        if (e.SelectedItem != null)
+        {
+            SelectedUser = e.SelectedItem as User;
+            var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser },
+                    //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
+                    {"Selected User", SelectedUser}
+                };
+            Shell.Current.GoToAsync(nameof(AdminEditUserPage), navigationParameter);
+        }
     }
 
     private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
     {
-        List<UserDeckGroup> userDeckGroups = await Constants.GetAllUserDeckGroups();
-
-        if (userDeckGroups != null)
+        List<User> users = await Constants.GetAllUsers();
+        users = users.Where(u => u.Username != LoggedInUser.Username).ToList();
+        if (users != null)
         {
             if (e != null)
             {
-                DeckGroupListView.ItemsSource = null;
-                DeckGroupListView.ItemsSource = userDeckGroups.Where(udg => udg.DeckGroup.DeckGroupName.Contains(e.NewTextValue));
+                UsersListView.ItemsSource = null;
+                UsersListView.ItemsSource = users.Where(u => u.Username.Contains(e.NewTextValue));
             }
             else
             {
@@ -41,24 +57,6 @@ public partial class AdminDeckGroupPage : ContentPage, IQueryAttributable, INoti
             }
         }
 
-    }
-
-    //When user clicks on an item in the listView it will take the item and send it through to the neck Page
-    private void DeckGroupListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-    {
-
-        if (e.SelectedItem != null)
-        {
-            ErrorLabel.IsVisible = false;
-            UserDeckGroup = e.SelectedItem as UserDeckGroup;
-                    var navigationParameter = new Dictionary<string, object>
-                {
-                    { "Current User", LoggedInUser },
-                    //added this to go to the BuildDeckGroupPage, might eventually just make an edit/viewing page?  
-                    {"Current DeckGroup", UserDeckGroup.DeckGroup}
-                };
-                    Shell.Current.GoToAsync(nameof(AdminEditDeckGroupPage), navigationParameter);
-                }
     }
 
     //tabs
@@ -120,7 +118,9 @@ public partial class AdminDeckGroupPage : ContentPage, IQueryAttributable, INoti
 
     public User LoggedInUser { get; set; }
 
-    public UserDeckGroup UserDeckGroup { get; set; }
+    public User SelectedUser { get; set; }
 
-    public List<UserDeckGroup> UserDeckGroups { get; set; }
+    public List<User> Users { get; set; }
+
+
 }

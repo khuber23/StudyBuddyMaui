@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="NtcMaui.Views.Admin.AdminDeckGroupPage"
-             Title="AdminDeckGroupPage">
+             x:Class="NtcMaui.Views.Admin.AdminUsersPage"
+             Title="AdminUsersPage">
     <ContentPage.Resources>
         <Style x:Key="CardView" TargetType="Frame">
             <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
@@ -23,45 +23,43 @@
             <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Text="Decks"></Button>
             <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"></Button>
             <Button x:Name="UsersBtn" Clicked="GoToUsersPage" Text="Users"></Button>
+
         </HorizontalStackLayout>
     </Shell.TitleView>
 
     <Grid ColumnDefinitions="*,*"
-      ColumnSpacing="5"
-      RowDefinitions="*,Auto"
-      RowSpacing="0">
+  ColumnSpacing="5"
+  RowDefinitions="*,Auto"
+  RowSpacing="0">
 
         <StackLayout Grid.ColumnSpan="2"  Margin="0,50,0,0">
-            <Label Text="Deck Groups" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
-            <Label Text="Select Deck Group to Begin Editing" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="12" />
-            <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="ErrorLabel" TextColor="Red" IsVisible="False"/>
-            <SearchBar Margin="0,30,0,0" WidthRequest="400" HorizontalOptions="Center" Placeholder="Search DeckGroups" TextChanged="SearchBar_TextChanged"/>
+            <Label Text="Users" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
+            <Label Text="Select a User to edit!" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="12" />
+            <SearchBar Margin="0,30,0,0" WidthRequest="400" HorizontalOptions="Center" Placeholder="Search Users" TextChanged="SearchBar_TextChanged"/>
         </StackLayout>
 
         <ListView Margin="0,200,0,0"
-                    BackgroundColor="Transparent"
-                    Grid.ColumnSpan="3"
-                    x:Name="DeckGroupListView" 
-                    ItemSelected="DeckGroupListView_ItemSelected">
+                BackgroundColor="Transparent"
+                Grid.ColumnSpan="3"
+                x:Name="UsersListView"
+                ItemSelected="UsersListView_ItemSelected">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
                         <Grid Padding="10">
                             <Frame HeightRequest="125"
-                               Padding="0"
-                               Style="{StaticResource CardView}">
+                           Padding="0"
+                           Style="{StaticResource CardView}">
                                 <Grid Padding="0"
-                                  ColumnDefinitions="125, *">
+                              ColumnDefinitions="125, *">
                                     <Image Aspect="AspectFill"
-                                   x:Name="ProfileImage"
-                                    Source="{Binding User.ProfilePicture, TargetNullValue='stockprofileimage.png'}"
-                                   WidthRequest="125"
-                                   HeightRequest="125"/>
+                               Source="{Binding ProfilePicture, TargetNullValue='stockprofileimage.png'}"
+                               WidthRequest="125"
+                               HeightRequest="125"/>
                                     <VerticalStackLayout Grid.Column="1"
-                                                     Padding="10"
-                                                     VerticalOptions="Center">
-                                        <Label Text="{Binding DeckGroup.DeckGroupName}" FontAttributes="Bold"/>
-                                        <Label Text="{Binding User.Username}"/>
+                                                 Padding="10"
+                                                 VerticalOptions="Center">
+                                        <Label Text="{Binding Username}" FontAttributes="Bold"/>
                                     </VerticalStackLayout>
                                 </Grid>
                             </Frame>

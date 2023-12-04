@@ -70,6 +70,16 @@ public partial class AdminHomePage : ContentPage, IQueryAttributable, INotifyPro
 
     }
 
+    private void GoToUsersPage(object sender, EventArgs e)
+    {
+        //eventually make this the dashboard page and also send the user through to this page.
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(AdminUsersPage), navigationParameter);
+    }
+
     private void GoToDeckGroupPage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>

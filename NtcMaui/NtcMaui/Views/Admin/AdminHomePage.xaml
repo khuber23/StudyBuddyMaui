@@ -52,6 +52,7 @@
                     <Button WidthRequest="200" FontSize="Medium" x:Name="AdminDeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"></Button>
                     <Button WidthRequest="200" FontSize="Medium" x:Name="AdminDeckButton" Clicked="GoToDeckPage" Text="Decks"></Button>
                     <Button WidthRequest="200" FontSize="Medium" x:Name="AdminFlashCardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"></Button>
+                    <Button WidthRequest="200" FontSize="Medium" x:Name="AdminUsersBtn" Clicked="GoToUsersPage" Text="Users"></Button>
                 </HorizontalStackLayout>
 
             </VerticalStackLayout>

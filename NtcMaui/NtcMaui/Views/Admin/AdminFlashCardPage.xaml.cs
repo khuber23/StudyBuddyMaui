@@ -104,6 +104,16 @@ private void GoToHomePage(object sender, EventArgs e)
         Shell.Current.GoToAsync(nameof(AdminDeckGroupPage), navigationParameter);
     }
 
+    private void GoToUsersPage(object sender, EventArgs e)
+    {
+        //eventually make this the dashboard page and also send the user through to this page.
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(AdminUsersPage), navigationParameter);
+    }
+
     public User LoggedInUser { get; set; }
 
     public FlashCard SelectedFlashcard { get; set; }

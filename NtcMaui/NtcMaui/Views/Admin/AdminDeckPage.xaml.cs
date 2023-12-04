@@ -90,6 +90,16 @@ public partial class AdminDeckPage : ContentPage, IQueryAttributable, INotifyPro
         Shell.Current.GoToAsync(nameof(AdminDeckGroupPage), navigationParameter);
     }
 
+    private void GoToUsersPage(object sender, EventArgs e)
+    {
+        //eventually make this the dashboard page and also send the user through to this page.
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(AdminUsersPage), navigationParameter);
+    }
+
     //different from deckpage. Only will deal with going directly to edit page.
     private void DeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {

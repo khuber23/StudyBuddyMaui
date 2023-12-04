@@ -381,5 +381,43 @@ namespace NtcMaui
 
             return users;
         }
+
+        public static async Task DeleteUser(int userId)
+        {
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User/%7Bid%7D?userid={userId}", string.Empty));
+
+            try
+            {
+                HttpResponseMessage response = await Constants._client.DeleteAsync(uri);
+               if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\Item successfully deleted.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+        public static async Task PutUserAsync(User user)
+        {
+            //note to self. You need to have the %7Bid%7D?deckgroupid={} since that is what the endpoint is looking for
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User/%7Bid%7D?userid={user.UserId}", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<User>(user, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                response = await Constants._client.PutAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\tTodoItem successfully updated.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
     }
 }
