@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Text.Json;
-using System.Threading.Tasks;
-using static System.Net.WebRequestMethods;
+using System.Text.Json.Serialization;
 using ApiStudyBuddy.Models;
-using System.Diagnostics;
 
 namespace NtcMaui
 {
@@ -760,6 +755,151 @@ namespace NtcMaui
                 Debug.WriteLine(@"\tERROR {0}", ex.Message);
             }
             return studySessionFlashCards;
+        }
+
+        public static async Task DeleteUserDeckGroupAsync(int userId, int userDeckGroupId)
+        {
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/{userId}/{userDeckGroupId}", string.Empty));
+
+            try
+            {
+                HttpResponseMessage response = await Constants._client.DeleteAsync(uri);
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\Item successfully deleted.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Does a Put command on the deckgroup
+        /// </summary>
+        /// <param name="deckGroup">the deckgroup you are updating</param>
+        /// <returns>updated deckgroup</returns>
+        public static async Task PutDeckGroupAsync(DeckGroup deckGroup)
+        {
+            //note to self. You need to have the %7Bid%7D?deckgroupid={} since that is what the endpoint is looking for
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup/%7Bid%7D?deckgroupid={deckGroup.DeckGroupId}", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<DeckGroup>(deckGroup, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                response = await Constants._client.PutAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\tTodoItem successfully updated.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Does a Put command on the deck
+        /// </summary>
+        /// <param name="deck">the deck you are updating</param>
+        /// <returns>updated deck</returns>
+        public static async Task PutDeckAsync(Deck deck)
+        {
+            //note to self. You need to have the %7Bid%7D?deckgroupid={} since that is what the endpoint is looking for
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck/%7Bid%7D?deckid={deck.DeckId}", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<Deck>(deck, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                response = await Constants._client.PutAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\tdeck successfully updated.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+        public static async Task DeleteDeckGroupDeckAsync(int deckGroupId, int deckId)
+        {
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck/{deckGroupId}/{deckId}", string.Empty));
+
+            try
+            {
+                HttpResponseMessage response = await Constants._client.DeleteAsync(uri);
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\Item successfully deleted.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+        public static async Task DeleteUserDeckAsync(int userId, int deckId)
+        {
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/{userId}/{deckId}", string.Empty));
+
+            try
+            {
+                HttpResponseMessage response = await Constants._client.DeleteAsync(uri);
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\Item successfully deleted.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Does a Put command on the flashcard
+        /// </summary>
+        /// <param name="flashcard">the flashcard you are updating</param>
+        /// <returns>updated flashcard</returns>
+        public static async Task PutFlashCardAsync(FlashCard flashcard)
+        {
+            //note to self. You need to have the %7Bid%7D?deckgroupid={} since that is what the endpoint is looking for
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/FlashCard/%7Bid%7D?flashcardid={flashcard.FlashCardId}", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<FlashCard>(flashcard, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                response = await Constants._client.PutAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\tTodoItem successfully updated.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+        public static async Task DeleteDeckFlashCardAsync(int deckId, int flashCardId)
+        {
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckFlashCard/{deckId}/{flashCardId}", string.Empty));
+
+            try
+            {
+                HttpResponseMessage response = await Constants._client.DeleteAsync(uri);
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\Item successfully deleted.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
         }
 
     }

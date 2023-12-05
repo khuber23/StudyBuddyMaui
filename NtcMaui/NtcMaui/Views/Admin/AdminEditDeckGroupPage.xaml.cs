@@ -41,7 +41,7 @@ public partial class AdminEditDeckGroupPage : ContentPage, IQueryAttributable, I
             SelectedDeckGroup.DeckGroupDescription = DeckGroupDescriptionEntry.Text;
             //not worrying about the public stuff for these.
 
-            await PutDeckGroupAsync(SelectedDeckGroup);
+            await Constants.PutDeckGroupAsync(SelectedDeckGroup);
         }
 
         //then navigate back to DeckGroupPage
@@ -66,7 +66,7 @@ public partial class AdminEditDeckGroupPage : ContentPage, IQueryAttributable, I
         //get the userDeckGroups and get the ones where by the name.
         foreach (UserDeckGroup userDeckGroup in UserDeckGroups)
         {
-            await DeleteDeckGroupAsync(userDeckGroup.UserId, userDeckGroup.DeckGroupId);
+            await Constants.DeleteUserDeckGroupAsync(userDeckGroup.UserId, userDeckGroup.DeckGroupId);
         }
         var navigationParameter = new Dictionary<string, object>
                 {
@@ -93,50 +93,6 @@ public partial class AdminEditDeckGroupPage : ContentPage, IQueryAttributable, I
         else
         {
             IsPublic = false;
-        }
-    }
-
-    //update the api to deal with endpoint for userId and DeckGroupId for deleting userDeckGroup
-    public async Task DeleteDeckGroupAsync(int userId, int userDeckGroupId)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/{userId}/{userDeckGroupId}", string.Empty));
-
-        try
-        {
-            HttpResponseMessage response = await Constants._client.DeleteAsync(uri);
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\Item successfully deleted.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    /// <summary>
-    /// Does a Put command on the deckgroup
-    /// </summary>
-    /// <param name="deckGroup">the deckgroup you are updating</param>
-    /// <returns>updated deckgroup</returns>
-    public async Task PutDeckGroupAsync(DeckGroup deckGroup)
-    {
-        //note to self. You need to have the %7Bid%7D?deckgroupid={} since that is what the endpoint is looking for
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup/%7Bid%7D?deckgroupid={SelectedDeckGroup.DeckGroupId}", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<DeckGroup>(deckGroup, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PutAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully updated.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
     }
 

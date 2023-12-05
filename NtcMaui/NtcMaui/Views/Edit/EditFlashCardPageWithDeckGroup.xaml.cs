@@ -66,7 +66,7 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
     {
         foreach (DeckFlashCard deckFlashCard in DeckFlashcards)
         {
-            await DeleteDeckFlashCardAsync(deckFlashCard.DeckId, deckFlashCard.FlashCardId);
+            await Constants.DeleteDeckFlashCardAsync(deckFlashCard.DeckId, deckFlashCard.FlashCardId);
         }
         var navigationParameter = new Dictionary<string, object>
                 {
@@ -106,7 +106,7 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
         SelectedFlashCard.FlashCardQuestionImage = FlashcardQuestionImageEntry.Text;
         //eventually deal with images here as well.
 
-        await PutFlashCardAsync(SelectedFlashCard);
+        await Constants.PutFlashCardAsync(SelectedFlashCard);
         //then navigate back to DeckGroupPage
         var navigationParameter = new Dictionary<string, object>
                 {
@@ -115,49 +115,6 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
                 };
         //goes right back to BuildDeckPage incase users wanted to edit more flashcards, which is why we needed to pass in Current deck.
         await Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
-    }
-
-    /// <summary>
-    /// Does a Put command on the flashcard
-    /// </summary>
-    /// <param name="flashcard">the flashcard you are updating</param>
-    /// <returns>updated flashcard</returns>
-    public async Task PutFlashCardAsync(FlashCard flashcard)
-    {
-        //note to self. You need to have the %7Bid%7D?deckgroupid={} since that is what the endpoint is looking for
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/FlashCard/%7Bid%7D?flashcardid={SelectedFlashCard.FlashCardId}", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<FlashCard>(flashcard, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PutAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully updated.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    public async Task DeleteDeckFlashCardAsync(int deckId, int flashCardId)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckFlashCard/{deckId}/{flashCardId}", string.Empty));
-
-        try
-        {
-            HttpResponseMessage response = await Constants._client.DeleteAsync(uri);
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\Item successfully deleted.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
     }
 
     public DeckGroupDeck SelectedDeckGroupDeck { get; set; }

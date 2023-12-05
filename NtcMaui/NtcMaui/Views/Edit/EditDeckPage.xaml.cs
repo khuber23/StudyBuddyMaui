@@ -57,7 +57,7 @@ public partial class EditDeckPage : ContentPage, IQueryAttributable, INotifyProp
         //get the userDeckGroups and get the ones where by the name.
         foreach (UserDeck userDeck in UserDecks)
         {
-            await DeleteUserDeckAsync(userDeck.UserId, userDeck.DeckId);
+            await Constants.DeleteUserDeckAsync(userDeck.UserId, userDeck.DeckId);
         }
         //essentially if there is a deck relating to DeckGroupDecks
         //so if a user is trying to delete a deck in a deckgroup we need to delete the userDeck as well as the deckgroupdeck
@@ -65,7 +65,7 @@ public partial class EditDeckPage : ContentPage, IQueryAttributable, INotifyProp
         {
             foreach (DeckGroupDeck groupDeck in DeckGroupDecks)
             {
-                await DeleteDeckGroupDeckAsync(groupDeck.DeckGroupId, groupDeck.DeckId);
+                await Constants.DeleteDeckGroupDeckAsync(groupDeck.DeckGroupId, groupDeck.DeckId);
             }
         }
 
@@ -95,7 +95,7 @@ public partial class EditDeckPage : ContentPage, IQueryAttributable, INotifyProp
             {
                 SelectedDeck.IsPublic = false;
             }
-            await PutDeckAsync(SelectedDeck);
+            await Constants.PutDeckAsync(SelectedDeck);
         }
         
         //then navigate back to DeckGroupPage
@@ -115,65 +115,6 @@ public partial class EditDeckPage : ContentPage, IQueryAttributable, INotifyProp
         else
         {
             IsPublic = false;
-        }
-    }
-
-    /// <summary>
-    /// Does a Put command on the deck
-    /// </summary>
-    /// <param name="deck">the deck you are updating</param>
-    /// <returns>updated deck</returns>
-    public async Task PutDeckAsync(Deck deck)
-    {
-        //note to self. You need to have the %7Bid%7D?deckgroupid={} since that is what the endpoint is looking for
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck/%7Bid%7D?deckid={SelectedDeck.DeckId}", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<Deck>(deck, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PutAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tdeck successfully updated.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    public async Task DeleteDeckGroupDeckAsync(int deckGroupId, int deckId)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck/{deckGroupId}/{deckId}", string.Empty));
-
-        try
-        {
-            HttpResponseMessage response = await Constants._client.DeleteAsync(uri);
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\Item successfully deleted.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    public async Task DeleteUserDeckAsync(int userId, int deckId)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/{userId}/{deckId}", string.Empty));
-
-        try
-        {
-            HttpResponseMessage response = await Constants._client.DeleteAsync(uri);
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\Item successfully deleted.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
     }
 
