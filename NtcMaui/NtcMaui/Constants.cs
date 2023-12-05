@@ -226,6 +226,30 @@ namespace NtcMaui
             return deckFlashCards;
         }
 
+        //is going to get all of the Deck
+        public static async Task<DeckGroupDeck> GetSpecificDeckGroupDeck(int deckGroupId, int deckId)
+        {
+            DeckGroupDeck deckGroupDeck = new DeckGroupDeck();
+
+
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck/maui/specificdeckgroupdeck/{deckGroupId}/{deckId}", string.Empty));
+            try
+            {
+                HttpResponseMessage response = await Constants._client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    deckGroupDeck = JsonSerializer.Deserialize<DeckGroupDeck>(content, Constants._serializerOptions);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+
+            return deckGroupDeck;
+        }
+
         public static async Task<List<FlashCard>> GetAllFlashCards()
         {
             List<FlashCard> flashCards = new List<FlashCard>();
@@ -313,6 +337,29 @@ namespace NtcMaui
                 Debug.WriteLine(@"\tERROR {0}", ex.Message);
             }
             return decks;
+        }
+
+        //pass in the UserName from the DeckPicker here to get specific user by username.
+        public static async Task<User> GetUserByUsername(string name)
+        {
+            User user = new User();
+
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User/MVC/User?username={name}", string.Empty));
+            try
+            {
+                HttpResponseMessage response = await Constants._client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    user = JsonSerializer.Deserialize<User>(content, Constants._serializerOptions);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+
+            return user;
         }
 
         public static async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
@@ -419,5 +466,158 @@ namespace NtcMaui
                 Debug.WriteLine(@"\tERROR {0}", ex.Message);
             }
         }
+
+        //posts the DeckGroupDeck
+        public static async Task SaveDeckGroupDeckAsync(DeckGroupDeck deckGroupDeck)
+        {
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<DeckGroupDeck>(deckGroupDeck, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                response = await Constants._client.PostAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\tdeckGroupDeck successfully saved.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+
+        public static async Task SaveUserDeckGroupAsync(UserDeckGroup userDeckGroup)
+        {
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<UserDeckGroup>(userDeckGroup, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = null;
+                response = await Constants._client.PostAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\tTodoItem successfully saved.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+
+        public static async Task SaveUserDeckAsync(UserDeck userDeck)
+        {
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<UserDeck>(userDeck, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                response = await Constants._client.PostAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\tTodoItem successfully saved.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+        public static async Task SaveDeckAsync(Deck deck)
+        {
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<Deck>(deck, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                response = await Constants._client.PostAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\tTodoItem successfully saved.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+        public static async Task SaveDeckGroupAsync(DeckGroup deckGroup)
+        {
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<DeckGroup>(deckGroup, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                response = await Constants._client.PostAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\tTodoItem successfully saved.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+        //Posts a Deckflashcard
+        public static async Task SaveDeckFlashCardAsync(DeckFlashCard deckFlashCard)
+        {
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckFlashCard", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<DeckFlashCard>(deckFlashCard, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                response = await Constants._client.PostAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\deckFlashCard successfully saved.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+
+        public static async Task SaveUserAsync(User user)
+        {
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<User>(user, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                response = await Constants._client.PostAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\tUser successfully saved.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+
     }
 }

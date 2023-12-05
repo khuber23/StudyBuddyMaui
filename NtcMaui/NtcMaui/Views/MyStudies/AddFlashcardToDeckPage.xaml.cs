@@ -63,7 +63,7 @@ public partial class AddFlashcardToDeckPage : ContentPage, IQueryAttributable, I
                 DeckFlashCard deckFlashCard = new DeckFlashCard();
                 deckFlashCard.FlashCardId = SelectedFlashCard.FlashCardId;
                 deckFlashCard.DeckId = selectedDeck.DeckId;
-                await SaveDeckFlashCardAsync(deckFlashCard);
+                await Constants.SaveDeckFlashCardAsync(deckFlashCard);
 
                 //then go back to the flashcards page
                 var navigationParameter = new Dictionary<string, object>
@@ -112,28 +112,6 @@ public partial class AddFlashcardToDeckPage : ContentPage, IQueryAttributable, I
         }
 
         return deck;
-    }
-
-    //posts the DeckFlashcard
-    public async Task SaveDeckFlashCardAsync(DeckFlashCard deckFlashCard)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckFlashCard", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<DeckFlashCard>(deckFlashCard, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tdeckFlashCard successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
     }
 
     public string DeckName { get; set; }

@@ -62,7 +62,7 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
     {
         bool found = false;
         ErrorLabel.IsVisible = false;
-        User selectedUser = await GetUserByUsername(UserName);
+        User selectedUser = await Constants.GetUserByUsername(UserName);
         if (selectedUser != null || selectedUser.UserId != 0)
         {
             if (Recipients.Count == 0)
@@ -162,10 +162,10 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                         clonedDeckGroup.DeckGroupDescription = SelectedDeckGroup.DeckGroupDescription;
                         clonedDeckGroup.ReadOnly = true;
                         //then we need to post this new Deck
-                        await SaveDeckGroupAsync(clonedDeckGroup);
+                        await Constants.SaveDeckGroupAsync(clonedDeckGroup);
                         //then we need to find the new deckGroup...probably through indexes of finding deckgroups by name? since there will now be multiple.
                         //then the last index is the newest one/the one that was cloned.
-                        DeckGroups = await GetAllDeckGroups();
+                        DeckGroups = await Constants.GetAllDeckGroups();
 
                         //multiple decks with same name test
                         List<DeckGroup> multipleSameNameDeckGroups = DeckGroups.Where(d => d.DeckGroupName.Contains(clonedDeckGroup.DeckGroupName)).ToList();
@@ -182,7 +182,7 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                             clonedDeck.DeckDescription = deckGroupDeck.Deck.DeckDescription;
                             clonedDeck.IsPublic = false;
                             clonedDeck.ReadOnly = true;
-                            await SaveDeckAsync(clonedDeck);
+                            await Constants.SaveDeckAsync(clonedDeck);
 
                             //retrieve it
                             Decks = await Constants.GetAllDecks();
@@ -196,7 +196,7 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                             UserDeck userDeck = new UserDeck();
                             userDeck.DeckId = clonedDeck.DeckId;
                             userDeck.UserId = SharedUser.UserId;
-                            await SaveUserDeckAsync(userDeck);
+                            await Constants.SaveUserDeckAsync(userDeck);
 
                             clonedDeck.DeckFlashCards = deckGroupDeck.Deck.DeckFlashCards;
                             //then copy the flashcards within the copied deck?
@@ -205,7 +205,7 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                                 DeckFlashCard newDeckFlashCard = new DeckFlashCard();
                                 newDeckFlashCard.DeckId = clonedDeck.DeckId;
                                 newDeckFlashCard.FlashCardId = deckFlashCard.FlashCardId;
-                                await SaveDeckFlashCardAsync(newDeckFlashCard);
+                                await Constants.SaveDeckFlashCardAsync(newDeckFlashCard);
                             }
 
                             //then save the DeckGroupDeck
@@ -213,7 +213,7 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                             clonedDeckGroupDeck.DeckGroupId = clonedDeckGroup.DeckGroupId;
                             clonedDeckGroupDeck.DeckId = clonedDeck.DeckId;
                             //double check to make sure that anything that isn't postable is null.
-                            await SaveDeckGroupDeckAsync(clonedDeckGroupDeck);
+                            await Constants.SaveDeckGroupDeckAsync(clonedDeckGroupDeck);
 
                         }
                         //then we can use the Shared User and the clonedDeckGroupId to the userDeckGroup.
@@ -221,7 +221,7 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                         UserDeckGroup userDeckGroup = new UserDeckGroup();
                         userDeckGroup.DeckGroupId = clonedDeckGroup.DeckGroupId;
                         userDeckGroup.UserId = SharedUser.UserId;
-                        await SaveUserDeckGroupAsync(userDeckGroup);
+                        await Constants.SaveUserDeckGroupAsync(userDeckGroup);
                     }
                     //then go back to DeckGroupPage
                     var navigationParameter = new Dictionary<string, object>
@@ -239,13 +239,13 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
                         UserDeckGroup userDeckGroup = new UserDeckGroup();
                         userDeckGroup.DeckGroupId = SelectedDeckGroup.DeckGroupId;
                         userDeckGroup.UserId = SharedUser.UserId;
-                        await SaveUserDeckGroupAsync(userDeckGroup);
+                        await Constants.SaveUserDeckGroupAsync(userDeckGroup);
                         foreach (DeckGroupDeck deckGroupDeck in SelectedDeckGroup.DeckGroupDecks)
                         {
                             UserDeck userDeck = new UserDeck();
                             userDeck.UserId = SharedUser.UserId;
                             userDeck.DeckId = deckGroupDeck.DeckId;
-                            await SaveUserDeckAsync(userDeck);
+                            await Constants.SaveUserDeckAsync(userDeck);
                         }
 
 
@@ -270,179 +270,6 @@ public partial class ShareDeckGroupWithUserPage : ContentPage, IQueryAttributabl
         }
     }
 
-    //Posts a Deckflashcard
-    public async Task SaveDeckFlashCardAsync(DeckFlashCard deckFlashCard)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckFlashCard", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<DeckFlashCard>(deckFlashCard, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\deckFlashCard successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    //Posts a Deckflashcard
-    public async Task SaveDeckGroupDeckAsync(DeckGroupDeck deckGroupDeck)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<DeckGroupDeck>(deckGroupDeck, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\deckFlashCard successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    public async Task SaveUserDeckGroupAsync(UserDeckGroup userDeckGroup)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<UserDeckGroup>(userDeckGroup, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    public async Task SaveUserDeckAsync(UserDeck userDeck)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<UserDeck>(userDeck, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    public async Task SaveDeckAsync(Deck deck)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<Deck>(deck, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    public async Task SaveDeckGroupAsync(DeckGroup deckGroup)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<DeckGroup>(deckGroup, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-
-
-    public async Task<List<DeckGroup>> GetAllDeckGroups()
-    {
-        List<DeckGroup> deckGroups = new List<DeckGroup>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                deckGroups = JsonSerializer.Deserialize<List<DeckGroup>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return deckGroups;
-    }
-
-    //pass in the UserName from the DeckPicker here to get specific user by username.
-    public async Task<User> GetUserByUsername(string name)
-    {
-        User user = new User();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User/MVC/User?username={name}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                user = JsonSerializer.Deserialize<User>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return user;
-    }
     public List<Deck> Decks { get; set; }
 
     public List<DeckGroup> DeckGroups { get; set; }

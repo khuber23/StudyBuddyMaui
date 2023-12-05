@@ -84,33 +84,7 @@ public partial class ForgotPassword : ContentPage
         // To verify user is valid before we offically call API to update their password.
         if (user != null)
         {
-            await UpdateUser(user);
+            await Constants.SaveUserAsync(user);
         }
     }
-
-    public async Task UpdateUser(User user)
-    {
-        // We are adding the {id}?userid + the user id together as a string for now until we update the API later so the code looks cleaner. 
-        string userIdSet = "{id}?userid=" + user.UserId;
-      
-        Uri uri = new Uri($"{Constants.TestUrl}/api/User/{userIdSet}");
-
-        try
-        {
-            string json = JsonSerializer.Serialize<User>(user, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PutAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-            {
-                Debug.WriteLine(@"\tUser successfully changed.");
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tError {0}", ex.Message);
-        }
-    } 
 }

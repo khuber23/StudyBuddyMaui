@@ -67,7 +67,7 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
     {
         bool found = false;
         ErrorLabel.IsVisible = false;
-        User selectedUser = await GetUserByUsername(UserName);
+        User selectedUser = await Constants.GetUserByUsername(UserName);
         if (selectedUser != null || selectedUser.UserId != 0) 
         {
             if (Recipients.Count == 0)
@@ -167,7 +167,7 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
                     clonedDeck.DeckDescription = SelectedDeck.DeckDescription;
                     clonedDeck.ReadOnly = true;
                     //then we need to post this new Deck
-                    await SaveDeckAsync(clonedDeck);
+                    await Constants.SaveDeckAsync(clonedDeck);
                     //then we need to find the new deck...probably through indexes of finding decks by name? since there will now be multiple.
                     //then the last index is the newest one/the one that was cloned.
                     Decks = await Constants.GetAllDecks();
@@ -184,14 +184,14 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
                         DeckFlashCard newDeckFlashCard = new DeckFlashCard();
                         newDeckFlashCard.DeckId = clonedDeck.DeckId;
                         newDeckFlashCard.FlashCardId = deckFlashCard.FlashCardId;
-                        await SaveDeckFlashCardAsync(newDeckFlashCard);
+                        await Constants.SaveDeckFlashCardAsync(newDeckFlashCard);
                     }
                     //then we can use the Shared User and the clonedDeckId to the userDeck.
 
                     UserDeck userDeck = new UserDeck();
                     userDeck.DeckId = clonedDeck.DeckId;
                     userDeck.UserId = SharedUser.UserId;
-                    await SaveUserDeckAsync(userDeck);
+                    await Constants.SaveUserDeckAsync(userDeck);
                 }
                 //then go back to DeckPage
                 var navigationParameter = new Dictionary<string, object>
@@ -210,7 +210,7 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
                     UserDeck userDeck = new UserDeck();
                     userDeck.DeckId = SelectedDeck.DeckId;
                     userDeck.UserId = SharedUser.UserId;
-                    await SaveUserDeckAsync(userDeck);
+                    await Constants.SaveUserDeckAsync(userDeck);
                 }
                 var navigationParameter = new Dictionary<string, object>
                 {
@@ -228,97 +228,6 @@ public partial class ShareDeckWithUserPage : ContentPage, IQueryAttributable, IN
         {
             SelectedUser = e.SelectedItem as User;
             DeleteUserBtn.IsVisible = true;
-        }
-    }
-
-    //pass in the UserName from the DeckPicker here to get specific user by username.
-    public async Task<User> GetUserByUsername(string name)
-    {
-        User user = new User();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/User/MVC/User?username={name}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                user = JsonSerializer.Deserialize<User>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return user;
-    }
-
-    public async Task SaveDeckAsync(Deck deck)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<Deck>(deck, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    //Posts a Deckflashcard
-    public async Task SaveDeckFlashCardAsync(DeckFlashCard deckFlashCard)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckFlashCard", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<DeckFlashCard>(deckFlashCard, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\deckFlashCard successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    //remember the 1 to 1 relationship later on.
-    public async Task SaveUserDeckAsync(UserDeck userDeck)
-    {
-        //either will be api/userDeckgroup or maybe just Deckgroup?
-        //for now i won't run anything but will just keep deckgroup.
-        //wait to see what they want from it and explain what you are thinking/what he envisions. you could have been right in the beginning 
-        //with the idea of creating new ones from there and saving them or just choosing 1 like your new idea. --past Brody
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<UserDeck>(userDeck, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
     }
 

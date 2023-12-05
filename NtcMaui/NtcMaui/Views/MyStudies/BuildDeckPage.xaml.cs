@@ -104,28 +104,6 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
         }
     }
 
-    //might straight up get rid of this and just display all of the DeckFlashCards of the deck/deckGroupDeck
-    public async Task<List<FlashCard>> GetAllFlashcards()
-    {
-        List<FlashCard> flashCards = new List<FlashCard>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Flashcard", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                flashCards = JsonSerializer.Deserialize<List<FlashCard>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return flashCards;
-    }
-
 	private void GoToHomePage(object sender, EventArgs e)
 	{
 		var navigationParameter = new Dictionary<string, object>

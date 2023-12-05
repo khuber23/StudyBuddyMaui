@@ -56,7 +56,7 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
                 Deck.IsPublic = IsPublic;
                 Deck.ReadOnly = false;
 
-                await SaveDeckAsync(Deck);
+                await Constants.SaveDeckAsync(Deck);
 
                 //get all the Decks and re-find the one so we have an ID...since when posting it the Id would be 0.
                 List<Deck> decks = await Constants.GetAllDecks();
@@ -69,17 +69,17 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
                 userDeck.DeckId = Deck.DeckId;
                 userDeck.UserId = deckgroup.UserId;
                 //creates the User Deck
-                await SaveUserDeckAsync(userDeck);
+                await Constants.SaveUserDeckAsync(userDeck);
 
                 //need a method to create the DeckGroupDeck part to combine the DeckGroup with the Created Deck.
                 DeckGroupDeck deckGroupDeck = new DeckGroupDeck();
                 deckGroupDeck.DeckGroupId = deckgroup.DeckGroupId;
                 deckGroupDeck.DeckId = Deck.DeckId;
                 DirectCopiedDeckGroupDeck = deckGroupDeck;
-                await SaveDeckGroupDeckAsync(deckGroupDeck);
+                await Constants.SaveDeckGroupDeckAsync(deckGroupDeck);
                 if (LoggedInUser.UserId == deckgroup.UserId)
                 {
-                    CurrentDeckGroupDeck = await GetSpecificDeckGroupDeck(deckGroupDeck.DeckGroupId, deckGroupDeck.DeckId);
+                    CurrentDeckGroupDeck = await Constants.GetSpecificDeckGroupDeck(deckGroupDeck.DeckGroupId, deckGroupDeck.DeckId);
                 }
 
             }
@@ -91,18 +91,18 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
                 userDeck.DeckId = Deck.DeckId;
                 userDeck.UserId = deckgroup.UserId;
                 //creates the User Deck
-                await SaveUserDeckAsync(userDeck);
+                await Constants.SaveUserDeckAsync(userDeck);
 
                 //need a method to create the DeckGroupDeck part to combine the DeckGroup with the Created Deck.
                 //already would be created
-                //DeckGroupDeck deckGroupDeck = new DeckGroupDeck();
-                //deckGroupDeck.DeckGroupId = deckgroup.DeckGroupId;
-                //deckGroupDeck.DeckId = Deck.DeckId;
-                //await SaveDeckGroupDeckAsync(deckGroupDeck);
+                DeckGroupDeck deckGroupDeck = new DeckGroupDeck();
+                deckGroupDeck.DeckGroupId = deckgroup.DeckGroupId;
+                deckGroupDeck.DeckId = Deck.DeckId;
+                await Constants.SaveDeckGroupDeckAsync(deckGroupDeck);
 
                 if (LoggedInUser.UserId == deckgroup.UserId)
                 {
-                    CurrentDeckGroupDeck = await GetSpecificDeckGroupDeck(DirectCopiedDeckGroupDeck.DeckGroupId, DirectCopiedDeckGroupDeck.DeckId);
+                    CurrentDeckGroupDeck = await Constants.GetSpecificDeckGroupDeck(DirectCopiedDeckGroupDeck.DeckGroupId, DirectCopiedDeckGroupDeck.DeckId);
                 }
             }
             
@@ -116,7 +116,7 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
             Deck.IsPublic = false;
             Deck.ReadOnly = true;
 
-            await SaveDeckAsync(Deck);
+            await Constants.SaveDeckAsync(Deck);
 
             //get all the Decks and re-find the one so we have an ID...since when posting it the Id would be 0.
             List<Deck> decks = await Constants.GetAllDecks();
@@ -130,16 +130,16 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
             userDeck.DeckId = Deck.DeckId;
             userDeck.UserId = deckgroup.UserId;
             //creates the User Deck
-            await SaveUserDeckAsync(userDeck);
+            await Constants.SaveUserDeckAsync(userDeck);
 
             //need a method to create the DeckGroupDeck part to combine the DeckGroup with the Created Deck.
             DeckGroupDeck deckGroupDeck = new DeckGroupDeck();
             deckGroupDeck.DeckGroupId = deckgroup.DeckGroupId;
             deckGroupDeck.DeckId = Deck.DeckId;
-            await SaveDeckGroupDeckAsync(deckGroupDeck);
+            await Constants.SaveDeckGroupDeckAsync(deckGroupDeck);
             if (LoggedInUser.UserId == deckgroup.UserId)
             {
-                CurrentDeckGroupDeck = await GetSpecificDeckGroupDeck(deckGroupDeck.DeckGroupId, deckGroupDeck.DeckId);
+                CurrentDeckGroupDeck = await Constants.GetSpecificDeckGroupDeck(deckGroupDeck.DeckGroupId, deckGroupDeck.DeckId);
             }
         }
 
@@ -157,125 +157,6 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
                 };
         //Finishing up making a DeckGroup so now it will take the user to Build Deck
         await Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
-    }
-
-    public async Task SaveDeckAsync(Deck deck)
-    {
-        //either will be api/userDeck or maybe just Deck?
-        //for now i won't run anything but will just keep deck. (won't do a post essentially just comment it out)
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<Deck>(deck, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    public async Task SaveDeckGroupDeckAsync(DeckGroupDeck deckGroupDeck)
-    {
-        //either will be api/userDeck or maybe just Deck?
-        //for now i won't run anything but will just keep deck. (won't do a post essentially just comment it out)
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<DeckGroupDeck>(deckGroupDeck, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    //is going to get all of the Deck Groups
-    public async Task<List<DeckGroup>> GetAllDeckGroups()
-    {
-        List<DeckGroup> deckGroups = new List<DeckGroup>();
-
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                deckGroups = JsonSerializer.Deserialize<List<DeckGroup>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return deckGroups;
-    }
-
-    //remember the 1 to 1 relationship later on.
-    public async Task SaveUserDeckAsync(UserDeck userDeck)
-    {
-        //either will be api/userDeckgroup or maybe just Deckgroup?
-        //for now i won't run anything but will just keep deckgroup.
-        //wait to see what they want from it and explain what you are thinking/what he envisions. you could have been right in the beginning 
-        //with the idea of creating new ones from there and saving them or just choosing 1 like your new idea. --past Brody
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<UserDeck>(userDeck, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    //is going to get all of the Deck
-    public async Task<DeckGroupDeck> GetSpecificDeckGroupDeck(int deckGroupId, int deckId)
-    {
-        DeckGroupDeck deckGroupDeck = new DeckGroupDeck();
-
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck/maui/specificdeckgroupdeck/{deckGroupId}/{deckId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                deckGroupDeck = JsonSerializer.Deserialize<DeckGroupDeck>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return deckGroupDeck;
     }
 
     private void IsPublicCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)

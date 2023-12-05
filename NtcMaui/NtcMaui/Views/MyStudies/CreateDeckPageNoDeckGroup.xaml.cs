@@ -29,7 +29,7 @@ public partial class CreateDeckPageNoDeckGroup : ContentPage, IQueryAttributable
         Deck.DeckDescription = DeckDescriptionEntry.Text;
         Deck.ReadOnly = false;
         Deck.IsPublic = IsPublic;
-        await SaveDeckAsync(Deck);
+        await Constants.SaveDeckAsync(Deck);
 
         //get all the Decks and re-find the one so we have an ID...since when posting it the Id would be 0.
         List<Deck> decks = await Constants.GetAllDecks();
@@ -46,7 +46,7 @@ public partial class CreateDeckPageNoDeckGroup : ContentPage, IQueryAttributable
         userDeck.DeckId = Deck.DeckId;
         userDeck.UserId = LoggedInUser.UserId;
         //creates the User Deck
-        await SaveUserDeckAsync(userDeck);
+        await Constants.SaveUserDeckAsync(userDeck);
 
         //pass in Deck so then Users can eventually add Flashcards to the deck.
         var navigationParameter = new Dictionary<string, object>
@@ -56,56 +56,6 @@ public partial class CreateDeckPageNoDeckGroup : ContentPage, IQueryAttributable
                 };
         //Finishing up making a DeckGroup so now it will take the user to Build Deck
         await Shell.Current.GoToAsync(nameof(BuildDeckPageOnlyDeck), navigationParameter);
-    }
-
-    //Posts the Deck
-    public async Task SaveDeckAsync(Deck deck)
-    {
-        //either will be api/userDeck or maybe just Deck?
-        //for now i won't run anything but will just keep deck. (won't do a post essentially just comment it out)
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<Deck>(deck, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    //remember the 1 to 1 relationship later on.
-    //Posts the UserDeck
-    public async Task SaveUserDeckAsync(UserDeck userDeck)
-    {
-        //either will be api/userDeckgroup or maybe just Deckgroup?
-        //for now i won't run anything but will just keep deckgroup.
-        //wait to see what they want from it and explain what you are thinking/what he envisions. you could have been right in the beginning 
-        //with the idea of creating new ones from there and saving them or just choosing 1 like your new idea. --past Brody
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<UserDeck>(userDeck, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tTodoItem successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
     }
 
     private void IsPublicCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)

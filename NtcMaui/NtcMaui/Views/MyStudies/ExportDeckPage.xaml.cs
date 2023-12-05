@@ -79,7 +79,7 @@ public partial class ExportDeckPage : ContentPage, IQueryAttributable, INotifyPr
                     DeckGroupDeck newDeckGroupDeck = new DeckGroupDeck();
                     newDeckGroupDeck.DeckId = SelectedDeck.DeckId;
                     newDeckGroupDeck.DeckGroupId = SelectedDeckGroup.DeckGroupId;
-                    await SaveDeckGroupDeckAsync(newDeckGroupDeck);
+                    await Constants.SaveDeckGroupDeckAsync(newDeckGroupDeck);
                 }
                 //if the user has already made a deck within the deckgroup and it also checks for shared instances.
                 else
@@ -92,7 +92,7 @@ public partial class ExportDeckPage : ContentPage, IQueryAttributable, INotifyPr
                         DeckGroupDeck newDeckGroupDeck = new DeckGroupDeck();
                         newDeckGroupDeck.DeckId = SelectedDeck.DeckId;
                         newDeckGroupDeck.DeckGroupId = deckGroupDeck.DeckGroupId;
-                        await SaveDeckGroupDeckAsync(newDeckGroupDeck);
+                        await Constants.SaveDeckGroupDeckAsync(newDeckGroupDeck);
                     }
                 }
 
@@ -153,28 +153,6 @@ public partial class ExportDeckPage : ContentPage, IQueryAttributable, INotifyPr
                     { "Current User", LoggedInUser }
                 };
         Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
-    }
-
-    //posts the DeckGroupDeck
-    public async Task SaveDeckGroupDeckAsync(DeckGroupDeck deckGroupDeck)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroupDeck", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<DeckGroupDeck>(deckGroupDeck, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tdeckGroupDeck successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
     }
 
     public User LoggedInUser { get; set; }

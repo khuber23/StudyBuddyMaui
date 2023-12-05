@@ -151,31 +151,6 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
             Debug.WriteLine(@"\tERROR {0}", ex.Message);
         }
     }
-
-    //gets all the flashCards
-    public async Task<List<FlashCard>> GetAllFlashCards()
-    {
-        List<FlashCard> flashCards = new List<FlashCard>();
-
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/FlashCard", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                flashCards = JsonSerializer.Deserialize<List<FlashCard>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return flashCards;
-    }
-
     private void CheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         if (e.Value == true)

@@ -71,7 +71,7 @@ public partial class ShareDeckPage : ContentPage, IQueryAttributable, INotifyPro
     private async void CopyBtn_Clicked(object sender, EventArgs e)
     {
         ErrorLabel.IsVisible = false;
-        Deck selectedDeck = await GetDeckByDeckName(DeckName);
+        Deck selectedDeck = await Constants.GetDeckByDeckName(DeckName);
         if (selectedDeck == null || selectedDeck.DeckId == 0)
         {
             ErrorLabel.Text = "Please Select a deck from the drop-down";
@@ -98,7 +98,7 @@ public partial class ShareDeckPage : ContentPage, IQueryAttributable, INotifyPro
     private async void CloneBtn_Clicked(object sender, EventArgs e)
     {
         ErrorLabel.IsVisible = false;
-        Deck selectedDeck = await GetDeckByDeckName(DeckName);
+        Deck selectedDeck = await Constants.GetDeckByDeckName(DeckName);
         if (selectedDeck == null || selectedDeck.DeckId == 0)
         {
             ErrorLabel.Text = "Please Select a deck from the drop-down";
@@ -119,34 +119,6 @@ public partial class ShareDeckPage : ContentPage, IQueryAttributable, INotifyPro
                 };
             await Shell.Current.GoToAsync(nameof(ShareDeckWithUserPage), navigationParameter);
         }
-    }
-
-
-    //might be an issue later but...i think it's fine
-    /// <summary>
-    /// gets the deck based on deck name
-    /// </summary>
-    /// <returns>a deck</returns>
-    public async Task<Deck> GetDeckByDeckName(string DeckName)
-    {
-        Deck deck = new Deck();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/Deck/deckname/{DeckName}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                deck = JsonSerializer.Deserialize<Deck>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return deck;
     }
 
 	private void GoToHomePage(object sender, EventArgs e)

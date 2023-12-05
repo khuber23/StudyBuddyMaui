@@ -43,7 +43,7 @@ public partial class ShareDeckGroupPage : ContentPage, IQueryAttributable, INoti
     private async void CopyBtn_Clicked(object sender, EventArgs e)
     {
         ErrorLabel.IsVisible = false;
-        DeckGroup selectedDeckGroup = await GetDeckGroupByDeckGroupName(DeckGroupName);
+        DeckGroup selectedDeckGroup = await Constants.GetDeckGroupByDeckGroupName(DeckGroupName);
         if (selectedDeckGroup == null || selectedDeckGroup.DeckGroupId == 0)
         {
             ErrorLabel.Text = "Please Select a Deck Group from the drop-down";
@@ -71,7 +71,7 @@ public partial class ShareDeckGroupPage : ContentPage, IQueryAttributable, INoti
         private async void CloneBtn_Clicked(object sender, EventArgs e)
         {
         ErrorLabel.IsVisible = false;
-        DeckGroup selectedDeckGroup = await GetDeckGroupByDeckGroupName(DeckGroupName);
+        DeckGroup selectedDeckGroup = await Constants.GetDeckGroupByDeckGroupName(DeckGroupName);
         if (selectedDeckGroup == null || selectedDeckGroup.DeckGroupId == 0)
         {
             ErrorLabel.Text = "Please Select a Deck Group from the drop-down";
@@ -94,33 +94,6 @@ public partial class ShareDeckGroupPage : ContentPage, IQueryAttributable, INoti
             await Shell.Current.GoToAsync(nameof(ShareDeckGroupWithUserPage), navigationParameter);
         }
     }
-
-        //might be an issue later but...i think it's fine
-        /// <summary>
-        /// gets the deck based on deck name
-        /// </summary>
-        /// <returns>a deck</returns>
-        public async Task<DeckGroup> GetDeckGroupByDeckGroupName(string DeckGroupName)
-        {
-            DeckGroup deckGroup = new DeckGroup();
-
-            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/DeckGroup/deckgroup/{DeckGroupName}", string.Empty));
-            try
-            {
-                HttpResponseMessage response = await Constants._client.GetAsync(uri);
-                if (response.IsSuccessStatusCode)
-                {
-                    string content = await response.Content.ReadAsStringAsync();
-                    deckGroup = JsonSerializer.Deserialize<DeckGroup>(content, Constants._serializerOptions);
-                }
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(@"\tERROR {0}", ex.Message);
-            }
-
-            return deckGroup;
-        }
 
 
 	private void GoToHomePage(object sender, EventArgs e)
