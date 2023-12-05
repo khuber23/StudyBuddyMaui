@@ -121,13 +121,13 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
         StudySession.DeckId = ChosenUserDeck.DeckId;
         //might check this later but if they exit early the study Session would not be complete.
         StudySession.IsCompleted = false;
-        SaveStudySessionAsync(StudySession);
+        Constants.SaveStudySessionAsync(StudySession);
 
 
 
         //re - get that StudySession to save the studySessionFlashCards
         //eventually also change the foreach to a Linq query for faster use.
-        StudySessions = await GetAllStudySessions();
+        StudySessions = await Constants.GetAllStudySessions();
 
         StudySession = StudySessions.FirstOrDefault(studySession => studySession.EndTime == StudySession.EndTime
                 && studySession.StartTime == StudySession.StartTime
@@ -144,7 +144,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
                 StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
                 StudySessionFlashCard.IsCorrect = true;
                 //DO NOT ADD AWAIT IN FRONT IT WILL NOT WORK OTHERWISE
-               SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+               Constants.SaveStudySessionFlashcardAsync(StudySessionFlashCard);
             }
         }
 
@@ -159,7 +159,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
                 StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
                 StudySessionFlashCard.IsCorrect = false;
                 //DO NOT ADD AWAIT IN FRONT IT WILL NOT WORK OTHERWISE
-               SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+               Constants.SaveStudySessionFlashcardAsync(StudySessionFlashCard);
             }
         }
     }
@@ -204,10 +204,10 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
             }
 
             //post the StudySession.
-            await SaveStudySessionAsync(StudySession);
+            await Constants.SaveStudySessionAsync(StudySession);
 
             //after posting you need to retrieve it to upload the study session flashcard.
-            StudySessions = await GetAllStudySessions();
+            StudySessions = await Constants.GetAllStudySessions();
 
             foreach (StudySession studySession in StudySessions)
             {
@@ -237,7 +237,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
                     StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
                     StudySessionFlashCard.IsCorrect = true;
                     //test to see if it works
-                    await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+                    await Constants.SaveStudySessionFlashcardAsync(StudySessionFlashCard);
                 }
             }
 
@@ -250,7 +250,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
                     StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
                     StudySessionFlashCard.IsCorrect = false;
                     //test to see if it works
-                    await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+                    await Constants.SaveStudySessionFlashcardAsync(StudySessionFlashCard);
                 }
             }
             //store both card sets for right and wrong and continue to session stats Page.
@@ -311,10 +311,10 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
             }
 
             //post the StudySession.
-            await SaveStudySessionAsync(StudySession);
+            await Constants.SaveStudySessionAsync(StudySession);
 
             //after posting you need to retrieve it to upload the study session flashcard.
-            StudySessions = await GetAllStudySessions();
+            StudySessions = await Constants.GetAllStudySessions();
 
             foreach (StudySession studySession in StudySessions)
             {
@@ -343,8 +343,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
                     StudySessionFlashCard.FlashCardId = flashCard.FlashCardId;
                     StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
                     StudySessionFlashCard.IsCorrect = true;
-                    //Api error currently
-                    await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+                    await Constants.SaveStudySessionFlashcardAsync(StudySessionFlashCard);
                 }
             }
 
@@ -356,8 +355,7 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
                     StudySessionFlashCard.FlashCardId = flashCard.FlashCardId;
                     StudySessionFlashCard.StudySessionId = StudySession.StudySessionId;
                     StudySessionFlashCard.IsCorrect = false;
-                    //Api error currently
-                    await SaveStudySessionFlashcardAsync(StudySessionFlashCard);
+                    await Constants.SaveStudySessionFlashcardAsync(StudySessionFlashCard);
                 }
             }
 
@@ -388,74 +386,6 @@ public partial class StudyingPageNoDeckGroups : ContentPage, IQueryAttributable,
                 FlashCardImage.IsVisible = false;
             }
         }
-    }
-
-    //Post for Study Session
-    public async Task SaveStudySessionAsync(StudySession studySession)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySession", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<StudySession>(studySession, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tStudySession successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    //Post for Study Session Flashcards
-    public async Task SaveStudySessionFlashcardAsync(StudySessionFlashCard studySessionFlashCard)
-    {
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySessionFlashCard", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<StudySessionFlashCard>(studySessionFlashCard, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PostAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\tStudySessionFlashCard successfully saved.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    //gets the Study Sessions
-    public async Task<List<StudySession>> GetAllStudySessions()
-    {
-        List<StudySession> studySessions = new List<StudySession>();
-
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySession", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                studySessions = JsonSerializer.Deserialize<List<StudySession>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-
-        return studySessions;
     }
 
     private void LangPicker_SelectedIndexChanged(object sender, EventArgs e)

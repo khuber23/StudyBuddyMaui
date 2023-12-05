@@ -23,7 +23,7 @@ public partial class DashboardStudyPage : ContentPage, IQueryAttributable, INoti
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        IncorrectCards = await GetIncorrectStudySessionsById(LoggedInUser.UserId);
+        IncorrectCards = await Constants.GetIncorrectStudySessionsById(LoggedInUser.UserId);
         StudySessionFlashCardsListView.ItemsSource = IncorrectCards;
         //do something/disable button if the incorrectCards count = 0
         if (IncorrectCards.Count == 0 || IncorrectCards == null)
@@ -56,27 +56,6 @@ public partial class DashboardStudyPage : ContentPage, IQueryAttributable, INoti
                     { "Current User", LoggedInUser }
                 };
         Shell.Current.GoToAsync(nameof(StudyPriorityPage), navigationParameter);
-    }
-
-    public async Task<List<StudySessionFlashCard>> GetIncorrectStudySessionsById(int userId)
-    {
-        List<StudySessionFlashCard> studySessionFlashCards = new List<StudySessionFlashCard>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySessionFlashCard/maui/incorrect/{userId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                studySessionFlashCards = JsonSerializer.Deserialize<List<StudySessionFlashCard>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return studySessionFlashCards;
     }
 
     private void GoToDashboardPage(object sender, EventArgs e)

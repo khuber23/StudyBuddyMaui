@@ -618,6 +618,149 @@ namespace NtcMaui
             }
         }
 
+        //Post for Study Session
+        public static async Task SaveStudySessionAsync(StudySession studySession)
+        {
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySession", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<StudySession>(studySession, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                response = await Constants._client.PostAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\tStudySession successfully saved.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+        //gets the Study Sessions
+        public static async Task<List<StudySession>> GetAllStudySessions()
+        {
+            List<StudySession> studySessions = new List<StudySession>();
+
+
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySession", string.Empty));
+            try
+            {
+                HttpResponseMessage response = await Constants._client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    studySessions = JsonSerializer.Deserialize<List<StudySession>>(content, Constants._serializerOptions);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+
+            return studySessions;
+        }
+
+
+        //Post for Study Session Flashcards
+        public static async Task SaveStudySessionFlashcardAsync(StudySessionFlashCard studySessionFlashCard)
+        {
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySessionFlashCard", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<StudySessionFlashCard>(studySessionFlashCard, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                response = await Constants._client.PostAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\tStudySessionFlashCard successfully saved.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Does a Put command on the StudySession
+        /// </summary>
+        /// <param name="studySession">the studySession you are updating</param>
+        /// <returns>A task/updated studysession</returns>
+        public static async Task PutStudySessionAsync(StudySession studySession)
+        {
+            //note to self. You need to have the %7Bid%7D? since that is what the endpoint is looking for
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySession/%7Bid%7D?studysessionid={studySession.StudySessionId}", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<StudySession>(studySession, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                response = await Constants._client.PutAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\study session successfully updated.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Does a Put command on the StudySessionFlashCard
+        /// </summary>
+        /// <param name="studySessionFlashCard">the studySessionflashcard you are updating</param>
+        /// <returns>A task/updated studysessionflashcard</returns>
+        public static async Task PutStudySessionFlashCardAsync(StudySessionFlashCard studySessionFlashCard)
+        {
+            //note to self. You need to have the %7Bid%7D? since that is what the endpoint is looking for
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySessionFlashCard/%7Bid%7D?studysessionid={studySessionFlashCard.StudySessionId}&flashcardid={studySessionFlashCard.FlashCardId}", string.Empty));
+
+            try
+            {
+                string json = JsonSerializer.Serialize<StudySessionFlashCard>(studySessionFlashCard, Constants._serializerOptions);
+                StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = null;
+                response = await Constants._client.PutAsync(uri, content);
+
+                if (response.IsSuccessStatusCode)
+                    Debug.WriteLine(@"\studysessionflashcard successfully updated.");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+        }
+
+        public static async Task<List<StudySessionFlashCard>> GetIncorrectStudySessionsById(int userId)
+        {
+            List<StudySessionFlashCard> studySessionFlashCards = new List<StudySessionFlashCard>();
+
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySessionFlashCard/maui/incorrect/{userId}", string.Empty));
+            try
+            {
+                HttpResponseMessage response = await Constants._client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    studySessionFlashCards = JsonSerializer.Deserialize<List<StudySessionFlashCard>>(content, Constants._serializerOptions);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+            return studySessionFlashCards;
+        }
 
     }
 }

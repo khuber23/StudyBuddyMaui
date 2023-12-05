@@ -27,8 +27,9 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        UserDeckGroups = await GetAllUserDeckGroups();
-        
+        UserDeckGroups = await Constants.GetAllUserDeckGroupByUserId(LoggedInUser.UserId);
+
+
         MyStudiesListView.ItemsSource = UserDeckGroups;
     }
 
@@ -91,51 +92,6 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
             ChosenDeckLabel.Text = $"Current Deck Chosen: {ChosenDeckGroupDeck.Deck.DeckName}";
          }
 
-    }
-
-
-
-    public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
-    {
-        List<UserDeckGroup> userDeckGroups = new List<UserDeckGroup>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/maui/user/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                userDeckGroups = JsonSerializer.Deserialize<List<UserDeckGroup>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return userDeckGroups;
-    }
-
-
-    public async Task<List<UserDeck>> GetAllUserDecks()
-    {
-        List<UserDeck> userDecks = new List<UserDeck>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/maui/user/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                userDecks = JsonSerializer.Deserialize<List<UserDeck>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return userDecks;
     }
 
     public User LoggedInUser { get; set; }

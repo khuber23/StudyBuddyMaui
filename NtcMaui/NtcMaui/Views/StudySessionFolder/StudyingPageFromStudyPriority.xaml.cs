@@ -93,7 +93,7 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
         session.DeckId = ChosenStudySession.DeckId;
         //might check this later but if they exit early the study Session would not be complete.
         session.IsCompleted = false;
-        PutStudySessionAsync(session);
+        Constants.PutStudySessionAsync(session);
 
         foreach (FlashCard flashCard in CorrectFlashCards)
         {
@@ -104,7 +104,7 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
                 StudySessionFlashCard.StudySessionId = session.StudySessionId;
                 StudySessionFlashCard.IsCorrect = true;
                 //DO NOT ADD AWAIT IN FRONT IT WILL NOT WORK OTHERWISE
-                PutStudySessionFlashCardAsync(StudySessionFlashCard);
+                Constants.PutStudySessionFlashCardAsync(StudySessionFlashCard);
             }
         }
 
@@ -119,7 +119,7 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
                 StudySessionFlashCard.StudySessionId = session.StudySessionId;
                 StudySessionFlashCard.IsCorrect = false;
                 //DO NOT ADD AWAIT IN FRONT IT WILL NOT WORK OTHERWISE
-                PutStudySessionFlashCardAsync(StudySessionFlashCard);
+                Constants.PutStudySessionFlashCardAsync(StudySessionFlashCard);
             }
         }
     }
@@ -197,7 +197,7 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
             ChosenStudySession = session;
 
             //put the StudySession mostly to change the times as well as the isCompleted.
-            await PutStudySessionAsync(ChosenStudySession);
+            await Constants.PutStudySessionAsync(ChosenStudySession);
 
            
 
@@ -213,7 +213,7 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
                     StudySessionFlashCard.StudySessionId = ChosenStudySession.StudySessionId;
                     StudySessionFlashCard.IsCorrect = true;
                     //test to see if it works
-                    await PutStudySessionFlashCardAsync(StudySessionFlashCard);
+                    await Constants.PutStudySessionFlashCardAsync(StudySessionFlashCard);
                 }
             }
 
@@ -226,7 +226,7 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
                     StudySessionFlashCard.StudySessionId = ChosenStudySession.StudySessionId;
                     StudySessionFlashCard.IsCorrect = false;
                     //test to see if it works
-                    await PutStudySessionFlashCardAsync(StudySessionFlashCard);
+                    await Constants.PutStudySessionFlashCardAsync(StudySessionFlashCard);
                 }
             }
             //store both card sets for right and wrong and continue to session stats Page.
@@ -291,7 +291,7 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
             }
             //check this for later
             ChosenStudySession = session;
-            await PutStudySessionAsync(ChosenStudySession);
+            await Constants.PutStudySessionAsync(ChosenStudySession);
 
 
 
@@ -307,7 +307,7 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
                     StudySessionFlashCard.StudySessionId = ChosenStudySession.StudySessionId;
                     StudySessionFlashCard.IsCorrect = true;
                     //test to see if it works
-                    await PutStudySessionFlashCardAsync(StudySessionFlashCard);
+                    await Constants.PutStudySessionFlashCardAsync(StudySessionFlashCard);
                 }
             }
 
@@ -320,7 +320,7 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
                     StudySessionFlashCard.StudySessionId = ChosenStudySession.StudySessionId;
                     StudySessionFlashCard.IsCorrect = false;
                     //test to see if it works
-                    await PutStudySessionFlashCardAsync(StudySessionFlashCard);
+                    await Constants.PutStudySessionFlashCardAsync(StudySessionFlashCard);
                 }
             }
             //store both card sets for right and wrong and continue to session stats Page.
@@ -347,60 +347,6 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
             }
         }
 
-    }
-
-    /// <summary>
-    /// Does a Put command on the StudySession
-    /// </summary>
-    /// <param name="studySession">the studySession you are updating</param>
-    /// <returns>A task/updated studysession</returns>
-    public async Task PutStudySessionAsync(StudySession studySession)
-    {
-        //note to self. You need to have the %7Bid%7D? since that is what the endpoint is looking for
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySession/%7Bid%7D?studysessionid={studySession.StudySessionId}", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<StudySession>(studySession, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PutAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\study session successfully updated.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-    }
-
-    /// <summary>
-    /// Does a Put command on the StudySessionFlashCard
-    /// </summary>
-    /// <param name="studySessionFlashCard">the studySessionflashcard you are updating</param>
-    /// <returns>A task/updated studysessionflashcard</returns>
-    public async Task PutStudySessionFlashCardAsync(StudySessionFlashCard studySessionFlashCard)
-    {
-        //note to self. You need to have the %7Bid%7D? since that is what the endpoint is looking for
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySessionFlashCard/%7Bid%7D?studysessionid={studySessionFlashCard.StudySessionId}&flashcardid={studySessionFlashCard.FlashCardId}", string.Empty));
-
-        try
-        {
-            string json = JsonSerializer.Serialize<StudySessionFlashCard>(studySessionFlashCard, Constants._serializerOptions);
-            StringContent content = new StringContent(json, Encoding.UTF8, "application/json");
-
-            HttpResponseMessage response = null;
-            response = await Constants._client.PutAsync(uri, content);
-
-            if (response.IsSuccessStatusCode)
-                Debug.WriteLine(@"\studysessionflashcard successfully updated.");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
     }
 
     private void LangPicker_SelectedIndexChanged(object sender, EventArgs e)

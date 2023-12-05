@@ -21,9 +21,9 @@ public partial class MyStudiesSessionPageOnlyUserDecks : ContentPage, IQueryAttr
     protected async override void OnAppearing()
     {
         base.OnAppearing();
-        UserDeckGroups = await GetAllUserDeckGroups();
+        UserDeckGroups = await Constants.GetAllUserDeckGroupByUserId(LoggedInUser.UserId);
         //evemtially add another listView for doing just user Decks without a DeckGroup and deal with it
-        UserDecks = await GetAllUserDecks();
+        UserDecks = await Constants.GetAllUserDecksById(LoggedInUser.UserId);
         //do all this stuff on load to eventually be able to display 1 or the other with the checkbox check
         DecksNotInDeckGroup = new List<UserDeck>();
         List<int> deckIds = new List<int>();
@@ -67,49 +67,6 @@ public partial class MyStudiesSessionPageOnlyUserDecks : ContentPage, IQueryAttr
                     { "Current User", LoggedInUser },
                 };
         Shell.Current.GoToAsync(nameof(MyStudiesSessionPageOnlyUserDecks), navigationParameter);
-    }
-
-    public async Task<List<UserDeckGroup>> GetAllUserDeckGroups()
-    {
-        List<UserDeckGroup> userDeckGroups = new List<UserDeckGroup>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeckGroup/maui/user/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                userDeckGroups = JsonSerializer.Deserialize<List<UserDeckGroup>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return userDeckGroups;
-    }
-
-
-    public async Task<List<UserDeck>> GetAllUserDecks()
-    {
-        List<UserDeck> userDecks = new List<UserDeck>();
-
-        Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/UserDeck/maui/user/{LoggedInUser.UserId}", string.Empty));
-        try
-        {
-            HttpResponseMessage response = await Constants._client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                string content = await response.Content.ReadAsStringAsync();
-                userDecks = JsonSerializer.Deserialize<List<UserDeck>>(content, Constants._serializerOptions);
-            }
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(@"\tERROR {0}", ex.Message);
-        }
-        return userDecks;
     }
 
     //will assign a user Deck when a user clicks on it.
