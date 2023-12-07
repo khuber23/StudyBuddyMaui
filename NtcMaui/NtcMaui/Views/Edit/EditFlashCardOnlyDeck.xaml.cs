@@ -30,7 +30,7 @@ public partial class EditFlashCardOnlyDeck : ContentPage, IQueryAttributable, IN
         FlashCardAnswerEntry.Text = SelectedFlashCard.FlashCardAnswer;
         IsPublicCheckBox.IsChecked = SelectedFlashCard.IsPublic;
         FlashcardQuestionImageEntry.Text = SelectedFlashCard.FlashCardQuestionImage;
-        FlashcardQuestionImageEntry.Text = SelectedFlashCard.FlashCardAnswerImage;
+        FlashcardAnswerImageEntry.Text = SelectedFlashCard.FlashCardAnswerImage;
         DeckFlashcards = await Constants.GetAllDeckFlashCards();
         DeckFlashcards = DeckFlashcards.Where(deckflashcard => deckflashcard.DeckId == SelectedDeck.DeckId || deckflashcard.Deck.DeckName == SelectedDeck.DeckName).ToList();
     }
