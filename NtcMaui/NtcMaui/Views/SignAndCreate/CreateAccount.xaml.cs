@@ -17,10 +17,24 @@ public partial class CreateAccount : ContentPage
     }
     public async void CompleteCreation(object sender, EventArgs e)
     {
-        //eventually add some checks/add to database before going back to sign in.
-        User user = this.MakeUser();
-        await Constants.SaveUserAsync(user);
-        await Shell.Current.GoToAsync(nameof(SignIn));
+        ErrorLabel.IsVisible = false;
+        //if a username already exists in the database throw up an error, else make the user like normal.
+        User testUser = await Constants.GetUserByUsername(UserNameEntry.Text);
+        if (testUser != null)
+        {
+            if (testUser.Username == UserNameEntry.Text)
+            {
+                ErrorLabel.IsVisible = true;
+                ErrorLabel.Text = "User by this username already exists. Please choose a different username";
+            }
+        }
+        else
+        {
+            User user = this.MakeUser();
+            await Constants.SaveUserAsync(user);
+            await Shell.Current.GoToAsync(nameof(SignIn));
+        }
+
     }
 
     public User MakeUser()

@@ -37,9 +37,11 @@
                             <Label Text="Make Public: Other users can import your Deck Group."/>
                             <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="IsPublicCheckBox_CheckedChanged" HorizontalOptions="Start"/>
                         </StackLayout>
+                        <Label TextColor="Red" x:Name="ErrorLabel" Margin="0,0,0,10" HorizontalOptions="Center" FontSize="20" FontAttributes="Bold" IsVisible="False"></Label>
                     </StackLayout>
                 </ScrollView>
             </Border>
+
             <Button 
                 Text="Next"
                 Clicked="GoToDeckGroupPage"

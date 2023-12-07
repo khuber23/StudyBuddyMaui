@@ -23,39 +23,53 @@ public partial class CreateDeckPageNoDeckGroup : ContentPage, IQueryAttributable
 
     private async void GoToBuildDeckPage(object sender, EventArgs e)
     {
-        //Creates the Deck that the user will make
-        Deck = new Deck();
-        Deck.DeckName = DeckNameEntry.Text;
-        Deck.DeckDescription = DeckDescriptionEntry.Text;
-        Deck.ReadOnly = false;
-        Deck.IsPublic = IsPublic;
-        await Constants.SaveDeckAsync(Deck);
-
-        //get all the Decks and re-find the one so we have an ID...since when posting it the Id would be 0.
-        List<Deck> decks = await Constants.GetAllDecks();
-        foreach (Deck deck in decks)
+        Decks = await Constants.GetAllDecks();
+        ErrorLabel.IsVisible = false;
+        var foundDeck = Decks.FirstOrDefault(x => x.DeckName == DeckNameEntry.Text);
+        if (foundDeck != null)
         {
-            if (deck.DeckName == Deck.DeckName && deck.DeckDescription == Deck.DeckDescription)
+            if (foundDeck.DeckName == DeckNameEntry.Text)
             {
-                Deck = deck;
-                break;
+                ErrorLabel.IsVisible = true;
+                ErrorLabel.Text = "Deck already exists. Please choose a different name.";
             }
         }
-        //after getting the right Deck With an ID from the database we make it a userDeck and post it to database.
-        UserDeck userDeck = new UserDeck();
-        userDeck.DeckId = Deck.DeckId;
-        userDeck.UserId = LoggedInUser.UserId;
-        //creates the User Deck
-        await Constants.SaveUserDeckAsync(userDeck);
+        else
+        {
+            //Creates the Deck that the user will make
+            Deck = new Deck();
+            Deck.DeckName = DeckNameEntry.Text;
+            Deck.DeckDescription = DeckDescriptionEntry.Text;
+            Deck.ReadOnly = false;
+            Deck.IsPublic = IsPublic;
+            await Constants.SaveDeckAsync(Deck);
 
-        //pass in Deck so then Users can eventually add Flashcards to the deck.
-        var navigationParameter = new Dictionary<string, object>
+            //get all the Decks and re-find the one so we have an ID...since when posting it the Id would be 0.
+            List<Deck> decks = await Constants.GetAllDecks();
+            foreach (Deck deck in decks)
+            {
+                if (deck.DeckName == Deck.DeckName && deck.DeckDescription == Deck.DeckDescription)
+                {
+                    Deck = deck;
+                    break;
+                }
+            }
+            //after getting the right Deck With an ID from the database we make it a userDeck and post it to database.
+            UserDeck userDeck = new UserDeck();
+            userDeck.DeckId = Deck.DeckId;
+            userDeck.UserId = LoggedInUser.UserId;
+            //creates the User Deck
+            await Constants.SaveUserDeckAsync(userDeck);
+
+            //pass in Deck so then Users can eventually add Flashcards to the deck.
+            var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser },
                     {"Current Deck", Deck }
                 };
-        //Finishing up making a DeckGroup so now it will take the user to Build Deck
-        await Shell.Current.GoToAsync(nameof(BuildDeckPageOnlyDeck), navigationParameter);
+            //Finishing up making a DeckGroup so now it will take the user to Build Deck
+            await Shell.Current.GoToAsync(nameof(BuildDeckPageOnlyDeck), navigationParameter);
+        }
     }
 
     private void IsPublicCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -125,4 +139,6 @@ public partial class CreateDeckPageNoDeckGroup : ContentPage, IQueryAttributable
     public UserDeck UserDeck { get; set; }
 
     public User LoggedInUser { get; set; }
+
+    public List<Deck> Decks { get; set; }
 }

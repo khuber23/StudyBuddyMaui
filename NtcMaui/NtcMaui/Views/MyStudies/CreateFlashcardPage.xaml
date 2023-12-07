@@ -56,6 +56,7 @@
                         <StackLayout VerticalOptions="Center" Margin="10" Grid.Column="1">
                             <Label IsVisible="false" FontSize="20" TextColor="Red" FontAttributes="Bold"  x:Name="FinishLabel" Text="Hit Finish when done saving to add Flashcard." HorizontalOptions="Center"/>
                         </StackLayout>
+                        <Label TextColor="Red" x:Name="ErrorLabel" Margin="0,0,0,10" HorizontalOptions="Center" FontSize="20" FontAttributes="Bold" IsVisible="False"></Label>
                     </StackLayout>
                 </ScrollView>
             </Border>

@@ -28,6 +28,7 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
         base.OnAppearing();
         Decks = await Constants.GetAllDecks();
         DecksToUpdate = Decks.Where(d => d.DeckName == SelectedDeck.DeckName && d.DeckDescription == SelectedDeck.DeckDescription).ToList();
+        FlashCards = await Constants.GetAllFlashCards();
     }
 
 
@@ -36,35 +37,49 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
     //eventually handle making images but for now i can handle if flashcard is public.
     private void SaveFlashCard(object sender, EventArgs e)
     {
-        FlashCard flashCard = new FlashCard();
-        flashCard.FlashCardQuestion = FlashcardQuestionEntry.Text;
-        flashCard.FlashCardAnswer = FlashcardAnswerEntry.Text;
-        flashCard.FlashCardQuestionImage = FlashcardQuestionImageEntry.Text;
-        flashCard.FlashCardAnswerImage = FlashcardAnswerImageEntry.Text;
-        flashCard.IsPublic = IsPublic;
-        
-        //contreversial but Readonly will be set to false...I am not too worried about the editing for flashcards.
-        //if a user would import a public flashcard it would clone a copy for that user to use and even eventually delete from it and use as they wish.
-       
-        flashCard.ReadOnly = false;
-        UsermadeFlashCards.Add(flashCard);
-        //added this for later use of dealing with getting all the flashcards by question that have been created (mostly re-get proper Id's)
-        FlashCardQuestions.Add(flashCard.FlashCardQuestion);
-        FlashcardQuestionEntry.Text = String.Empty;
-        FlashcardAnswerEntry.Text = String.Empty;
-        FlashcardAnswerImageEntry.Text = String.Empty;
-        FlashcardQuestionImageEntry.Text = String.Empty;
-        IsPublicCheckBox.IsChecked = false;
-        if (UsermadeFlashCards.Count > 0)
+        ErrorLabel.IsVisible = false;
+        var foundFlashCard = FlashCards.FirstOrDefault(x => x.FlashCardQuestion == FlashcardQuestionEntry.Text);
+        if (foundFlashCard != null)
         {
-            FinishBtn.IsVisible = true;
-            CancelBtn.IsVisible = false;
-            FinishLabel.IsVisible = true;
+            if (foundFlashCard.FlashCardQuestion == FlashcardQuestionEntry.Text)
+            {
+                ErrorLabel.IsVisible = true;
+                ErrorLabel.Text = "FlashCard already exists. Please use a different question.";
+            }
         }
+
         else
         {
-            FinishBtn.IsVisible = false;
-            FinishLabel.IsVisible = false;
+            FlashCard flashCard = new FlashCard();
+            flashCard.FlashCardQuestion = FlashcardQuestionEntry.Text;
+            flashCard.FlashCardAnswer = FlashcardAnswerEntry.Text;
+            flashCard.FlashCardQuestionImage = FlashcardQuestionImageEntry.Text;
+            flashCard.FlashCardAnswerImage = FlashcardAnswerImageEntry.Text;
+            flashCard.IsPublic = IsPublic;
+
+            //contreversial but Readonly will be set to false...I am not too worried about the editing for flashcards.
+            //if a user would import a public flashcard it would clone a copy for that user to use and even eventually delete from it and use as they wish.
+
+            flashCard.ReadOnly = false;
+            UsermadeFlashCards.Add(flashCard);
+            //added this for later use of dealing with getting all the flashcards by question that have been created (mostly re-get proper Id's)
+            FlashCardQuestions.Add(flashCard.FlashCardQuestion);
+            FlashcardQuestionEntry.Text = String.Empty;
+            FlashcardAnswerEntry.Text = String.Empty;
+            FlashcardAnswerImageEntry.Text = String.Empty;
+            FlashcardQuestionImageEntry.Text = String.Empty;
+            IsPublicCheckBox.IsChecked = false;
+            if (UsermadeFlashCards.Count > 0)
+            {
+                FinishBtn.IsVisible = true;
+                CancelBtn.IsVisible = false;
+                FinishLabel.IsVisible = true;
+            }
+            else
+            {
+                FinishBtn.IsVisible = false;
+                FinishLabel.IsVisible = false;
+            }
         }
     }
 
@@ -245,4 +260,6 @@ public partial class CreateFlashcardPage : ContentPage, IQueryAttributable, INot
     public List<Deck> DecksToUpdate { get; set; }
 
     public List<string> FlashCardQuestions { get; set;} = new List<string>();
+
+    public List<FlashCard> FlashCards { get; set; }
 }

@@ -7,7 +7,8 @@
     <ScrollView>
         <Grid>
             <VerticalStackLayout Padding="8" Spacing="8" Margin="0,0,0,10">
-                <Label Margin="0,0,0,10" HorizontalOptions="Center" FontSize="40" FontAttributes="Bold" Text="Create New Account"></Label>
+          
+                    <Label Margin="0,0,0,10" HorizontalOptions="Center" FontSize="40" FontAttributes="Bold" Text="Create New Account"></Label>
                     <!--<Label FontSize="12" Text="Boxes marked with * are required"></Label>-->
                 <Border BackgroundColor="{StaticResource Primary}" WidthRequest="800" HeightRequest="5" />
                 <Label WidthRequest="400" Text="First Name*" FontSize="16"></Label>
@@ -58,9 +59,9 @@
                     <ImageButton x:Name="UploadImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png" Clicked="UploadImageBtn_Clicked"/>
                     <Image x:Name="ProfileImage"  Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50"/>
                 </HorizontalStackLayout>
-                                              
-                    <Button x:Name="SaveBtn" Text="Save" Margin="0, 30" WidthRequest="250" HorizontalOptions="Center" Clicked="CompleteCreation"></Button>
-               
+                <Label TextColor="Red" x:Name="ErrorLabel" Margin="0,0,0,10" HorizontalOptions="Center" FontSize="20" FontAttributes="Bold" IsVisible="False"></Label>
+                <Button x:Name="SaveBtn" Text="Save" Margin="0, 30" WidthRequest="250" HorizontalOptions="Center" Clicked="CompleteCreation"></Button>
+           
             </VerticalStackLayout>
 
         </Grid>

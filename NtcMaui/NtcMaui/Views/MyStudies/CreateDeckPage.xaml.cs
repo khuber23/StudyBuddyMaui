@@ -27,6 +27,7 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
     {
         base.OnAppearing();
         UserDeckGroups = await Constants.GetAllUserDeckGroups();
+        Decks = await Constants.GetAllDecks();
         foreach (UserDeckGroup group in UserDeckGroups)
         {
             if (group.DeckGroupId == SelectedDeckGroup.DeckGroupId)
@@ -43,6 +44,19 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
 
     private async void GoToBuildDeckPage(object sender, EventArgs e)
     {
+        ErrorLabel.IsVisible = false;
+        var foundDeck = Decks.FirstOrDefault(x => x.DeckName == DeckNameEntry.Text);
+        if (foundDeck != null)
+        {
+            if (foundDeck.DeckName == DeckNameEntry.Text)
+            {
+                ErrorLabel.IsVisible = true;
+                ErrorLabel.Text = "Deck already exists. Please choose a different name.";
+            }
+        }
+
+        else
+        {
         //maybe split it up?
         //bool for this
         bool deckCreated = false;
@@ -157,6 +171,8 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
                 };
         //Finishing up making a DeckGroup so now it will take the user to Build Deck
         await Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
+
+        }
     }
 
     private void IsPublicCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -241,6 +257,8 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
     public List<UserDeckGroup> SameDeckGroupsById { get; set; } = new List<UserDeckGroup>();
 
     public List<UserDeckGroup> NotSameDeckGroupsById { get; set; } = new List<UserDeckGroup>();
+
+    public List<Deck> Decks { get; set; }
 
 
 }

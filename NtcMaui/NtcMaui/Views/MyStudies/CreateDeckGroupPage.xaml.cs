@@ -23,6 +23,22 @@ public partial class CreateDeckGroupPage : ContentPage, IQueryAttributable, INot
 
     private async void GoToDeckGroupPage(object sender, EventArgs e)
     {
+        ErrorLabel.IsVisible = false;
+        DeckGroups = await Constants.GetAllDeckGroups();
+        var foundDeckGroup = DeckGroups.FirstOrDefault(x => x.DeckGroupName == DeckGroupNameEntry.Text);
+        if (foundDeckGroup != null) 
+        {
+            if (foundDeckGroup.DeckGroupName == DeckGroupNameEntry.Text)
+            {
+                ErrorLabel.IsVisible = true;
+                ErrorLabel.Text = "Deck Group already exists. Please choose a different name.";
+            }
+        }
+        else
+        {
+
+      
+
         //in this code then might need to create a deckgroup or make a method to create a deck group and post it before moving on?
         //I'll get the method ready
         DeckGroup = new DeckGroup();
@@ -63,6 +79,7 @@ public partial class CreateDeckGroupPage : ContentPage, IQueryAttributable, INot
                     {"Current DeckGroup", DeckGroup }
                 };
        await Shell.Current.GoToAsync(nameof(BuildDeckGroupPage), navigationParameter);
+        }
     }
 
     private void IsPublicCheckBox_CheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -131,6 +148,8 @@ public partial class CreateDeckGroupPage : ContentPage, IQueryAttributable, INot
     public User LoggedInUser { get; set; }
 
     public DeckGroup DeckGroup { get; set; }
+
+    public List<DeckGroup> DeckGroups { get; set; }
 
 
 }
