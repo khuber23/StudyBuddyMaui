@@ -28,7 +28,11 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
     {
         base.OnAppearing();
         UserDeckGroups = await Constants.GetAllUserDeckGroupByUserId(LoggedInUser.UserId);
-
+        foreach (UserDeckGroup userdeckgroup in UserDeckGroups)
+        {
+            //
+            userdeckgroup.DeckGroup.DeckGroupDecks = await Constants.GetDeckGroupDecksByDeckGroupId(userdeckgroup.DeckGroupId);
+        }
 
         MyStudiesListView.ItemsSource = UserDeckGroups;
     }
@@ -105,6 +109,5 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
     public DeckGroupDeck ChosenDeckGroupDeck { get; set; }
 
     public List<DeckFlashCard> DeckFlashCards { get; set; }
-
 
 }

@@ -17,6 +17,7 @@ public partial class CreateAccount : ContentPage
     }
     public async void CompleteCreation(object sender, EventArgs e)
     {
+        bool validImage = false;
         ErrorLabel.IsVisible = false;
         //if a username already exists in the database throw up an error, else make the user like normal.
         User testUser = await Constants.GetUserByUsername(UserNameEntry.Text);
@@ -28,12 +29,28 @@ public partial class CreateAccount : ContentPage
                 ErrorLabel.Text = "User by this username already exists. Please choose a different username";
             }
         }
-        else
+         if (testUser.UserId == 0)
         {
-            User user = this.MakeUser();
-            await Constants.SaveUserAsync(user);
-            await Shell.Current.GoToAsync(nameof(SignIn));
+            {
+                User user = this.MakeUser();
+                if (UserImageEntry.Text.Contains(".png") || UserImageEntry.Text.Contains(".jpg") || UserImageEntry.Text.Contains(".jpeg"))
+                {
+                    validImage = true;
+                }
+                if (validImage == false)
+                {
+                    ErrorLabel.IsVisible = true;
+                    ErrorLabel.Text = "Image path isn't valid. Make sure it is a jpg or png image please.";
+                }
+                else
+                {
+                    await Constants.SaveUserAsync(user);
+                    await Shell.Current.GoToAsync(nameof(SignIn));
+                }
+
+            }
         }
+
 
     }
 
@@ -50,11 +67,6 @@ public partial class CreateAccount : ContentPage
         //eventually add profile picture stuff here
         user.IsAdmin = false;
         //test to make sure the image you want follows these designs for image
-        if (!UserImageEntry.Text.Contains(".png") || !UserImageEntry.Text.Contains(".jpg") || !UserImageEntry.Text.Contains(".jpeg"))
-        {
-            ErrorLabel.IsVisible = true;
-            ErrorLabel.Text = "Image path isn't valid. Make sure it is a jpg or png image please.";
-        }
         user.ProfilePicture = UserImageEntry.Text;
         if (UserImageEntry.Text == string.Empty || UserImageEntry.Text == null)
         {
