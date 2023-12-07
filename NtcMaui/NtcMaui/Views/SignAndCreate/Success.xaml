@@ -23,7 +23,7 @@
                        HorizontalOptions="Center"
                        Padding="0"
                        Margin="0,100,0,0">
-                    <Image x:Name="UserImage"  WidthRequest="100" HeightRequest="100" Source="stockprofileimage.png"></Image>
+                    <Image x:Name="UserImage" Aspect="AspectFill"  WidthRequest="100" HeightRequest="100" Source="stockprofileimage.png"></Image>
                 </Frame>
             </Grid>
             <VerticalStackLayout Padding="10" Spacing="10">
