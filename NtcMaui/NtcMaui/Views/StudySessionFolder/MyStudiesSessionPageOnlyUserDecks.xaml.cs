@@ -29,7 +29,8 @@ public partial class MyStudiesSessionPageOnlyUserDecks : ContentPage, IQueryAttr
         List<int> deckIds = new List<int>();
         foreach (UserDeckGroup userdeckgroup in UserDeckGroups)
         {
-            //test
+            //
+            userdeckgroup.DeckGroup.DeckGroupDecks = await Constants.GetDeckGroupDecksByDeckGroupId(userdeckgroup.DeckGroupId);
             foreach (DeckGroupDeck deckGroupDeck in userdeckgroup.DeckGroup.DeckGroupDecks)
             {
                 deckIds.Add(deckGroupDeck.DeckId);

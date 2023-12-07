@@ -39,6 +39,7 @@ public partial class CreateAccount : ContentPage
 
     public User MakeUser()
     {
+        ErrorLabel.IsVisible = false;
         User user = new User();
         user.Username = UserNameEntry.Text;
         //when we implement password hash
@@ -48,6 +49,12 @@ public partial class CreateAccount : ContentPage
         user.LastName = LastNameEntry.Text;
         //eventually add profile picture stuff here
         user.IsAdmin = false;
+        //test to make sure the image you want follows these designs for image
+        if (!UserImageEntry.Text.Contains(".png") || !UserImageEntry.Text.Contains(".jpg") || !UserImageEntry.Text.Contains(".jpeg"))
+        {
+            ErrorLabel.IsVisible = true;
+            ErrorLabel.Text = "Image path isn't valid. Make sure it is a jpg or png image please.";
+        }
         user.ProfilePicture = UserImageEntry.Text;
         if (UserImageEntry.Text == string.Empty || UserImageEntry.Text == null)
         {
