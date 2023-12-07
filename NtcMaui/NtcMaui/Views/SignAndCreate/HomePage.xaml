@@ -32,13 +32,15 @@
                        CornerRadius="80"
                        HorizontalOptions="Center"
                        IsClippedToBounds="True"
+                       ToolTipProperties.Text="Click to edit your profile."
                        Padding="0">
-                    <Image x:Name="UserImage" Aspect="AspectFill" ToolTipProperties.Text="Click to edit your profile." WidthRequest="150" HeightRequest="150">
-                        <Image.GestureRecognizers>
+                        <Image x:Name="UserImage" Aspect="AspectFill"  WidthRequest="150" HeightRequest="150">
+                        </Image>
+                        <Frame.GestureRecognizers>
                             <TapGestureRecognizer Tapped="UserImage_Clicked"/>
-                        </Image.GestureRecognizers>
-                    </Image>
+                        </Frame.GestureRecognizers>
                     </Frame>
+
                     <Label HorizontalOptions="Center" x:Name="UserNameText"></Label>
                     <Label HorizontalOptions="Center" Text="Create Decks and Deck Groups in MyStudies or Start studying!"></Label>
                 </StackLayout>
