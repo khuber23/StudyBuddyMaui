@@ -29,6 +29,8 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
         FlashCardQuestionEntry.Text = SelectedFlashCard.FlashCardQuestion;
         FlashCardAnswerEntry.Text = SelectedFlashCard.FlashCardAnswer;
         IsPublicCheckBox.IsChecked = SelectedFlashCard.IsPublic;
+        FlashcardQuestionImageEntry.Text = SelectedFlashCard.FlashCardQuestionImage;
+        FlashcardAnswerImageEntry.Text = SelectedFlashCard.FlashCardAnswerImage;
         DeckFlashcards = await Constants.GetAllDeckFlashCards();
         DeckFlashcards = DeckFlashcards.Where(deckflashcard => deckflashcard.DeckId == SelectedDeckGroupDeck.Deck.DeckId || deckflashcard.Deck.DeckName == SelectedDeckGroupDeck.Deck.DeckName).ToList();
     }
