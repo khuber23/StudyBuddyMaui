@@ -119,4 +119,100 @@
             </StackLayout>
         </Grid>
     </ScrollView>
+
+
+    <!--<ContentPage.Resources>
+        <Style TargetType="Label" x:Key="LabelStyle">
+            <Setter Property="TextColor" Value="Green" />
+            <Style.Triggers>
+                <DataTrigger TargetType="Label" Binding="{Binding IsCorrect}" Value="False">
+                    <Setter Property="TextColor" Value="Red" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+        <Style x:Key="CardView" TargetType="Frame">
+            <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
+            <Setter Property="HasShadow" Value="{OnPlatform iOS=false, MacCatalyst=false, Default=true}"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="50,0,50,0"/>
+            <Setter Property="Background" Value="{StaticResource LightBackground}"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="IsClippedToBounds" Value="True"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <Shell.TitleView>
+        <HorizontalStackLayout>
+            <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
+            <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage" Text="Dashboard"></Button>
+            <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"></Button>
+            <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Text="Decks"></Button>
+            <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"></Button>
+        </HorizontalStackLayout>
+    </Shell.TitleView>
+
+    <Grid ColumnDefinitions="*,*"
+          ColumnSpacing="5"
+          RowDefinitions="*,Auto"
+          RowSpacing="0">
+
+        <StackLayout Grid.ColumnSpan="2"  Margin="0,10,0,0">
+            <Label Text="Card Stats" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
+            <ProgressBar WidthRequest="200" HeightRequest="70" ProgressColor="Green" x:Name="StatsProgressBar"/>
+            <Label HorizontalOptions="Center" FontSize="16" x:Name="ProgressLabel"/>
+        </StackLayout>
+
+        <CollectionView Margin="0,160,0,0"
+                        BackgroundColor="Transparent"
+                        Grid.ColumnSpan="3"
+                        x:Name="AllStudyFlashcardsListView"                      
+                        SelectionMode="None">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Padding="10">
+                        <Frame HeightRequest="125"
+                               Padding="0"
+                               Style="{StaticResource CardView}">
+                            <Grid Padding="0"
+                                  ColumnDefinitions="125, *">
+                                <Image Aspect="AspectFill"
+                                   Source="stockprofileimage.png"
+                                   WidthRequest="125"
+                                   HeightRequest="125"/>
+                                <VerticalStackLayout Grid.Column="1"
+                                                     Padding="10"
+                                                     VerticalOptions="Center">
+                                    <Label Style="{StaticResource LabelStyle}" Text="{Binding FlashCard.FlashCardQuestion}"/>
+                                    <Label x:Name="TestLabel">
+                                        <Label.Text>
+                                            <MultiBinding StringFormat="{} From {0}-{1}">
+                                                <Binding Path="StudySession.Deck.DeckName"/>
+                                                <Binding Path="StudySession.StartTime"/>
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </Grid>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <Button Text="Stats"
+                x:Name="DashboardStatsBtn"
+                Clicked="GoToDashboardPage"
+                Grid.Row="1"
+                Grid.Column="0"
+                Margin="8"/>
+        <Button Text="History"
+                x:Name="DashboardHistoryBtn"
+                Clicked="GoToDashboardHistoryPage"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="8"/>
+    </Grid>-->
+
+
+
 </ContentPage>

@@ -25,13 +25,22 @@
             <VerticalStackLayout Padding="10" Spacing="10">
 
                 <StackLayout Margin="0, 30">
-                    <Image x:Name="UserImage" WidthRequest="150" HeightRequest="150" MaximumHeightRequest="150" MaximumWidthRequest="150">
+                    <Frame Grid.Row="1"
+                       Grid.Column="1"
+                       HeightRequest="150"
+                       WidthRequest="150"
+                       CornerRadius="80"
+                       HorizontalOptions="Center"
+                       IsClippedToBounds="True"
+                       Padding="0">
+                    <Image x:Name="UserImage" Aspect="AspectFill" ToolTipProperties.Text="Click to edit your profile." WidthRequest="150" HeightRequest="150">
                         <Image.GestureRecognizers>
                             <TapGestureRecognizer Tapped="UserImage_Clicked"/>
                         </Image.GestureRecognizers>
                     </Image>
+                    </Frame>
                     <Label HorizontalOptions="Center" x:Name="UserNameText"></Label>
-                    <Label HorizontalOptions="Center" Text="Click the image to edit your profile. Or use the buttons below to create decks and deckgroups to study or the other button to study!"></Label>
+                    <Label HorizontalOptions="Center" Text="Create Decks and Deck Groups in MyStudies or Start studying!"></Label>
                 </StackLayout>
                 <HorizontalStackLayout HorizontalOptions="Center" Padding="10" Spacing="30">
                     <Button WidthRequest="200" FontSize="Medium" x:Name="MyStudiesBtn" Clicked="GoToMyStudies" Text="My Studies"></Button>
