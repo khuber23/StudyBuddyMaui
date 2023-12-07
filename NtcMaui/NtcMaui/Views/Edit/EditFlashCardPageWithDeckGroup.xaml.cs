@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text;
 using ApiStudyBuddy.Models;
 using NtcMaui.Views.MyStudies;
+using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.Edit;
 
@@ -117,6 +118,54 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
                 };
         //goes right back to BuildDeckPage incase users wanted to edit more flashcards, which is why we needed to pass in Current deck.
         await Shell.Current.GoToAsync(nameof(BuildDeckPage), navigationParameter);
+    }
+
+    private void GoToHomePage(object sender, EventArgs e)
+    {
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+    }
+
+    private void GoToDashboardPage(object sender, EventArgs e)
+    {
+        //eventually make this the dashboard page and also send the user through to this page.
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(DashboardPage), navigationParameter);
+    }
+
+    private void GoToFlashcardPage(object sender, EventArgs e)
+    {
+        //eventually make this the dashboard page and also send the user through to this page.
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(FlashcardPage), navigationParameter);
+    }
+    private void GoToDeckPage(object sender, EventArgs e)
+    {
+        //eventually make this the dashboard page and also send the user through to this page.
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(DeckPage), navigationParameter);
+    }
+
+    private void GoToDeckGroupPage(object sender, EventArgs e)
+    {
+        //eventually make this the dashboard page and also send the user through to this page.
+        var navigationParameter = new Dictionary<string, object>
+                {
+                    { "Current User", LoggedInUser }
+                };
+        Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
     }
 
     public DeckGroupDeck SelectedDeckGroupDeck { get; set; }

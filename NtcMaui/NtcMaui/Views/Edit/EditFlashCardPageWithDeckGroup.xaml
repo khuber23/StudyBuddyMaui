@@ -3,7 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.Edit.EditFlashCardPageWithDeckGroup"
              Title="EditFlashCardPage">
-    <ScrollView>
+    <Shell.TitleView>
+        <HorizontalStackLayout>
+            <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
+            <Button x:Name="DashboardBtn" Clicked="GoToDashboardPage" Text="Dashboard"></Button>
+            <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"></Button>
+            <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Text="Decks"></Button>
+            <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"></Button>
+        </HorizontalStackLayout>
+    </Shell.TitleView>
+    <!--<ScrollView>
         <Grid>
             <StackLayout Margin="5, 20">
                 <StackLayout>
@@ -66,5 +75,84 @@
                 </StackLayout>
             </StackLayout>
         </Grid>
-    </ScrollView>
+    </ScrollView>-->
+
+    <ContentPage.Content>
+        <Grid ColumnDefinitions="*,*"
+      ColumnSpacing="5"
+      RowDefinitions="*,Auto"
+      RowSpacing="0">
+            <Border Grid.ColumnSpan="2"
+                Margin="90,20,90,20"
+        Stroke="{StaticResource Primary}"
+        StrokeThickness="4" 
+        StrokeShape="RoundRectangle 10,10,10,10" >
+                <ScrollView Grid.ColumnSpan="2">
+                    <StackLayout  HorizontalOptions="Center"  Margin="0,15,0,0" VerticalOptions="Center" Padding="10,0,10,20" Spacing="10">
+                        <Label Text="Edit Flashcard" Margin="0,0,0,30" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
+                        <StackLayout Spacing="20" Padding="20" VerticalOptions="Center">
+
+                            <Label Text="Flashcard Question" FontAttributes="Bold" FontSize="16"/>
+                            <Entry MinimumWidthRequest="400" x:Name="FlashCardQuestionEntry" Placeholder="Enter a Question"/>
+                            <VerticalStackLayout>
+                                <Label Text="Question Image Link" FontAttributes="Bold" FontSize="16"/>
+                                <Entry x:Name="FlashcardQuestionImageEntry" Placeholder="Paste a link to an image here (Optional)"/>
+                                <Label Text="Or" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Upload Question Image" FontAttributes="Bold" FontSize="16"/>
+                                <ImageButton x:Name="UploadQuestionImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png" Clicked="UploadQuestionImageBtn_Clicked"/>
+                            </VerticalStackLayout>
+
+                            <Label Text="Flashcard Answer" Margin="0,15,0,0" FontAttributes="Bold" FontSize="16"/>
+                            <Entry x:Name="FlashCardAnswerEntry" Placeholder="Enter an answer"/>
+                            <VerticalStackLayout>
+                                <Label Text="Answer Image Link" FontAttributes="Bold" FontSize="16"/>
+                                <Entry x:Name="FlashcardAnswerImageEntry" Placeholder="Paste a link to an image here (Optional)"/>
+                                <Label Text="Or" HorizontalOptions="Center" FontAttributes="Bold"/>
+                                <Label Text="Upload Answer Image" FontAttributes="Bold" FontSize="16"/>
+                                <ImageButton x:Name="UploadAnswerImageBtn" WidthRequest="25" HeightRequest="25" Source="upload.png" Clicked="UploadAnswerImageBtn_Clicked"/>
+                            </VerticalStackLayout>
+                        </StackLayout>
+                        <StackLayout Grid.Column="1" Padding="10" VerticalOptions="Center" Margin="10">
+                            <Label FontSize="16" Text="Make Public"/>
+                            <CheckBox x:Name="IsPublicCheckBox" CheckedChanged="CheckBox_CheckedChanged" HorizontalOptions="Start"/>
+                        </StackLayout>
+                        <StackLayout VerticalOptions="Center" Margin="10" Grid.Column="1">
+                            <Label IsVisible="false" FontSize="20" TextColor="Red" FontAttributes="Bold"  x:Name="WarningLabel" HorizontalOptions="Center"/>
+                        </StackLayout>
+                    </StackLayout>
+                </ScrollView>
+            </Border>
+            <Button x:Name="FinishEditingBtn"
+            Clicked="FinishEditingBtn_Clicked"               
+            Text="Done Editing" 
+            HeightRequest="20"
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="8"/>
+            <Button x:Name="CancelBtn"
+            Clicked="CancelBtn_Clicked"               
+            Text="Cancel"
+            IsVisible="false"
+            HeightRequest="20"
+            Grid.Row="1"
+            Grid.Column="0"
+            Margin="8"/>
+            <Button x:Name="DeleteBtn" 
+            Text="Delete Deck" 
+            Clicked="DeleteBtn_Clicked"
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="8"
+            BackgroundColor="Red" />
+            <Button x:Name="FinishDeleteBtn"
+            Clicked="FinishDeleteBtn_Clicked"               
+            Text="Finish Delete"
+            IsVisible="false"
+            HeightRequest="20"
+            Grid.Row="1"
+            Grid.Column="1"
+            Margin="8"
+            BackgroundColor="Red" />
+        </Grid>
+    </ContentPage.Content>
 </ContentPage>
