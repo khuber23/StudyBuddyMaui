@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
+using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.StudySessionFolder;
 
@@ -110,4 +111,33 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
 
     public List<DeckFlashCard> DeckFlashCards { get; set; }
 
+	private void styleSwitch_Toggled(object sender, ToggledEventArgs e)
+	{
+        if (e.Value == true)
+        {
+			var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser },
+				};
+			Shell.Current.GoToAsync(nameof(MyStudiesSessionPage), navigationParameter);
+
+		}
+        else if (e.Value == false)
+        {
+			var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser },
+				};
+			Shell.Current.GoToAsync(nameof(MyStudiesSessionPageOnlyUserDecks), navigationParameter);
+		}
+	}
+
+	private void GoToHomePage(object sender, EventArgs e)
+	{
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+	}
 }
