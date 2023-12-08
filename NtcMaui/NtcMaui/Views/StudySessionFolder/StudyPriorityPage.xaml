@@ -3,30 +3,69 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.StudySessionFolder.StudyPriorityPage"
              Title="StudyPriorityPage">
-    <ScrollView>
-        <Grid>
-            <StackLayout Margin="5,5">
-                <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 5">
-                    <Button x:Name="MyStudySessionBtn" Clicked="GoToMyStudiesSessionPage"  Margin="5, 5" Text="My Studies"></Button>
-                    <Button x:Name="StudyPriorityBtn" Clicked="GoToStudyPriorityPage" Margin="5, 5" Text="Study Priority"></Button>
-                </HorizontalStackLayout>
-                <StackLayout Margin="0, 25" VerticalOptions="Start" HorizontalOptions="Center">
 
-                    <Label Margin="0,5" VerticalOptions="End" HorizontalOptions="Center" x:Name="ChosenCardLabel"></Label>
-                    <Button VerticalOptions="End" HorizontalOptions="Center" x:Name="DoStudySessionBtn" Clicked="BeginStudySession" Margin="5,5" Text="Begin Session"></Button>
-                </StackLayout>
-                <StackLayout>
-                    <Label FontAttributes="Bold" FontSize="18" HorizontalOptions="Center" Text="Here are all flashcards you can re-study."></Label>
-                    <ListView x:Name="StudySessionFlashCardsListView" ItemSelected="FlashCardSelected">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout Orientation="Horizontal">
+    <ContentPage.Resources>
+        <Style x:Key="CardView" TargetType="Frame">
+            <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
+            <Setter Property="HasShadow" Value="{OnPlatform iOS=false, MacCatalyst=false, Default=true}"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="Margin" Value="50,0,50,0"/>
+            <Setter Property="Background" Value="{StaticResource LightBackground}"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="IsClippedToBounds" Value="True"/>
+        </Style>
+    </ContentPage.Resources>
+    <Shell.TitleView>
+        <HorizontalStackLayout>
+            <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
+            <Button x:Name="MyStudySessionBtn" Clicked="GoToMyStudiesSessionPage" Text="Study Session"></Button>
+            <Button x:Name="StudyPriorityBtn" Clicked="GoToStudyPriorityPage" Text="Study Priority Session"></Button>
+        </HorizontalStackLayout>
+    </Shell.TitleView>
+    <Grid ColumnDefinitions="*,*,*"
+          ColumnSpacing="5"
+          RowDefinitions="*,Auto"
+          RowSpacing="0">
+        <StackLayout Grid.ColumnSpan="3"  Margin="0,50,0,0">
+            <Label Text="Study Priority Session" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="35" FontAttributes="Bold"/>
+            <Label Text="Here are all Flashcards you can re-study." Padding="10" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="18" />
+            <Label Padding="0,10" Text="Select a Flashcard:" HorizontalOptions="Center"/>
+            <Label VerticalOptions="Center" TextColor="ForestGreen" HorizontalOptions="Center"  FontSize="14" x:Name="ChosenCardLabel"/>
+        </StackLayout>
+        <ListView
+                  x:Name="StudySessionFlashCardsListView" 
+                  Margin="0,250,0,0"                
+                  Grid.ColumnSpan="3"
+                  ItemSelected="FlashCardSelected">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <Grid Padding="10">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroupList>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="PointerOver">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="{StaticResource Primary}" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Property="BackgroundColor" Value="white" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateGroupList>
+                            </VisualStateManager.VisualStateGroups>
+                            <Frame
+                                   Padding="0"
+                                   Style="{StaticResource CardView}">
+                                <Grid Padding="0"
+                                      ColumnDefinitions="*,*">
+                                    <StackLayout Grid.ColumnSpan="2" VerticalOptions="Center">
                                         <StackLayout Orientation="Vertical" Margin="10, 5">
-                                            <Label TextColor="Red" Text="{Binding FlashCard.FlashCardQuestion}" FontSize="20" FontAttributes="Bold" VerticalOptions="CenterAndExpand"></Label>
-                                            <!--<Label
-                                                Text="{Binding StudySession.Deck.DeckName, StringFormat='{} From: {0}' }"></Label>-->
-                                            <Label>
+                                            <Label HorizontalTextAlignment="Center" TextColor="Red" Text="{Binding FlashCard.FlashCardQuestion}" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" VerticalOptions="Center"/>
+                                            <Label HorizontalTextAlignment="Center" VerticalOptions="Center" HorizontalOptions="Center">
                                                 <Label.Text>
                                                     <MultiBinding StringFormat="{} From {0}-{1}">
                                                         <Binding Path="StudySession.Deck.DeckName"/>
@@ -36,14 +75,21 @@
                                             </Label>
                                         </StackLayout>
                                     </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                  
-                </StackLayout>
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button x:Name="DoStudySessionBtn"
+                Clicked="BeginStudySession"             
+                Text="Start" 
+                BackgroundColor="ForestGreen"
+                HeightRequest="20"
+                Grid.Row="1"
+                Grid.Column="1"
+                Margin="8"/>
+    </Grid>
 
-            </StackLayout>
-        </Grid>
-    </ScrollView>
 </ContentPage>

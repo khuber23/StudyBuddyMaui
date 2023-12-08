@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
 using Microsoft.Maui.Controls;
+using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.StudySessionFolder;
 
@@ -28,7 +29,7 @@ public partial class StudyPriorityPage : ContentPage, IQueryAttributable, INotif
         if (IncorrectCards.Count == 0 ||  IncorrectCards == null) 
         { 
             DoStudySessionBtn.IsVisible = false;
-            ChosenCardLabel.Text = "You have no incorrect flashcards. Good Job!";
+            ChosenCardLabel.Text = "You have zero incorrect Flashcards. Good Job!";
         }
         else
         {
@@ -73,7 +74,7 @@ public partial class StudyPriorityPage : ContentPage, IQueryAttributable, INotif
                     CardsToStudy.Add(flashCard);
                 }
             }
-            ChosenCardLabel.Text = $"You have chosen {SelectedFlashCard.FlashCard.FlashCardQuestion} and any subsecquent flashcards to re-study. Click Begin Session to re-study these cards.";
+            ChosenCardLabel.Text = $"Current Flashcard chosen: {SelectedFlashCard.FlashCard.FlashCardQuestion}";
         }
     }
 
@@ -91,12 +92,21 @@ public partial class StudyPriorityPage : ContentPage, IQueryAttributable, INotif
         }
         else
         {
-            ChosenCardLabel.Text = "Please choose a flashcard to re-do your studysessions with";
+            ChosenCardLabel.Text = "Please choose a flashcard to re-do your Study Session with.";
         }
 
     }
 
-    public User LoggedInUser { get; set; }
+	private void GoToHomePage(object sender, EventArgs e)
+	{
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+	}
+
+	public User LoggedInUser { get; set; }
 
     public List<StudySession> StudySessions { get; set; }
 

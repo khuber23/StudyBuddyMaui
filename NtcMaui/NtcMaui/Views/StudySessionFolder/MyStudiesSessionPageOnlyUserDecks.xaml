@@ -32,7 +32,7 @@
             <Switch Margin="100,0,0,0" VerticalOptions="Start" HorizontalOptions="Start" x:Name="styleSwitch" IsToggled="False" Toggled="styleSwitch_Toggled"/>
             <!--<Label Grid.Column="1" Grid.Row="0"  FontSize="18" Text="Deck Groups"/>-->
             <Label VerticalOptions="Center" HorizontalOptions="Center"  x:Name="ErrorLabel" Text="Select a Deck you wish to study:"/>
-            <Label VerticalOptions="Center" HorizontalOptions="Center" Margin="0,5" x:Name="ChosenDeckLabel" IsVisible="false"/>
+            <Label TextColor="ForestGreen" VerticalOptions="Center" HorizontalOptions="Center" Margin="0,5" x:Name="ChosenDeckLabel" IsVisible="false"/>
         </StackLayout>
         <ListView 
                   x:Name="UserDecksOnlyListView" 
