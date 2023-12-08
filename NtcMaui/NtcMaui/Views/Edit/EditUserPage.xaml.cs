@@ -71,6 +71,8 @@ public partial class EditUserPage : ContentPage, IQueryAttributable, INotifyProp
 
     private async void FinishEditingBtn_Clicked(object sender, EventArgs e)
     {
+        bool validImage = false;
+        WarningLabel.IsVisible = false;
         //change to deal with user
         SelectedUser.Username = UserNameEntry.Text;
         SelectedUser.ProfilePicture = UserImageEntry.Text;
@@ -80,13 +82,26 @@ public partial class EditUserPage : ContentPage, IQueryAttributable, INotifyProp
         //check to make sure any lists are null. if they are not set them to null otherwise the update won't work.
         SelectedUser.UserDecks = null;
         SelectedUser.UserDeckGroups = null;
-        await Constants.PutUserAsync(SelectedUser);
-        //then navigate back to admin user page
-        var navigationParameter = new Dictionary<string, object>
+        if (UserImageEntry.Text.Contains(".png") || UserImageEntry.Text.Contains(".jpg") || UserImageEntry.Text.Contains(".jpeg"))
+        {
+            validImage = true;
+        }
+        if (validImage == false)
+        {
+            WarningLabel.IsVisible = true;
+            WarningLabel.Text = "Image path isn't valid. Make sure it is a jpg or png image please.";
+        }
+        else
+        {
+            await Constants.PutUserAsync(SelectedUser);
+            //then navigate back to admin user page
+            var navigationParameter = new Dictionary<string, object>
                 {
                     { "Current User", LoggedInUser }
                 };
-        await Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+            await Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+        }
+
     }
 
     private void GoToHomePage(object sender, EventArgs e)
