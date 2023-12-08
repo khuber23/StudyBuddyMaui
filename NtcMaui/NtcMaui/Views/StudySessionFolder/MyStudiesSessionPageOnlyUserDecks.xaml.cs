@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Text.Json;
 using ApiStudyBuddy.Models;
+using NtcMaui.Views.SignAndCreate;
 
 namespace NtcMaui.Views.StudySessionFolder;
 
@@ -61,7 +62,16 @@ public partial class MyStudiesSessionPageOnlyUserDecks : ContentPage, IQueryAttr
         Shell.Current.GoToAsync(nameof(MyStudiesSessionPage), navigationParameter);
     }
 
-    private void GoToMyStudiesSessionPageNoDeckGroups(object sender, EventArgs e)
+	private void GoToHomePage(object sender, EventArgs e)
+	{
+		var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser }
+				};
+		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
+	}
+
+	private void GoToMyStudiesSessionPageNoDeckGroups(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
                 {
@@ -115,4 +125,25 @@ public partial class MyStudiesSessionPageOnlyUserDecks : ContentPage, IQueryAttr
     public UserDeck ChosenUserDeck { get; set; }
 
     public List<DeckFlashCard> DeckFlashCards { get; set; }
+
+	private void styleSwitch_Toggled(object sender, ToggledEventArgs e)
+	{
+		if (e.Value == true)
+		{
+			var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser },
+				};
+			Shell.Current.GoToAsync(nameof(MyStudiesSessionPage), navigationParameter);
+
+		}
+		else if (e.Value == false)
+		{
+			var navigationParameter = new Dictionary<string, object>
+				{
+					{ "Current User", LoggedInUser },
+				};
+			Shell.Current.GoToAsync(nameof(MyStudiesSessionPageOnlyUserDecks), navigationParameter);
+		}
+	}
 }

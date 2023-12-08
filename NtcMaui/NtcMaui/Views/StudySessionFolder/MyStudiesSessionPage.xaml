@@ -4,126 +4,6 @@
              x:Class="NtcMaui.Views.StudySessionFolder.MyStudiesSessionPage"
              Title="MyStudiesSessionPage">
 
-    <!--<ScrollView>
-        <Grid>
-            <StackLayout Margin="30">
-
-                <HorizontalStackLayout HorizontalOptions="Center" Margin="0, 5">
-                    <Button x:Name="MyStudySessionBtn" Clicked="GoToMyStudiesSessionPage"  Margin="5, 5" Text="My Studies"></Button>
-                    <Button x:Name="StudyPriorityBtn" Clicked="GoToStudyPriorityPage" Margin="5, 5" Text="Study Priority"></Button>
-                </HorizontalStackLayout>
-
-                <StackLayout>
-                    <HorizontalStackLayout HorizontalOptions="Center" Margin="0,25">
-                        <Label Text="Click one of these buttons to bring up just your decks within DeckGroups or all your decks not in deckgroups"></Label>
-                        --><!---Basically same as Button Above-->
-                        <!--<Button x:Name="MyStudySessionWithDeckGroupsBtn" Clicked="GoToMyStudiesSessionPage"  Margin="5, 5" Text="DeckGroups"></Button>
-                        --><!---Will navigate to Page with just userDecks not in DeckGroups--><!--
-                        <Button x:Name="MyStudySessionWithNoDeckGroupsBtn" Clicked="GoToMyStudiesSessionPageNoDeckGroups" Margin="5, 5" Text="NoDeckGroups"></Button>--><!--
-                        <Switch x:Name="styleSwitch" IsToggled="True" Toggled="styleSwitch_Toggled"/>
-
-                    </HorizontalStackLayout>
-                    <Label Margin="0, 10" x:Name="ErrorLabel" Text="Please Select a deck you wish to study"></Label>
-                    <Label Margin="0, 15" x:Name="ChosenDeckLabel" IsVisible="false"></Label>
-                    
-                </StackLayout>
-
-                --><!---this will probably need to load all user decks and user deck groups later on that have a user id 
-                Matching the id of the logged in user.
-                Also will need to make a method again to return a full list of user decks or deck groups to access 
-                deck and user at same time. for the mean time i am just going to load the decks until the meeting tuesday--><!--
-                <StackLayout>
-
-                    <Label Margin="0, 20" Text="Deckgroups"></Label>
-                    <ListView SelectionMode="None" x:Name="MyStudiesListView">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <ViewCell>
-                                    <StackLayout Orientation="Horizontal">
-                                        --><!---This code just make it so we don't see the highlight when we hover over a UserDeckGroup
-                                        Eventually change the colors to whatver background color we decide on--><!--
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroupList>
-                                                <VisualStateGroup x:Name="CommonStates">
-                                                    <VisualState x:Name="PointerOver">
-                                                        <VisualState.Setters>
-                                                            <Setter Property="BackgroundColor" 
-                                                            Value="white" />
-                                                        </VisualState.Setters>
-                                                    </VisualState>
-                                                    <VisualState x:Name="Normal">
-                                                        <VisualState.Setters>
-                                                            <Setter Property="BackgroundColor" 
-                                                            Value="white" />
-                                                        </VisualState.Setters>
-                                                    </VisualState>
-                                                </VisualStateGroup>
-                                            </VisualStateGroupList>
-                                        </VisualStateManager.VisualStateGroups>
-                                        --><!--eventually make this user image.-->
-                                        <!--<Image x:Name="ProfileImage" Source="stockprofileimage.png" WidthRequest="50" HeightRequest="50" VerticalOptions="Start"></Image>--><!--
-                                        <StackLayout Orientation="Vertical" Margin="10, 5">
-                                            <Label Text="{Binding DeckGroup.DeckGroupName}"></Label>
-                                            <ListView ItemSelected="DeckGroupDeckListView_ItemSelected" x:Name="DeckGroupDeckListView" ItemsSource="{Binding DeckGroup.DeckGroupDecks}">
-                                                <ListView.ItemTemplate>
-                                                    <DataTemplate>
-                                                        <ViewCell>
-                                                            <Label Text="{Binding Path=Deck.DeckName}" FontSize="18" FontAttributes="Bold" VerticalOptions="CenterAndExpand">
-                                                                <VisualStateManager.VisualStateGroups>
-                                                                    <VisualStateGroupList>
-                                                                        <VisualStateGroup x:Name="CommonStates">
-                                                                            <VisualState x:Name="PointerOver">
-                                                                                <VisualState.Setters>
-                                                                                    <Setter Property="BackgroundColor" 
-                                                                                        Value="Grey" />
-                                                                                </VisualState.Setters>
-                                                                            </VisualState>
-                                                                            <VisualState x:Name="Normal">
-                                                                                <VisualState.Setters>
-                                                                                    <Setter Property="BackgroundColor" 
-                                                                                     Value="white" />
-                                                                                </VisualState.Setters>
-                                                                            </VisualState>
-                                                                        </VisualStateGroup>
-                                                                    </VisualStateGroupList>
-                                                                </VisualStateManager.VisualStateGroups>
-                                                            </Label>
-                                                        </ViewCell>
-                                                    </DataTemplate>
-                                                </ListView.ItemTemplate>
-                                            </ListView>
-                                            --><!--Might re-add this later-->
-                                            <!--<StackLayout>
-                                                <ListView IsEnabled="False" x:Name="FlashCardsListView" SelectionMode="None" ItemsSource="{Binding DeckGroup.DeckGroupDeck.Deck.DeckFlashCards}">
-                                                    <ListView.ItemTemplate>
-                                                        <DataTemplate>
-                                                            <ViewCell>
-                                                                <Label Text="{Binding FlashCard.FlashCardQuestion, StringFormat='{}FlashCard: {0}'}"></Label>
-                                                            </ViewCell>
-                                                        </DataTemplate>
-                                                    </ListView.ItemTemplate>
-                                                </ListView>
-                                            </StackLayout>--><!--
-                                            <Label Text="{Binding User.Username}"></Label>
-
-                                        </StackLayout>
-                                    </StackLayout>
-                                </ViewCell>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
-                </StackLayout>
-
-               
-
-                <StackLayout VerticalOptions="Start" HorizontalOptions="Center">
-                    <Button Text="Start Session" Clicked="BeginSession" Margin="20" WidthRequest="150"></Button>
-                </StackLayout>
-            </StackLayout>
-        </Grid>
-    </ScrollView>-->
-
-
     <ContentPage.Resources>
         <Style x:Key="CardView" TargetType="Frame">
             <Setter Property="BorderColor" Value="{StaticResource Primary}"/>
@@ -146,7 +26,7 @@
           ColumnSpacing="5"
           RowDefinitions="*,Auto"
           RowSpacing="0">
-        <StackLayout Grid.ColumnSpan="3"  Margin="0,40,0,0">
+        <StackLayout Grid.ColumnSpan="3"  Margin="0,30,0,0">
             <Label Text="My Studies Session" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="35" FontAttributes="Bold"/>
             <Label Text="Select a Deck to Start a Session with or Toggle off to study Decks NOT in a Deck Group" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="18" />
             <Switch Margin="100,0,0,0" VerticalOptions="Start" HorizontalOptions="Start" x:Name="styleSwitch" IsToggled="True" Toggled="styleSwitch_Toggled"/>
@@ -158,9 +38,9 @@
                   x:Name="MyStudiesListView" 
                   Margin="0,245,0,20"                
                   Grid.ColumnSpan="3">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <ViewCell>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
                         <Grid Padding="10">
                             <VisualStateManager.VisualStateGroups>
                                 <VisualStateGroupList>
@@ -184,15 +64,15 @@
                                 <Grid Padding="0"
                                       ColumnDefinitions="*,*">
                                     <!--<Label HorizontalOptions="Center" FontSize="14" Text="{Binding User.Username}"/>-->
-                                    <StackLayout Grid.ColumnSpan="2" Padding="5" WidthRequest="300" VerticalOptions="Center">
-                                        <Label HorizontalOptions="Center" Grid.Column="0" Text="{Binding DeckGroup.DeckGroupName}" FontSize="14"/>
+                                    <StackLayout Grid.ColumnSpan="2" Padding="0"  VerticalOptions="Center">
+                                        <Label HorizontalOptions="Center" Grid.Column="0" Text="{Binding DeckGroup.DeckGroupName}" FontSize="16"/>
                                         <StackLayout>
                                             <ScrollView HorizontalScrollBarVisibility="Default">
                                                 <ListView Grid.ColumnSpan="2" VerticalOptions="Center" HorizontalOptions="Center" ItemSelected="DeckGroupDeckListView_ItemSelected" x:Name="DeckGroupDeckListView" ItemsSource="{Binding DeckGroup.DeckGroupDecks}">
                                                     <ListView.ItemTemplate>
                                                         <DataTemplate>
                                                             <ViewCell>
-                                                                <Label Text="{Binding Path=Deck.DeckName}" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center">
+                                                                <Label Grid.ColumnSpan="2" Text="{Binding Path=Deck.DeckName}" FontSize="18" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalOptions="Center">
                                                                     <VisualStateManager.VisualStateGroups>
                                                                         <VisualStateGroupList>
                                                                             <VisualStateGroup x:Name="CommonStates">
@@ -201,6 +81,7 @@
                                                                                         <Setter Property="BackgroundColor" 
                                                                                             Value="{StaticResource Primary}" />
                                                                                         <Setter Property="TextColor" Value="White"/>
+                                                                                        
                                                                                     </VisualState.Setters>
                                                                                 </VisualState>
                                                                                 <VisualState x:Name="Normal">
@@ -224,18 +105,17 @@
                             </Frame>
                         </Grid>
                     </ViewCell>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-             
-        <Button x:Name="AddDeckBtn"
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Button
                 Clicked="BeginSession"             
-                Text="Start Session" 
+                Text="Start" 
+                BackgroundColor="ForestGreen"
                 HeightRequest="20"
                 Grid.Row="1"
                 Grid.Column="1"
                 Margin="8"/>
     </Grid>
-
 
 </ContentPage>
