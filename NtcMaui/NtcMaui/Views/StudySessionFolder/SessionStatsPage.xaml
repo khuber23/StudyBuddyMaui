@@ -2,21 +2,26 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.StudySessionFolder.SessionStatsPage"
-             Title="SessionStatsPage">
-    <ScrollView>
+             Title="">
+    <ScrollView BackgroundColor="{StaticResource Primary}">
         <Grid>
             <StackLayout x:Name="Box" Margin="10" VerticalOptions="Center" WidthRequest="500">
                 <Border Stroke="Black" StrokeThickness="2" BackgroundColor="White" Padding="10" VerticalOptions="Center">
                     <StackLayout Margin="10">
-                        <Label x:Name="RunTime"></Label>
-                        <Label x:Name="TotalCardsText"></Label>
-                        <Label x:Name="CorrectFlashcardCount"></Label>
-                        <Label x:Name="IncorrectFlashcardCount"></Label>
+                        <StackLayout Grid.ColumnSpan="2"  Margin="0,10,0,0">
+                            <Label Text="Congrats!" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="40" FontAttributes="Bold"/>
+                            <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="RunTime"/>
+                            <ProgressBar WidthRequest="200" HeightRequest="70" ProgressColor="Green" x:Name="StatsProgressBar"/>
+                            <Label HorizontalOptions="Center" FontSize="16" x:Name="ProgressLabel"/>
+                            <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="CorrectFlashcardCount"/>
+                            <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="IncorrectFlashcardCount"/>
+                            <Label VerticalOptions="Center" HorizontalOptions="Center" x:Name="TotalCardsText"/>
+                        </StackLayout>
                     </StackLayout>
                 </Border>
             </StackLayout>
             <StackLayout Orientation="Horizontal" VerticalOptions="End" HorizontalOptions="Center" Margin="20">
-                <Button Text="Continue" Clicked="GoToStudySession"></Button>
+                <Button WidthRequest="100" BackgroundColor="White" TextColor="ForestGreen" Text="Done" Clicked="GoToStudySession"/>
             </StackLayout>
         </Grid>
     </ScrollView>

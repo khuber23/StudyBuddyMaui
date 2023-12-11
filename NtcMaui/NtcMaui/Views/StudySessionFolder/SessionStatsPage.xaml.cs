@@ -20,11 +20,15 @@ public partial class SessionStatsPage : ContentPage, IQueryAttributable, INotify
         TotalCards = (IncorrectFlashCards.Count + CorrectFlashCards.Count);
         int correctCards = CorrectFlashCards.Count;
         int incorrectCards = IncorrectFlashCards.Count;
-        RunTime.Text = $"Session Run Time: {hours} hours, {minutes} minutes and {seconds} seconds";
-        TotalCardsText.Text = $"Total Flashcards: {TotalCards}";
-        CorrectFlashcardCount.Text = $"Correct Flashcards: {correctCards}";
-        IncorrectFlashcardCount.Text = $"Incorrect Flashcards: {incorrectCards}";
-    }
+        RunTime.Text = $"Session Total Time: {hours} hours, {minutes} minutes and {seconds} seconds";
+        TotalCardsText.Text = $"Total Cards: {TotalCards}";
+        CorrectFlashcardCount.Text = $"# Correct: {correctCards}";
+        IncorrectFlashcardCount.Text = $"# Incorrect: {incorrectCards}";
+
+		decimal progress = Math.Round(((decimal)correctCards / TotalCards), 2);
+		StatsProgressBar.Progress = (double)progress;
+		ProgressLabel.Text = $"You have {Math.Round(progress * 100)}% Correct Cards in this Deck!";
+	}
 
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
