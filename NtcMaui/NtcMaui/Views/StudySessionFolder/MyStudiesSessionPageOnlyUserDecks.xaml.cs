@@ -100,17 +100,27 @@ public partial class MyStudiesSessionPageOnlyUserDecks : ContentPage, IQueryAttr
         ErrorLabel.IsVisible = false;
         if (ChosenUserDeck != null)
         {
-            var navigationParameter = new Dictionary<string, object>
+            if (ChosenUserDeck.Deck.DeckFlashCards.Count > 0) 
+            {
+                var navigationParameter = new Dictionary<string, object>
             {
             { "Current User", LoggedInUser },
             {"Chosen Deck", ChosenUserDeck }
             };
-            //seperate page for StudyingPagewith just Decks
-            Shell.Current.GoToAsync(nameof(StudyingPageNoDeckGroups), navigationParameter);
+                //seperate page for StudyingPagewith just Decks
+                Shell.Current.GoToAsync(nameof(StudyingPageNoDeckGroups), navigationParameter);
+            }
+            else
+            {
+                ErrorLabel.IsVisible = true;
+                ErrorLabel.Text = "Deck has no flashcards to study. Please add some or choose a new deck to study";
+            }
+
         }
         else
         {
             ErrorLabel.IsVisible = true;
+            ErrorLabel.Text = "Select a Deck you wish to Study";
         }
     }
 

@@ -31,7 +31,7 @@
             <Label Text="Select a Deck from a Deck Group to Start a Session with or Toggle off to study Decks NOT in a Deck Group" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="18" />
             <Switch Margin="100,0,0,0" VerticalOptions="Start" HorizontalOptions="Start" x:Name="styleSwitch" IsToggled="True" Toggled="styleSwitch_Toggled"/>
             <!--<Label Grid.Column="1" Grid.Row="0"  FontSize="18" Text="Deck Groups"/>-->
-            <Label VerticalOptions="Center" HorizontalOptions="Center"  x:Name="ErrorLabel" Text="Select a Deck you wish to study:"/>
+            <Label IsVisible="false" VerticalOptions="Center" HorizontalOptions="Center" TextColor="Red"  x:Name="ErrorLabel" Text="Select a Deck you wish to study:"/>
             <Label TextColor="ForestGreen" VerticalOptions="Center" HorizontalOptions="Center" Margin="0,5" x:Name="ChosenDeckLabel" IsVisible="false"/>
         </StackLayout>
         <ListView  SelectionMode="None"
