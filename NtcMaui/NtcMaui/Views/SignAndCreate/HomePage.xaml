@@ -44,11 +44,11 @@
                     <Label HorizontalOptions="Center" x:Name="UserNameText"></Label>
                     <Label HorizontalOptions="Center" Text="Create Decks and Deck Groups in MyStudies or Start studying!"></Label>
                 </StackLayout>
-                <HorizontalStackLayout HorizontalOptions="Center" Padding="10" Spacing="30">
+                <VerticalStackLayout HorizontalOptions="Center" Padding="10" Spacing="30">
                     <Button WidthRequest="200" FontSize="Medium" x:Name="MyStudiesBtn" Clicked="GoToMyStudies" Text="My Studies"></Button>
                     <Button IsVisible="False" WidthRequest="200" FontSize="Medium" x:Name="AdminButton" Clicked="GoToAdminHomePage" Text="Admin"></Button>
                     <Button WidthRequest="200" FontSize="Medium" x:Name="StudySessionBtn" Clicked="GoToStudySession" Text="Study Session"></Button>
-                </HorizontalStackLayout>
+                </VerticalStackLayout>
 
             </VerticalStackLayout>
 
