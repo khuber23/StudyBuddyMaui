@@ -71,6 +71,11 @@ public partial class MyStudiesSessionPageOnlyUserDecks : ContentPage, IQueryAttr
 		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
 	}
 
+	public async void LogOut(object sender, EventArgs e)
+	{
+		await Shell.Current.GoToAsync(nameof(SignIn));
+	}
+
 	private void GoToMyStudiesSessionPageNoDeckGroups(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>

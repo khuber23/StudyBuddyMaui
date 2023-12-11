@@ -47,8 +47,13 @@ public partial class DashboardStudyPage : ContentPage, IQueryAttributable, INoti
 		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
 	}
 
+	public async void LogOut(object sender, EventArgs e)
+	{
+		await Shell.Current.GoToAsync(nameof(SignIn));
+	}
 
-    //when user clicks a flashcard it should take him straight to study priority page.
+
+	//when user clicks a flashcard it should take him straight to study priority page.
 	private void FlashCardSelected(object sender, TappedEventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>

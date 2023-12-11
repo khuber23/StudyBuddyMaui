@@ -167,6 +167,11 @@ public partial class EditFlashCardOnlyDeck : ContentPage, IQueryAttributable, IN
 		Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
 	}
 
+	public async void LogOut(object sender, EventArgs e)
+	{
+		await Shell.Current.GoToAsync(nameof(SignIn));
+	}
+
 
 	public User LoggedInUser { get; set; }
 

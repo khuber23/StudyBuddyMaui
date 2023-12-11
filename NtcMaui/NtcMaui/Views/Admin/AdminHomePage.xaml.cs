@@ -42,16 +42,21 @@ public partial class AdminHomePage : ContentPage, IQueryAttributable, INotifyPro
         Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
     }
 
-    //private void GoToAdminHomePage(object sender, EventArgs e)
-    //{
-    //    var navigationParameter = new Dictionary<string, object>
-    //            {
-    //                { "Current User", LoggedInUser }
-    //            };
-    //    Shell.Current.GoToAsync(nameof(AdminHomePage), navigationParameter);
-    //}
+	public async void LogOut(object sender, EventArgs e)
+	{
+		await Shell.Current.GoToAsync(nameof(SignIn));
+	}
 
-    private void GoToFlashcardPage(object sender, EventArgs e)
+	//private void GoToAdminHomePage(object sender, EventArgs e)
+	//{
+	//    var navigationParameter = new Dictionary<string, object>
+	//            {
+	//                { "Current User", LoggedInUser }
+	//            };
+	//    Shell.Current.GoToAsync(nameof(AdminHomePage), navigationParameter);
+	//}
+
+	private void GoToFlashcardPage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
                 {

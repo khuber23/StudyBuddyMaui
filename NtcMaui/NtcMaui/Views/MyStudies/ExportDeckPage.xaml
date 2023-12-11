@@ -10,6 +10,7 @@
             <Button x:Name="FlashcardBtn" Clicked="GoToFlashcardPage" Text="Flashcards"/>
             <Button x:Name="DeckBtn" Clicked="GoToDeckPage" Text="Decks"/>
             <Button x:Name="DeckGroupBtn" Clicked="GoToDeckGroupPage" Text="Deck Groups"/>
+            <Button Clicked="LogOut" Text="Logout"/>
         </HorizontalStackLayout>
     </Shell.TitleView>
 

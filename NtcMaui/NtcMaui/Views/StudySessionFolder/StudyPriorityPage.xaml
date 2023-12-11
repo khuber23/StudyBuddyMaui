@@ -20,6 +20,7 @@
             <Button Text="Home" x:Name="HomeBtn" Clicked="GoToHomePage" />
             <Button x:Name="MyStudySessionBtn" Clicked="GoToMyStudiesSessionPage" Text="Study Session"></Button>
             <Button x:Name="StudyPriorityBtn" Clicked="GoToStudyPriorityPage" Text="Study Priority Session"></Button>
+            <Button Clicked="LogOut" Text="Logout"/>
         </HorizontalStackLayout>
     </Shell.TitleView>
     <Grid ColumnDefinitions="*,*,*"

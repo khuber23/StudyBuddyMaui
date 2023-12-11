@@ -46,6 +46,7 @@ public partial class FlashcardPage : ContentPage, IQueryAttributable, INotifyPro
 		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
 	}
 
+
 	private void GoToDashboardPage(object sender, EventArgs e)
     {
         //eventually make this the dashboard page and also send the user through to this page.
@@ -85,9 +86,14 @@ public partial class FlashcardPage : ContentPage, IQueryAttributable, INotifyPro
         Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
     }
 
+	public async void LogOut(object sender, EventArgs e)
+	{
+		await Shell.Current.GoToAsync(nameof(SignIn));
+	}
 
 
-    private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
+
+	private async void SearchBar_TextChanged(object sender, TextChangedEventArgs e)
     {
        List<FlashCard> flashCards = await Constants.GetAllFlashCards();
 

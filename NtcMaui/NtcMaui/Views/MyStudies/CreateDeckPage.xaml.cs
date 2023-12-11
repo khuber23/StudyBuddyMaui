@@ -235,6 +235,11 @@ public partial class CreateDeckPage : ContentPage, IQueryAttributable, INotifyPr
 		Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
 	}
 
+	public async void LogOut(object sender, EventArgs e)
+	{
+		await Shell.Current.GoToAsync(nameof(SignIn));
+	}
+
 
 	public bool IsPublic { get; set; }
 

@@ -174,4 +174,9 @@ public partial class AddFlashcardToDeckPage : ContentPage, IQueryAttributable, I
 				};
 		Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
 	}
+
+	public async void LogOut(object sender, EventArgs e)
+	{
+		await Shell.Current.GoToAsync(nameof(SignIn));
+	}
 }

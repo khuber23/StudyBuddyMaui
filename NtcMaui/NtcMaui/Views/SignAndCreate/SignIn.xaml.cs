@@ -32,7 +32,7 @@ public partial class SignIn : ContentPage
         this.ValidateUser();
     }
 
-    public async void GoToAccountCreation(object sender, EventArgs e)
+	public async void GoToAccountCreation(object sender, EventArgs e)
     {
         await Shell.Current.GoToAsync(nameof(CreateAccount));
     }

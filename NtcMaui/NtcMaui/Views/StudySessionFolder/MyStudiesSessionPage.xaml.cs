@@ -96,9 +96,14 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
         Shell.Current.GoToAsync(nameof(MyStudiesSessionPageOnlyUserDecks), navigationParameter);
     }
 
+	public async void LogOut(object sender, EventArgs e)
+	{
+		await Shell.Current.GoToAsync(nameof(SignIn));
+	}
 
-    //will assign a deckGroupDeck when a user clicks on it.
-    private void DeckGroupDeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+
+	//will assign a deckGroupDeck when a user clicks on it.
+	private void DeckGroupDeckListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
     {
         if (e.SelectedItem != null)
         {
@@ -150,4 +155,9 @@ public partial class MyStudiesSessionPage : ContentPage, IQueryAttributable, INo
 				};
 		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
 	}
+
+	private void Button_Clicked(object sender, EventArgs e)
+	{
+
+    }
 }

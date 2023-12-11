@@ -113,7 +113,12 @@ public partial class DashboardPage : ContentPage, IQueryAttributable, INotifyPro
         Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
     }
 
-    public User LoggedInUser { get; set; }
+	public async void LogOut(object sender, EventArgs e)
+	{
+		await Shell.Current.GoToAsync(nameof(SignIn));
+	}
+
+	public User LoggedInUser { get; set; }
 
     public List<StudySessionFlashCard> StudySessionFlashCards { get; set; }
 }

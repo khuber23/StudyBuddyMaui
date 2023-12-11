@@ -168,7 +168,12 @@ public partial class EditFlashCardPageWithDeckGroup : ContentPage, IQueryAttribu
         Shell.Current.GoToAsync(nameof(DeckGroupPage), navigationParameter);
     }
 
-    public DeckGroupDeck SelectedDeckGroupDeck { get; set; }
+	public async void LogOut(object sender, EventArgs e)
+	{
+		await Shell.Current.GoToAsync(nameof(SignIn));
+	}
+
+	public DeckGroupDeck SelectedDeckGroupDeck { get; set; }
     public User LoggedInUser { get; set; }
 
     public FlashCard SelectedFlashCard { get; set; }

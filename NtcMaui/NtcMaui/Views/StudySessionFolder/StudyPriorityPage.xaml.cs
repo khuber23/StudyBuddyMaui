@@ -47,7 +47,12 @@ public partial class StudyPriorityPage : ContentPage, IQueryAttributable, INotif
         Shell.Current.GoToAsync(nameof(StudyPriorityPage), navigationParameter);
     }
 
-    private void GoToMyStudiesSessionPage(object sender, EventArgs e)
+	public async void LogOut(object sender, EventArgs e)
+	{
+		await Shell.Current.GoToAsync(nameof(SignIn));
+	}
+
+	private void GoToMyStudiesSessionPage(object sender, EventArgs e)
     {
         var navigationParameter = new Dictionary<string, object>
                 {

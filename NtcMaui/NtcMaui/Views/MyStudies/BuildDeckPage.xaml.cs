@@ -113,6 +113,11 @@ public partial class BuildDeckPage : ContentPage, IQueryAttributable, INotifyPro
 		Shell.Current.GoToAsync(nameof(HomePage), navigationParameter);
 	}
 
+	public async void LogOut(object sender, EventArgs e)
+	{
+		await Shell.Current.GoToAsync(nameof(SignIn));
+	}
+
 	private void GoToDashboardPage(object sender, EventArgs e)
 	{
 		//eventually make this the dashboard page and also send the user through to this page.
