@@ -23,11 +23,11 @@ namespace NtcMaui
         //public static string Port = "5001";
         //Url of our test api
         public static string TestUrl = "https://instruct.ntc.edu/teststudybuddyapi";
-        
+
         //Prod endpoint
         //public static string TestUrl = "https://instruct.ntc.edu/studybuddyapi";
 
-        public static string LocalApiUrl = "https://localhost:7025";
+        //public static string TestUrl = "https://localhost:7025";
 
         //is going to get all of the Deck
         public static async Task<List<Deck>> GetAllDecks()
@@ -642,6 +642,30 @@ namespace NtcMaui
 
 
             Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySession", string.Empty));
+            try
+            {
+                HttpResponseMessage response = await Constants._client.GetAsync(uri);
+                if (response.IsSuccessStatusCode)
+                {
+                    string content = await response.Content.ReadAsStringAsync();
+                    studySessions = JsonSerializer.Deserialize<List<StudySession>>(content, Constants._serializerOptions);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+            }
+
+            return studySessions;
+        }
+
+        //gets the Study Sessions
+        public static async Task<List<StudySession>> GetAllStudySessionByDeckGroupAndDecks(int userId, int? deckId, string deckgroupId)
+        {
+            List<StudySession> studySessions = new List<StudySession>();
+
+
+            Uri uri = new Uri(string.Format($"{Constants.TestUrl}/api/StudySession/full/{userId}/{deckId}/{deckgroupId}", string.Empty));
             try
             {
                 HttpResponseMessage response = await Constants._client.GetAsync(uri);

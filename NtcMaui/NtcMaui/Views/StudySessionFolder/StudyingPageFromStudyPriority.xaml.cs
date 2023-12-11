@@ -237,6 +237,7 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
                 {"Incorrect Cards", IncorrectFlashCards },
                 {"Study Session", ChosenStudySession }
                 };
+            CompletedSession = true;
             await Shell.Current.GoToAsync(nameof(SessionStatsPage), navigationParameter);
         }
         else
@@ -331,6 +332,7 @@ public partial class StudyingPageFromStudyPriority : ContentPage, IQueryAttribut
                 {"Incorrect Cards", IncorrectFlashCards },
                 {"Study Session", ChosenStudySession }
                 };
+            CompletedSession = true;
             await Shell.Current.GoToAsync(nameof(SessionStatsPage), navigationParameter);
         }
         else
