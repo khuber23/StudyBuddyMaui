@@ -94,7 +94,7 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
 
         //re - get that StudySession to save the studySessionFlashCards
         //eventually also change the foreach to a Linq query for faster use.
-        StudySessions = await Constants.GetAllStudySessions();
+        StudySessions = await Constants.GetAllStudySessionByDeckGroupAndDecks(LoggedInUser.UserId, StudySession.DeckId, StudySession.DeckGroupId.ToString());
 
         StudySession = StudySessions.FirstOrDefault(studySession => studySession.EndTime == StudySession.EndTime
                 && studySession.StartTime == StudySession.StartTime
@@ -211,7 +211,7 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
             await Constants.SaveStudySessionAsync(StudySession);
 
             //after posting you need to retrieve it to upload the study session flashcard.
-            StudySessions = await Constants.GetAllStudySessions();
+            StudySessions = await Constants.GetAllStudySessionByDeckGroupAndDecks(LoggedInUser.UserId, StudySession.DeckId, StudySession.DeckGroupId.ToString());
 
             foreach (StudySession studySession in StudySessions)
             {
@@ -265,6 +265,7 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
                 {"Incorrect Cards", IncorrectFlashCards },
                 {"Study Session", StudySession }
                 };
+            CompletedSession = true;
             await Shell.Current.GoToAsync(nameof(SessionStatsPage), navigationParameter);
         }
         else
@@ -318,7 +319,7 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
             await Constants.SaveStudySessionAsync(StudySession);
 
             //after posting you need to retrieve it to upload the study session flashcard.
-            StudySessions = await Constants.GetAllStudySessions();
+            StudySessions = await Constants.GetAllStudySessionByDeckGroupAndDecks(LoggedInUser.UserId, StudySession.DeckId, StudySession.DeckGroupId.ToString());
 
             foreach (StudySession studySession in StudySessions)
             {
@@ -373,6 +374,7 @@ public partial class StudyingPage : ContentPage, IQueryAttributable, INotifyProp
                 {"Incorrect Cards", IncorrectFlashCards },
                 {"Study Session", StudySession }
                 };
+            CompletedSession = true;
             await Shell.Current.GoToAsync(nameof(SessionStatsPage), navigationParameter);
         }
         else
