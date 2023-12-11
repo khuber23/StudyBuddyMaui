@@ -2,51 +2,49 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="NtcMaui.Views.StudySessionFolder.StudyingPageNoDeckGroups"
-             Title="StudyingPage">
+             Title="Studying">
+    
     <ScrollView>
         <!--<ScrollView.GestureRecognizers>
             <SwipeGestureRecognizer Direction="Left" Swiped="OnSwiped"/>
             <SwipeGestureRecognizer Direction="Right" Swiped="OnSwiped"/>
         </ScrollView.GestureRecognizers>-->
         <Grid>
-            <!---This stacklayout represents the actual flashcard
-            Eventually need to add in flashcard images and deal with those-->
             <StackLayout VerticalOptions="Center">
                 <StackLayout x:Name="Flashcard" Margin="10" VerticalOptions="Center" WidthRequest="500">
                     <StackLayout.GestureRecognizers>
-                        <TapGestureRecognizer Tapped="OnTapRecognized" NumberOfTapsRequired="1"></TapGestureRecognizer>
+                        <TapGestureRecognizer Tapped="OnTapRecognized" NumberOfTapsRequired="1"/>
                     </StackLayout.GestureRecognizers>
                     <Border Stroke="Black" StrokeThickness="2" BackgroundColor="White" Padding="10" VerticalOptions="Center">
+                        <Border.StrokeShape>
+                            <RoundRectangle CornerRadius="20,20,20,20"/>
+                        </Border.StrokeShape>
                         <StackLayout>
                             <StackLayout   Margin="50" HorizontalOptions="Center" VerticalOptions="Center">
-                                <!---This stacklayout is where the inside of the card will appear along with flashcard text-->
-                                <Label x:Name="FlashcardText"></Label>
+                                <Label FontSize="20" x:Name="FlashcardText"/>
                                 <Image x:Name="FlashCardImage" WidthRequest="300" HeightRequest="300"></Image>
                             </StackLayout>
                             <HorizontalStackLayout HorizontalOptions="End">
-
-                                <ImageButton WidthRequest="25" HeightRequest="25" Source="sound.png" x:Name="SoundButton" Clicked="SoundButton_Clicked" HorizontalOptions="End" VerticalOptions="End"></ImageButton>
-
+                                <ImageButton WidthRequest="25" HeightRequest="25" Source="sound.png" x:Name="SoundButton" Clicked="SoundButton_Clicked" HorizontalOptions="End" VerticalOptions="End"/>
                             </HorizontalStackLayout>
-
                         </StackLayout>
-
                     </Border>
                 </StackLayout>
-
                 <StackLayout HorizontalOptions="Center">
                     <Picker x:Name="LangPicker"
-SelectedIndexChanged="LangPicker_SelectedIndexChanged" 
-ItemDisplayBinding="{Binding Name}"
-Title="Choose a Voice:" 
-WidthRequest="275"
-    HorizontalOptions="Center"/>
+                    SelectedIndexChanged="LangPicker_SelectedIndexChanged" 
+                    ItemDisplayBinding="{Binding Name}"
+                    Title="Choose a Voice:" 
+                    WidthRequest="275"
+                    HorizontalOptions="Center"/>
                 </StackLayout>
             </StackLayout>
+
             <StackLayout Orientation="Horizontal" VerticalOptions="End" HorizontalOptions="Center">
-                <Button Margin="20" Text="Don't Understand" Clicked="DontUnderstandClick"></Button>
-                <Button Margin="20" Text="Understand" Clicked="UnderstandClick"></Button>
+                <Button Margin="10" BackgroundColor="white" WidthRequest="150"  HeightRequest="98" BorderColor="white"  ImageSource="questionmark100.png" Clicked="DontUnderstandClick"></Button>
+                <Button Margin="10" BackgroundColor="white" WidthRequest="150"  HeightRequest="105" BorderColor="white" ImageSource="checkmark100.png" Clicked="UnderstandClick"></Button>
             </StackLayout>
         </Grid>
     </ScrollView>
+
 </ContentPage>

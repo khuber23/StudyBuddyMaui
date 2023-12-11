@@ -28,7 +28,7 @@
           RowSpacing="0">
         <StackLayout Grid.ColumnSpan="3"  Margin="0,30,0,0">
             <Label Text="My Studies Session" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="35" FontAttributes="Bold"/>
-            <Label Text="Select a Deck to Start a Session with or Toggle off to study Decks NOT in a Deck Group" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="18" />
+            <Label Text="Select a Deck from a Deck Group to Start a Session with or Toggle off to study Decks NOT in a Deck Group" VerticalOptions="Center" HorizontalOptions="Center"  FontSize="18" />
             <Switch Margin="100,0,0,0" VerticalOptions="Start" HorizontalOptions="Start" x:Name="styleSwitch" IsToggled="True" Toggled="styleSwitch_Toggled"/>
             <!--<Label Grid.Column="1" Grid.Row="0"  FontSize="18" Text="Deck Groups"/>-->
             <Label VerticalOptions="Center" HorizontalOptions="Center"  x:Name="ErrorLabel" Text="Select a Deck you wish to study:"/>
