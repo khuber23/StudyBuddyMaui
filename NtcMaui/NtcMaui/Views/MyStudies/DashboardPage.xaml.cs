@@ -35,23 +35,30 @@ public partial class DashboardPage : ContentPage, IQueryAttributable, INotifyPro
         else
         {
             AllStudyFlashcardsListView.ItemsSource = StudySessionFlashCards;
-            int totalCount = StudySessionFlashCards.Count;
+            TotalCount = StudySessionFlashCards.Count;
 
             foreach (var item in StudySessionFlashCards)
             {
                 if (item.IsCorrect)
                 {
-                    correctCount++;
+                    CorrectCount++;
                 }
 
             }
-            decimal progress = Math.Round(((decimal)correctCount / totalCount), 2);
+            decimal progress = Math.Round(((decimal)CorrectCount / TotalCount), 2);
             StatsProgressBar.Progress = (double)progress;
             ProgressLabel.Text = $"You are at {Math.Round(progress * 100)}% on your studying";
         }
     }
 
-	private void GoToHomePage(object sender, EventArgs e)
+    protected override void OnDisappearing()
+    {
+        StatsProgressBar.Progress = 0;
+        CorrectCount = 0;
+        TotalCount = 0;
+    }
+
+    private void GoToHomePage(object sender, EventArgs e)
 	{
 		var navigationParameter = new Dictionary<string, object>
 				{
@@ -121,4 +128,8 @@ public partial class DashboardPage : ContentPage, IQueryAttributable, INotifyPro
 	public User LoggedInUser { get; set; }
 
     public List<StudySessionFlashCard> StudySessionFlashCards { get; set; }
+
+    public int TotalCount { get; set; }
+
+    public int CorrectCount { get; set; }
 }
