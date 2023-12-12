@@ -22,10 +22,10 @@ namespace NtcMaui
         //public static string Scheme = "https"; // or http
         //public static string Port = "5001";
         //Url of our test api
-        public static string TestUrl = "https://instruct.ntc.edu/teststudybuddyapi";
+        //public static string TestUrl = "https://instruct.ntc.edu/teststudybuddyapi";
 
         //Prod endpoint
-        //public static string TestUrl = "https://instruct.ntc.edu/studybuddyapi";
+        public static string TestUrl = "https://instruct.ntc.edu/studybuddyapi";
 
         //public static string TestUrl = "https://localhost:7025";
 
